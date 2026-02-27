@@ -1,0 +1,136 @@
+/* src/screens/stage2/Level2_1.css */
+
+.l21-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Task */
+.l21-task {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 20px 24px;
+}
+
+.l21-task-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #f97316;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.l21-task-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #f1f5f9;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.l21-task-desc {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.l21-task-desc code {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: #fbbf24;
+  background: rgba(251,191,36,0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.l21-expected {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #080a0f;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.l21-expected-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #475569;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.l21-expected-output {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: #4ade80;
+  letter-spacing: 0.3px;
+}
+
+/* Anatomy breakdown */
+.l21-anatomy {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 18px 22px;
+}
+
+.l21-anatomy-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #475569;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.l21-anatomy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 8px;
+}
+
+.anatomy-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #080a0f;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.anatomy-token {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 110px;
+}
+
+.anatomy-meaning {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* Success */
+.l21-success {
+  background: rgba(74,222,128,0.06);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #86efac;
+  font-family: 'DM Mono', monospace;
+}

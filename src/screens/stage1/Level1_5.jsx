@@ -12,6 +12,7 @@ import { useGame } from '../../context/GameContext';
 import Stage1Shell from './Stage1Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
 import './Level1_5.css';
+import useUndo from '../../hooks/useUndo';
 
 // ── Support content ────────────────────────────────────────────────────────
 const SUPPORT = {
@@ -151,7 +152,7 @@ function MethodColumn({ method, endpoints, allEndpoints }) {
 function Level1_5() {
   const { selectedDomain } = useGame();
   const [activeId,    setActiveId]    = useState(null);
-  const [placements,  setPlacements]  = useState({});
+  const [placements, setPlacements, undoControls] = useUndo({});
   // placements: { endpointId: methodId }
 
   const endpoints = getEndpointsForDomain(selectedDomain);
@@ -202,7 +203,7 @@ function Level1_5() {
   }
 
   return (
-    <Stage1Shell levelId={5} canProceed={canProceed} conceptReveal={SUPPORT.reveal}>
+    <Stage1Shell levelId={5} canProceed={canProceed} conceptReveal={SUPPORT.reveal} undoControls={undoControls}>
       <LevelSupportWrapper
         conceptIntro={SUPPORT.intro}
         hints={SUPPORT.hints}

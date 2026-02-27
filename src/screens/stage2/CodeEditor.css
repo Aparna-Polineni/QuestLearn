@@ -1,0 +1,270 @@
+/* src/screens/stage2/CodeEditor.css */
+
+.code-editor {
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0d1117;
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Toolbar ──────────────────────────────────────────────────────────── */
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #080a0f;
+  border-bottom: 1px solid #1e293b;
+}
+
+.editor-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.editor-lang-tag {
+  font-size: 10px;
+  color: #f97316;
+  background: rgba(249,115,22,0.1);
+  border: 1px solid rgba(249,115,22,0.2);
+  border-radius: 4px;
+  padding: 2px 7px;
+  letter-spacing: 2px;
+}
+
+.editor-file-name {
+  font-size: 12px;
+  color: #475569;
+  letter-spacing: 0.5px;
+}
+
+.editor-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor-hint-btn {
+  padding: 6px 12px;
+  background: rgba(249,115,22,0.08);
+  border: 1px solid rgba(249,115,22,0.2);
+  border-radius: 7px;
+  color: #f97316;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.editor-hint-btn:hover { background: rgba(249,115,22,0.15); }
+
+.editor-reset-btn {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid #1e293b;
+  border-radius: 7px;
+  color: #475569;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editor-reset-btn:hover { border-color: #ef4444; color: #ef4444; }
+
+.editor-run-btn {
+  padding: 7px 18px;
+  background: linear-gradient(90deg, #4ade80, #22c55e);
+  border: none;
+  border-radius: 7px;
+  color: #020617;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editor-run-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(74,222,128,0.3);
+}
+
+.editor-run-btn.running {
+  background: #1e293b;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* ── Hint panel ───────────────────────────────────────────────────────── */
+.editor-hint-panel {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(249,115,22,0.05);
+  border-bottom: 1px solid rgba(249,115,22,0.15);
+  animation: slideDown 0.2s ease;
+}
+
+.hint-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+.hint-text {
+  flex: 1;
+  font-size: 12px;
+  color: #fed7aa;
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+}
+
+.hint-next {
+  background: transparent;
+  border: 1px solid rgba(249,115,22,0.3);
+  border-radius: 6px;
+  color: #f97316;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 3px 9px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.hint-next:hover { background: rgba(249,115,22,0.1); }
+
+/* ── Editor body ──────────────────────────────────────────────────────── */
+.editor-body {
+  position: relative;
+  display: flex;
+  overflow: auto;
+  background: #0d1117;
+}
+
+/* Line numbers */
+.line-numbers {
+  flex-shrink: 0;
+  padding: 14px 0;
+  background: #080a0f;
+  border-right: 1px solid #1e293b;
+  user-select: none;
+  min-width: 44px;
+}
+
+.line-number {
+  font-size: 12px;
+  color: #334155;
+  text-align: right;
+  padding: 0 12px 0 8px;
+  line-height: 1.6;
+  height: 19.2px;
+}
+
+/* Highlight layer */
+.editor-highlight {
+  position: absolute;
+  top: 0;
+  left: 44px;
+  right: 0;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre;
+  pointer-events: none;
+  color: #e2e8f0;
+  overflow: visible;
+  font-family: 'DM Mono', monospace;
+}
+
+/* Textarea on top */
+.editor-textarea {
+  position: absolute;
+  top: 0;
+  left: 44px;
+  right: 0;
+  bottom: 0;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  font-family: 'DM Mono', monospace;
+  color: transparent;
+  caret-color: #f1f5f9;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  white-space: pre;
+  overflow: auto;
+  width: calc(100% - 44px);
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* Syntax tokens */
+.tok-keyword    { color: #f97316; }
+.tok-type       { color: #38bdf8; }
+.tok-string     { color: #4ade80; }
+.tok-number     { color: #f472b6; }
+.tok-comment    { color: #475569; font-style: italic; }
+.tok-method     { color: #fbbf24; }
+.tok-annotation { color: #818cf8; }
+
+/* ── Output panel ─────────────────────────────────────────────────────── */
+.editor-output {
+  border-top: 1px solid #1e293b;
+  transition: border-color 0.3s;
+}
+
+.editor-output.output-correct { border-top-color: rgba(74,222,128,0.4); }
+.editor-output.output-wrong   { border-top-color: rgba(239,68,68,0.4); }
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #080a0f;
+  border-bottom: 1px solid #1e293b;
+}
+
+.output-label {
+  font-size: 11px;
+  color: #475569;
+  letter-spacing: 1px;
+}
+
+.output-correct .output-label { color: #4ade80; }
+.output-wrong   .output-label { color: #ef4444; }
+
+.output-expected-label {
+  font-size: 11px;
+  color: #334155;
+  letter-spacing: 0.3px;
+}
+
+.output-expected-label code {
+  color: #64748b;
+  font-family: 'DM Mono', monospace;
+}
+
+.output-content {
+  padding: 12px 14px;
+  margin: 0;
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.7;
+  min-height: 52px;
+  font-family: 'DM Mono', monospace;
+  white-space: pre-wrap;
+}
+
+.output-correct .output-content { color: #86efac; }
+.output-wrong   .output-content { color: #fca5a5; }
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

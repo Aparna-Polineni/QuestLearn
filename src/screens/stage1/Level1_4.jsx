@@ -6,6 +6,7 @@ import { useGame } from '../../context/GameContext';
 import Stage1Shell from './Stage1Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
 import './Level1_4.css';
+import useUndo from '../../hooks/useUndo';
 
 // ── Support content ────────────────────────────────────────────────────────
 const SUPPORT = {
@@ -114,8 +115,16 @@ function Level1_4() {
   const canvasRef  = useRef(null);
   const entities   = selectedDomain?.entities || [];
 
-  const [positions,    setPositions]    = useState({});
-  const [connections,  setConnections]  = useState([]);
+  const [positions,    setPositions, posUndo]    = useUndo({});
+  const [connections, setConnections, connUndo] = useUndo([]);
+  const undoControls = {
+  canUndo:     posUndo.canUndo || connUndo.canUndo,
+  canRedo:     posUndo.canRedo || connUndo.canRedo,
+  undo:        () => { posUndo.undo(); connUndo.undo(); },
+  redo:        () => { posUndo.redo(); connUndo.redo(); },
+  reset:       () => { posUndo.reset(); connUndo.reset(); },
+  historySize: Math.max(posUndo.historySize, connUndo.historySize),
+};
   const [dragging,     setDragging]     = useState(null);
   const [dragOffset,   setDragOffset]   = useState({ x: 0, y: 0 });
   const [connectFrom,  setConnectFrom]  = useState(null);
@@ -218,7 +227,7 @@ function Level1_4() {
   }
 
   return (
-    <Stage1Shell levelId={4} canProceed={canProceed} conceptReveal={SUPPORT.reveal}>
+    <Stage1Shell levelId={4} canProceed={canProceed} conceptReveal={SUPPORT.reveal} undoControls={undoControls}>
       <LevelSupportWrapper
         conceptIntro={SUPPORT.intro}
         hints={SUPPORT.hints}

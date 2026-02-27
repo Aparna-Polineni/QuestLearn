@@ -9,7 +9,7 @@ import { useGame } from '../../context/GameContext';
 import Stage1Shell from './Stage1Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
 import './Level1_3.css';
-import useUndo from '../hooks/useUndo';
+import useUndo from '../../hooks/useUndo';
 
 // ── Support content ────────────────────────────────────────────────────────
 const SUPPORT = {

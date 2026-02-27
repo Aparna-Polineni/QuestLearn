@@ -8,6 +8,10 @@ import Level1_2 from './screens/stage1/Level1_2';
 import Level1_3 from './screens/stage1/Level1_3';
 import Level1_4 from './screens/stage1/Level1_4';
 import Level1_5 from './screens/stage1/Level1_5';
+import Level1_6 from './screens/stage1/Level1_6';
+import Level1_7 from './screens/stage1/Level1_7';
+import Level1_8 from './screens/stage1/Level1_8';
+import Level2_1 from './screens/stage2/Level2_1';
 
 // Placeholder for levels not built yet
 function ComingSoon({ label }) {
@@ -45,12 +49,17 @@ function App() {
           <Route path="/stage/1/level/3" element={<Level1_3 />} />
           <Route path="/stage/1/level/4" element={<Level1_4 />} />
           <Route path="/stage/1/level/5" element={<Level1_5 />} />
-          <Route path="/stage/1/level/6" element={<ComingSoon label="Level 1.6 — Choose Your Stack" />} />
-          <Route path="/stage/1/level/7" element={<ComingSoon label="Level 1.7 — Set Up the Project" />} />
-          <Route path="/stage/1/level/8" element={<ComingSoon label="Level 1.8 — The Roadmap" />} />
+          <Route path="/stage/1/level/6" element={<Level1_6 />} />
+          <Route path="/stage/1/level/7" element={<Level1_7 />} />
+          <Route path="/stage/1/level/8" element={<Level1_8 />} />
 
-          {/* Stage 2 intro placeholder */}
-          <Route path="/stage/2/intro" element={<ComingSoon label="Stage 2 — Java Core" />} />
+          {/* Stage 2 levels */}
+          <Route path="/stage/2/intro" element={<Navigate to="/stage/2/level/1" />} />
+          <Route path="/stage/2/level/1" element={<Level2_1 />} />
+          <Route path="/stage/2/level/2" element={<ComingSoon label="Stage 2 — Java Core" />} />
+          <Route path="/stage/2/level/3" element={<ComingSoon label="Stage 2 — Java Core" />} />
+          <Route path="/stage/2/level/4" element={<ComingSoon label="Stage 2 — Java Core" />} />
+          <Route path="/stage/2/level/5" element={<ComingSoon label="Stage 2 — Java Core" />} />
 
           {/* Catch all */}
           <Route path="*" element={<Navigate to="/" />} />
