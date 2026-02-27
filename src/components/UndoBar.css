@@ -1,0 +1,78 @@
+/* src/components/UndoBar.css */
+
+.undo-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.undo-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.undo-enabled {
+  background: rgba(56,189,248,0.08);
+  border-color: rgba(56,189,248,0.25);
+  color: #38bdf8;
+}
+
+.undo-enabled:hover {
+  background: rgba(56,189,248,0.15);
+  border-color: rgba(56,189,248,0.4);
+  transform: translateY(-1px);
+}
+
+.undo-disabled {
+  background: transparent;
+  border-color: #1e293b;
+  color: #334155;
+  cursor: not-allowed;
+}
+
+.redo-btn {
+  background: rgba(129,140,248,0.08);
+  border-color: rgba(129,140,248,0.25);
+  color: #818cf8;
+}
+
+.redo-btn:hover {
+  background: rgba(129,140,248,0.15);
+  border-color: rgba(129,140,248,0.4);
+}
+
+.reset-btn {
+  padding: 7px 12px;
+  background: transparent;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  color: #475569;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.reset-btn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239,68,68,0.06);
+}
+
+.undo-history-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #334155;
+  letter-spacing: 1px;
+  padding-left: 4px;
+}

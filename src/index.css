@@ -1,13 +1,41 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  /* Global */
+  --bg: #080a0f;
+  --text: #f1f5f9;
+  --muted: #64748b;
+  --border: #1e293b;
+
+  /* Coding path — blue */
+  --coding-primary: #38bdf8;
+  --coding-secondary: #818cf8;
+  --coding-glow: rgba(56, 189, 248, 0.3);
+
+  /* Math path — orange */
+  --math-primary: #f97316;
+  --math-secondary: #fbbf24;
+  --math-glow: rgba(249, 115, 22, 0.3);
+
+  /* Language path — green */
+  --lang-primary: #4ade80;
+  --lang-secondary: #34d399;
+  --lang-glow: rgba(74, 222, 128, 0.3);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+/* Font utilities */
+.font-mono { font-family: 'DM Mono', monospace; }
+.font-display { font-family: 'Syne', sans-serif; }
