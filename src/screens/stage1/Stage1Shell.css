@@ -126,9 +126,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 32px;
+  padding: 12px 24px;
   background: #0d1117;
   border-top: 1px solid #1e293b;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.s1-action-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex-shrink: 0;
 }
 
@@ -184,93 +192,188 @@
 }
 
 /* Celebration */
+/* ── Celebration overlay ─────────────────────────────────────────── */
 .s1-celebration {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.88);
+  background: rgba(0,0,0,0.92);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 200;
   animation: fadeIn 0.3s ease;
+  overflow-y: auto;
+  padding: 40px 16px 60px;
 }
 
 .s1-celebrate-box {
   background: #0d1117;
   border: 1px solid #1e293b;
   border-radius: 24px;
-  padding: 52px 48px;
-  max-width: 500px;
-  width: 92%;
+  padding: 40px 36px;
+  max-width: 560px;
+  width: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  flex-shrink: 0;
 }
 
-.s1-celebrate-emoji { font-size: 64px; }
+.s1-celebrate-emoji { font-size: 56px; }
 
-.s1-celebrate-box h2 {
+.s1-celebrate-title {
   font-family: 'Syne', sans-serif;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
   color: #4ade80;
+  margin: 0;
 }
 
 .s1-celebrate-sub {
   font-family: 'DM Mono', monospace;
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
 }
 
-.s1-concept-box {
-  background: rgba(56,189,248,0.06);
-  border: 1px solid rgba(56,189,248,0.2);
-  border-radius: 14px;
+/* ── Concept reveal panel ────────────────────────────────────────── */
+.s1-concept-reveal {
+  background: #080a0f;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
   padding: 20px;
   text-align: left;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 14px;
+  margin-top: 4px;
 }
 
-.s1-concept-label {
+.s1-cr-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.s1-cr-icon { font-size: 24px; flex-shrink: 0; }
+
+.s1-cr-tag {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   color: #38bdf8;
   letter-spacing: 3px;
   text-transform: uppercase;
+  margin-bottom: 4px;
 }
 
-.s1-concept-name {
+.s1-cr-title {
   font-family: 'Syne', sans-serif;
   font-size: 18px;
   font-weight: 800;
   color: #f1f5f9;
+  line-height: 1.2;
 }
 
-.s1-concept-text {
+.s1-cr-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.s1-cr-block-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #475569;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.s1-cr-block-text {
   font-size: 13px;
   color: #94a3b8;
-  line-height: 1.6;
+  line-height: 1.7;
+  margin: 0;
 }
 
-.s1-next-level-btn {
-  padding: 14px 36px;
-  background: transparent;
-  border: 2px solid #4ade80;
-  color: #4ade80;
+.s1-cr-quote {
+  background: rgba(249,115,22,0.06);
+  border-left: 3px solid #f97316;
+  border-radius: 0 8px 8px 0;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.s1-cr-quote-mark {
+  font-size: 28px;
+  color: #f97316;
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+
+.s1-cr-quote-text {
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.7;
+  font-style: italic;
+  margin: 0;
+}
+
+.s1-cr-quote-attr {
   font-family: 'DM Mono', monospace;
-  font-size: 14px;
+  font-size: 10px;
+  color: #f97316;
   letter-spacing: 1px;
+}
+
+/* ── Celebration action buttons ──────────────────────────────────── */
+.s1-celebrate-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.s1-home-btn {
+  padding: 12px 20px;
+  background: transparent;
+  border: 1px solid #1e293b;
+  color: #64748b;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
   cursor: pointer;
   border-radius: 12px;
   transition: all 0.2s;
-  margin-top: 8px;
+  white-space: nowrap;
 }
+.s1-home-btn:hover { border-color: #38bdf8; color: #38bdf8; }
+
+.s1-next-level-btn {
+  flex: 1;
+  padding: 14px 20px;
+  background: #4ade80;
+  border: none;
+  color: #052e16;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+.s1-next-level-btn:hover {
+  background: #86efac;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(74,222,128,0.3);
+}
+
 
 .s1-next-level-btn:hover {
   background: #4ade80;
@@ -287,3 +390,19 @@
   from { opacity: 0; transform: scale(0.85); }
   to   { opacity: 1; transform: scale(1); }
 }
+
+/* Roadmap button in HUD */
+.s1-roadmap-btn {
+  margin-left: 12px;
+  padding: 4px 10px;
+  background: rgba(56,189,248,0.08);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 7px;
+  color: #38bdf8;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+.s1-roadmap-btn:hover { background: rgba(56,189,248,0.14); }

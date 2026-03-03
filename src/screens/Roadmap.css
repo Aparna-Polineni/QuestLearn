@@ -1,0 +1,329 @@
+/* src/screens/Roadmap.css */
+.roadmap-screen {
+  min-height: 100vh;
+  background: #080a0f;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.roadmap-bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(150px);
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-a { width: 700px; height: 700px; background: rgba(249,115,22,0.04); top: -200px; right: -200px; }
+.orb-b { width: 500px; height: 500px; background: rgba(56,189,248,0.04); bottom: -100px; left: -100px; }
+
+/* Nav */
+.roadmap-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  border-bottom: 1px solid #1e293b;
+  position: relative;
+  z-index: 2;
+}
+
+.roadmap-back {
+  background: transparent;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 7px 14px;
+  color: #64748b;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.roadmap-back:hover { border-color: #38bdf8; color: #38bdf8; }
+
+.roadmap-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: #38bdf8;
+  letter-spacing: 3px;
+}
+
+.roadmap-user {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Content */
+.roadmap-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero */
+.roadmap-hero {
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.roadmap-path-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: #f97316;
+  letter-spacing: 2px;
+}
+
+.roadmap-domain-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: #38bdf8;
+  letter-spacing: 1px;
+}
+
+.roadmap-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: #f1f5f9;
+  line-height: 1.1;
+}
+
+/* Stats */
+.roadmap-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.roadmap-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: #475569;
+}
+
+/* Overall bar */
+.roadmap-overall-bar {
+  margin-top: 8px;
+}
+
+.roadmap-overall-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #475569;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.roadmap-bar-track {
+  height: 8px;
+  background: #1e293b;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 500px;
+}
+
+.roadmap-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f97316, #38bdf8);
+  border-radius: 8px;
+  transition: width 0.6s ease;
+}
+
+/* Stages */
+.roadmap-stages {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Stage card */
+.stage-card {
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 20px;
+  transition: border-color 0.2s;
+}
+
+.stage-card:hover:not(.stage-locked)   { border-color: rgba(255,255,255,0.08); }
+.stage-current { border-color: var(--stage-color) !important; box-shadow: 0 0 0 1px var(--stage-color); }
+.stage-complete { border-color: rgba(74,222,128,0.25); }
+.stage-locked   { opacity: 0.45; }
+
+/* Stage card header */
+.stage-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.stage-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stage-card-emoji { font-size: 24px; }
+
+.stage-card-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--stage-color);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.stage-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.stage-complete-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #4ade80;
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 100px;
+  padding: 3px 10px;
+}
+
+.stage-locked-badge { font-size: 16px; }
+
+.stage-progress-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--stage-color);
+  font-weight: 700;
+}
+
+/* Progress bar */
+.stage-progress-bar {
+  height: 4px;
+  background: #1e293b;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.stage-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.stage-desc {
+  font-size: 12px;
+  color: #475569;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* Level dots */
+.stage-level-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.level-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: transparent;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+}
+
+.dot-complete {
+  background: rgba(74,222,128,0.1);
+  border-color: rgba(74,222,128,0.3);
+  color: #4ade80;
+}
+
+.dot-current {
+  background: rgba(249,115,22,0.15);
+  border-color: #f97316;
+  color: #f97316;
+  box-shadow: 0 0 8px rgba(249,115,22,0.3);
+}
+
+.dot-available:hover {
+  border-color: var(--stage-color, #38bdf8);
+  color: var(--stage-color, #38bdf8);
+  transform: scale(1.1);
+}
+
+.dot-locked {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.stage-locked-msg {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #334155;
+  letter-spacing: 0.5px;
+  padding: 8px 0;
+}
+
+.stage-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #334155;
+  letter-spacing: 0.5px;
+}
+
+/* CTA */
+.roadmap-cta {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.roadmap-continue-btn {
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+  border: none;
+  border-radius: 12px;
+  color: #1c0a00;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.roadmap-continue-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(249,115,22,0.35);
+}

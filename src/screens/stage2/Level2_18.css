@@ -1,0 +1,7 @@
+.l218-container { display:flex; flex-direction:column; gap:24px; padding:0 0 32px; }
+.l218-brief { background:#0d1117; border:1px solid #1e293b; border-radius:16px; padding:24px; }
+.l218-brief-tag { font-family:'DM Mono',monospace; font-size:11px; color:#38bdf8; letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+.l218-brief h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:#f1f5f9; margin-bottom:8px; }
+.l218-brief p { font-size:14px; color:#64748b; line-height:1.6; margin-bottom:12px; }
+.l218-method-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.l218-method-chip { font-family:'DM Mono',monospace; font-size:11px; color:#38bdf8; background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.2); border-radius:6px; padding:3px 9px; }

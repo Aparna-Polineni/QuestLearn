@@ -1,0 +1,17 @@
+.l26-container { display:flex; flex-direction:column; gap:24px; padding:0 0 32px; }
+.l26-brief { background:#0d1117; border:1px solid #1e293b; border-radius:16px; padding:24px; }
+.l26-brief-tag { font-family:'DM Mono',monospace; font-size:11px; color:#38bdf8; letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+.l26-brief h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:#f1f5f9; margin-bottom:8px; }
+.l26-brief p { font-size:14px; color:#64748b; line-height:1.6; margin-bottom:16px; }
+.l26-anatomy { background:#080a0f; border:1px solid #1e293b; border-radius:12px; padding:18px; }
+.l26-anatomy-label { font-family:'DM Mono',monospace; font-size:11px; color:#475569; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+.l26-anatomy-code { font-family:'DM Mono',monospace; font-size:13px; color:#cbd5e1; line-height:2; padding:12px; background:#060810; border-radius:8px; margin-bottom:12px; }
+.tok-keyword { color:#818cf8; }
+.tok-type { color:#38bdf8; }
+.tok-method { color:#fbbf24; }
+.l26-anatomy-parts { display:flex; flex-wrap:wrap; gap:6px; }
+.l26-ap { font-family:'DM Mono',monospace; font-size:10px; border-radius:4px; padding:3px 9px; }
+.l26-ap-mod { color:#818cf8; background:rgba(129,140,248,0.1); border:1px solid rgba(129,140,248,0.2); }
+.l26-ap-ret { color:#38bdf8; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.2); }
+.l26-ap-par { color:#4ade80; background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.2); }
+.l26-ap-key { color:#f97316; background:rgba(249,115,22,0.1); border:1px solid rgba(249,115,22,0.2); }

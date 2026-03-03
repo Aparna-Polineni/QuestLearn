@@ -1,0 +1,5 @@
+.l211-container { display:flex; flex-direction:column; gap:24px; padding:0 0 32px; }
+.l211-brief { background:#0d1117; border:1px solid #1e293b; border-radius:16px; padding:24px; }
+.l211-brief-tag { font-family:'DM Mono',monospace; font-size:11px; color:#f97316; letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+.l211-brief h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:#f1f5f9; margin-bottom:8px; }
+.l211-brief p { font-size:14px; color:#64748b; line-height:1.6; }

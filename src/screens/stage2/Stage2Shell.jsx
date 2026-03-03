@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { ConceptReveal } from '../../components/LevelSupport';
 import UndoBar from '../../components/UndoBar';
+import RoadmapSidebar from '../../components/RoadmapSidebar';
 import './Stage2Shell.css';
 
 const LEVELS = [
@@ -42,6 +43,7 @@ function Stage2Shell({ children, levelId, canProceed, conceptReveal, undoControl
   const navigate = useNavigate();
   const { selectedDomain, completeLevel, isLevelComplete } = useGame();
   const [showCelebration, setShowCelebration] = useState(false);
+  const [roadmapOpen,     setRoadmapOpen]     = useState(false);
 
   const level    = LEVELS[levelId - 1];
   const part     = PARTS[level?.part];
@@ -68,7 +70,7 @@ function Stage2Shell({ children, levelId, canProceed, conceptReveal, undoControl
       {/* HUD */}
       <div className="s2-hud">
         <div className="s2-hud-left">
-          <span className="s2-logo">◈ QuestLearn</span>
+          <span className="s2-logo" style={{cursor:'pointer'}} onClick={() => navigate('/home')}>◈ QuestLearn</span>
           <span className="s2-sep">·</span>
           <span className="s2-stage">☕ Stage 2 — Java Core</span>
         </div>
@@ -79,7 +81,10 @@ function Stage2Shell({ children, levelId, canProceed, conceptReveal, undoControl
             </span>
           )}
         </div>
-        <div className="s2-hud-right">Level {levelId} of 20</div>
+        <div className="s2-hud-right">
+          Level {levelId} of 20
+          <button className="s2-roadmap-btn" onClick={() => setRoadmapOpen(true)}>🗺️ Map</button>
+        </div>
       </div>
 
       {/* Progress bar */}
@@ -180,6 +185,14 @@ function Stage2Shell({ children, levelId, canProceed, conceptReveal, undoControl
           </div>
         </div>
       )}
+
+      {/* Roadmap Sidebar */}
+      <RoadmapSidebar
+        isOpen={roadmapOpen}
+        onClose={() => setRoadmapOpen(false)}
+        currentStageId={2}
+        currentLevelId={levelId}
+      />
 
     </div>
   );

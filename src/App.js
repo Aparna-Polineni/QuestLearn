@@ -1,8 +1,15 @@
 // src/App.js
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { GameProvider } from './context/GameContext';
-import Onboarding from './screens/Onboarding';
-import DomainSelect from './screens/DomainSelect';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+import AuthScreen       from './screens/AuthScreen';
+import Home             from './screens/Home';
+import CareerPathSelect from './screens/CareerPathSelect';
+import DomainSelect     from './screens/DomainSelect';
+import Roadmap          from './screens/Roadmap';
+
+// Stage 1
 import Level1_1 from './screens/stage1/Level1_1';
 import Level1_2 from './screens/stage1/Level1_2';
 import Level1_3 from './screens/stage1/Level1_3';
@@ -11,62 +18,115 @@ import Level1_5 from './screens/stage1/Level1_5';
 import Level1_6 from './screens/stage1/Level1_6';
 import Level1_7 from './screens/stage1/Level1_7';
 import Level1_8 from './screens/stage1/Level1_8';
-import Level2_1 from './screens/stage2/Level2_1';
 
-// Placeholder for levels not built yet
+// Stage 2 — all 20 levels
+import Level2_1  from './screens/stage2/Level2_1';
+import Level2_2  from './screens/stage2/Level2_2';
+import Level2_3  from './screens/stage2/Level2_3';
+import Level2_4  from './screens/stage2/Level2_4';
+import Level2_5  from './screens/stage2/Level2_5';
+import Level2_6  from './screens/stage2/Level2_6';
+import Level2_7  from './screens/stage2/Level2_7';
+import Level2_8  from './screens/stage2/Level2_8';
+import Level2_9  from './screens/stage2/Level2_9';
+import Level2_10 from './screens/stage2/Level2_10';
+import Level2_11 from './screens/stage2/Level2_11';
+import Level2_12 from './screens/stage2/Level2_12';
+import Level2_13 from './screens/stage2/Level2_13';
+import Level2_14 from './screens/stage2/Level2_14';
+import Level2_15 from './screens/stage2/Level2_15';
+import Level2_16 from './screens/stage2/Level2_16';
+import Level2_17 from './screens/stage2/Level2_17';
+import Level2_18 from './screens/stage2/Level2_18';
+import Level2_19 from './screens/stage2/Level2_19';
+import Level2_20 from './screens/stage2/Level2_20';
+
 function ComingSoon({ label }) {
   return (
-    <div style={{
-      minHeight: '100vh', background: '#080a0f',
-      display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', gap: 16
-    }}>
-      <div style={{ fontSize: 48 }}>🚧</div>
-      <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 28, fontWeight: 800, color: '#f1f5f9' }}>
-        {label}
-      </div>
-      <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 13, color: '#475569' }}>
-        Coming soon — being built
-      </div>
+    <div style={{ minHeight:'100vh', background:'#080a0f', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16 }}>
+      <div style={{ fontSize:48 }}>🚧</div>
+      <div style={{ fontFamily:'Syne,sans-serif', fontSize:28, fontWeight:800, color:'#f1f5f9' }}>{label}</div>
+      <div style={{ fontFamily:'DM Mono,monospace', fontSize:13, color:'#475569' }}>Coming soon — being built</div>
     </div>
   );
 }
 
-function App() {
+function RequireAuth({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return (
+    <div style={{ minHeight:'100vh', background:'#080a0f', display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <div style={{ fontFamily:'DM Mono,monospace', fontSize:13, color:'#475569', letterSpacing:2 }}>loading...</div>
+    </div>
+  );
+  if (!user) return <Navigate to="/auth" replace />;
+  return children;
+}
+
+const R = ({ children }) => <RequireAuth>{children}</RequireAuth>;
+
+function AppRoutes() {
   return (
-    <GameProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Onboarding — who are you */}
-          <Route path="/" element={<Onboarding />} />
+    <Routes>
+      <Route path="/"              element={<Navigate to="/auth" replace />} />
+      <Route path="/auth"          element={<AuthScreen />} />
+      <Route path="/home"          element={<R><Home /></R>} />
+      <Route path="/career-select" element={<R><CareerPathSelect /></R>} />
+      <Route path="/domain-select" element={<R><DomainSelect /></R>} />
+      <Route path="/roadmap"       element={<R><Roadmap /></R>} />
 
-          {/* Domain selection — choose your project */}
-          <Route path="/domain-select" element={<DomainSelect />} />
+      {/* Stage 1 */}
+      <Route path="/stage/1/level/1" element={<R><Level1_1 /></R>} />
+      <Route path="/stage/1/level/2" element={<R><Level1_2 /></R>} />
+      <Route path="/stage/1/level/3" element={<R><Level1_3 /></R>} />
+      <Route path="/stage/1/level/4" element={<R><Level1_4 /></R>} />
+      <Route path="/stage/1/level/5" element={<R><Level1_5 /></R>} />
+      <Route path="/stage/1/level/6" element={<R><Level1_6 /></R>} />
+      <Route path="/stage/1/level/7" element={<R><Level1_7 /></R>} />
+      <Route path="/stage/1/level/8" element={<R><Level1_8 /></R>} />
 
-          {/* Stage 1 levels */}
-          <Route path="/stage/1/level/1" element={<Level1_1 />} />
-          <Route path="/stage/1/level/2" element={<Level1_2 />} />          
-          <Route path="/stage/1/level/3" element={<Level1_3 />} />
-          <Route path="/stage/1/level/4" element={<Level1_4 />} />
-          <Route path="/stage/1/level/5" element={<Level1_5 />} />
-          <Route path="/stage/1/level/6" element={<Level1_6 />} />
-          <Route path="/stage/1/level/7" element={<Level1_7 />} />
-          <Route path="/stage/1/level/8" element={<Level1_8 />} />
+      {/* Stage 2 — all 20 */}
+      <Route path="/stage/2/level/1"  element={<R><Level2_1  /></R>} />
+      <Route path="/stage/2/level/2"  element={<R><Level2_2  /></R>} />
+      <Route path="/stage/2/level/3"  element={<R><Level2_3  /></R>} />
+      <Route path="/stage/2/level/4"  element={<R><Level2_4  /></R>} />
+      <Route path="/stage/2/level/5"  element={<R><Level2_5  /></R>} />
+      <Route path="/stage/2/level/6"  element={<R><Level2_6  /></R>} />
+      <Route path="/stage/2/level/7"  element={<R><Level2_7  /></R>} />
+      <Route path="/stage/2/level/8"  element={<R><Level2_8  /></R>} />
+      <Route path="/stage/2/level/9"  element={<R><Level2_9  /></R>} />
+      <Route path="/stage/2/level/10" element={<R><Level2_10 /></R>} />
+      <Route path="/stage/2/level/11" element={<R><Level2_11 /></R>} />
+      <Route path="/stage/2/level/12" element={<R><Level2_12 /></R>} />
+      <Route path="/stage/2/level/13" element={<R><Level2_13 /></R>} />
+      <Route path="/stage/2/level/14" element={<R><Level2_14 /></R>} />
+      <Route path="/stage/2/level/15" element={<R><Level2_15 /></R>} />
+      <Route path="/stage/2/level/16" element={<R><Level2_16 /></R>} />
+      <Route path="/stage/2/level/17" element={<R><Level2_17 /></R>} />
+      <Route path="/stage/2/level/18" element={<R><Level2_18 /></R>} />
+      <Route path="/stage/2/level/19" element={<R><Level2_19 /></R>} />
+      <Route path="/stage/2/level/20" element={<R><Level2_20 /></R>} />
 
-          {/* Stage 2 levels */}
-          <Route path="/stage/2/intro" element={<Navigate to="/stage/2/level/1" />} />
-          <Route path="/stage/2/level/1" element={<Level2_1 />} />
-          <Route path="/stage/2/level/2" element={<ComingSoon label="Stage 2 — Java Core" />} />
-          <Route path="/stage/2/level/3" element={<ComingSoon label="Stage 2 — Java Core" />} />
-          <Route path="/stage/2/level/4" element={<ComingSoon label="Stage 2 — Java Core" />} />
-          <Route path="/stage/2/level/5" element={<ComingSoon label="Stage 2 — Java Core" />} />
+      {/* Stages 3–8 placeholders */}
+      <Route path="/stage/3/*" element={<R><ComingSoon label="Stage 3 — Java Advanced" /></R>} />
+      <Route path="/stage/4/*" element={<R><ComingSoon label="Stage 4 — Frontend React" /></R>} />
+      <Route path="/stage/5/*" element={<R><ComingSoon label="Stage 5 — Spring Boot" /></R>} />
+      <Route path="/stage/6/*" element={<R><ComingSoon label="Stage 6 — Database & SQL" /></R>} />
+      <Route path="/stage/7/*" element={<R><ComingSoon label="Stage 7 — Full Stack Integration" /></R>} />
+      <Route path="/stage/8/*" element={<R><ComingSoon label="Stage 8 — DevOps" /></R>} />
 
-          {/* Catch all */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </BrowserRouter>
-    </GameProvider>
+      <Route path="*" element={<Navigate to="/auth" replace />} />
+    </Routes>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <AuthProvider>
+      <GameProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </GameProvider>
+    </AuthProvider>
+  );
+}

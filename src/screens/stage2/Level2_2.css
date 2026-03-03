@@ -1,0 +1,11 @@
+.l22-container { display:flex; flex-direction:column; gap:24px; padding:0 0 32px; }
+.l22-brief { background:#0d1117; border:1px solid #1e293b; border-radius:16px; padding:24px; }
+.l22-brief-tag { font-family:'DM Mono',monospace; font-size:11px; color:#38bdf8; letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+.l22-brief-title { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:#f1f5f9; margin-bottom:8px; }
+.l22-brief-text { font-size:14px; color:#64748b; line-height:1.6; margin-bottom:16px; }
+.l22-type-ref { display:flex; flex-wrap:wrap; gap:8px; }
+.l22-type-card { background:#080a0f; border:1px solid #1e293b; border-radius:10px; padding:10px 14px; display:flex; flex-direction:column; gap:3px; min-width:100px; transition:border-color 0.2s; }
+.l22-type-card:hover { border-color:#38bdf8; }
+.l22-type-name { font-family:'DM Mono',monospace; font-size:14px; color:#38bdf8; font-weight:700; }
+.l22-type-example { font-family:'DM Mono',monospace; font-size:11px; color:#f97316; }
+.l22-type-desc { font-size:11px; color:#475569; }

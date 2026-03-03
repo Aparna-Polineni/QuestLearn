@@ -1,0 +1,9 @@
+.l23-container { display:flex; flex-direction:column; gap:24px; padding:0 0 32px; }
+.l23-brief { background:#0d1117; border:1px solid #1e293b; border-radius:16px; padding:24px; }
+.l23-brief-tag { font-family:'DM Mono',monospace; font-size:11px; color:#38bdf8; letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+.l23-brief h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:#f1f5f9; margin-bottom:8px; }
+.l23-brief p { font-size:14px; color:#64748b; line-height:1.6; margin-bottom:16px; }
+.l23-ops { display:flex; flex-wrap:wrap; gap:8px; }
+.l23-op-chip { display:flex; align-items:center; gap:10px; background:#080a0f; border:1px solid #1e293b; border-radius:8px; padding:8px 12px; }
+.l23-op-sym { font-family:'DM Mono',monospace; font-size:15px; color:#f97316; font-weight:700; min-width:28px; text-align:center; }
+.l23-op-desc { font-size:11px; color:#475569; }
