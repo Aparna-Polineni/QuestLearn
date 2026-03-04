@@ -20,6 +20,7 @@ import Level1_7 from './screens/stage1/Level1_7';
 import Level1_8 from './screens/stage1/Level1_8';
 
 // Stage 2 — all 20 levels
+import Level2_0 from './screens/stage2/Level2_0';
 import Level2_1  from './screens/stage2/Level2_1';
 import Level2_2  from './screens/stage2/Level2_2';
 import Level2_3  from './screens/stage2/Level2_3';
@@ -84,7 +85,8 @@ function AppRoutes() {
       <Route path="/stage/1/level/7" element={<R><Level1_7 /></R>} />
       <Route path="/stage/1/level/8" element={<R><Level1_8 /></R>} />
 
-      {/* Stage 2 — all 20 */}
+      {/* Stage 2 — all 21 (level 0 = concepts) */}
+      <Route path="/stage/2/level/0"  element={<R><Level2_0  /></R>} />
       <Route path="/stage/2/level/1"  element={<R><Level2_1  /></R>} />
       <Route path="/stage/2/level/2"  element={<R><Level2_2  /></R>} />
       <Route path="/stage/2/level/3"  element={<R><Level2_3  /></R>} />

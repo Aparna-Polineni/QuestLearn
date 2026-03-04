@@ -8,7 +8,7 @@
   font-family: 'DM Mono', monospace;
 }
 
-/* ── Toolbar ──────────────────────────────────────────────────────────── */
+/* ── Toolbar (unchanged) ──────────────────────────────────────────────── */
 .editor-toolbar {
   display: flex;
   align-items: center;
@@ -17,12 +17,8 @@
   background: #080a0f;
   border-bottom: 1px solid #1e293b;
 }
-
-.editor-toolbar-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.editor-toolbar-left  { display: flex; align-items: center; gap: 10px; }
+.editor-toolbar-right { display: flex; align-items: center; gap: 8px;  }
 
 .editor-lang-tag {
   font-size: 10px;
@@ -33,18 +29,7 @@
   padding: 2px 7px;
   letter-spacing: 2px;
 }
-
-.editor-file-name {
-  font-size: 12px;
-  color: #475569;
-  letter-spacing: 0.5px;
-}
-
-.editor-toolbar-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.editor-file-name { font-size: 12px; color: #475569; letter-spacing: 0.5px; }
 
 .editor-hint-btn {
   padding: 6px 12px;
@@ -56,9 +41,7 @@
   font-size: 11px;
   cursor: pointer;
   transition: all 0.2s;
-  letter-spacing: 0.5px;
 }
-
 .editor-hint-btn:hover { background: rgba(249,115,22,0.15); }
 
 .editor-reset-btn {
@@ -72,7 +55,6 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-
 .editor-reset-btn:hover { border-color: #ef4444; color: #ef4444; }
 
 .editor-run-btn {
@@ -84,23 +66,16 @@
   font-family: 'DM Mono', monospace;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.2s;
 }
-
 .editor-run-btn:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(74,222,128,0.3);
 }
+.editor-run-btn.running { background: #1e293b; color: #64748b; cursor: not-allowed; }
 
-.editor-run-btn.running {
-  background: #1e293b;
-  color: #64748b;
-  cursor: not-allowed;
-}
-
-/* ── Hint panel ───────────────────────────────────────────────────────── */
+/* ── Hint panel (unchanged) ───────────────────────────────────────────── */
 .editor-hint-panel {
   display: flex;
   align-items: flex-start;
@@ -110,17 +85,8 @@
   border-bottom: 1px solid rgba(249,115,22,0.15);
   animation: slideDown 0.2s ease;
 }
-
 .hint-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
-
-.hint-text {
-  flex: 1;
-  font-size: 12px;
-  color: #fed7aa;
-  line-height: 1.6;
-  letter-spacing: 0.3px;
-}
-
+.hint-text { flex: 1; font-size: 12px; color: #fed7aa; line-height: 1.6; }
 .hint-next {
   background: transparent;
   border: 1px solid rgba(249,115,22,0.3);
@@ -130,80 +96,137 @@
   font-size: 11px;
   padding: 3px 9px;
   cursor: pointer;
-  flex-shrink: 0;
   transition: all 0.15s;
 }
-
 .hint-next:hover { background: rgba(249,115,22,0.1); }
 
 /* ── Editor body ──────────────────────────────────────────────────────── */
 .editor-body {
-  position: relative;
   display: flex;
   overflow: auto;
   background: #0d1117;
 }
 
-/* Line numbers */
+/* Line numbers (unchanged) */
 .line-numbers {
   flex-shrink: 0;
-  padding: 14px 0;
+  padding: 0;
   background: #080a0f;
   border-right: 1px solid #1e293b;
   user-select: none;
   min-width: 44px;
 }
-
 .line-number {
   font-size: 12px;
   color: #334155;
   text-align: right;
   padding: 0 12px 0 8px;
   line-height: 1.6;
-  height: 19.2px;
+  height: 24px;        /* matches editor-line height */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-/* Highlight layer */
-.editor-highlight {
-  position: absolute;
-  top: 0;
-  left: 44px;
-  right: 0;
-  padding: 14px 16px;
+/* ── Lines container (ADDED) ──────────────────────────────────────────── */
+/* Holds all lines — locked and writable — in a vertical stack            */
+.editor-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  min-width: 0;
+}
+
+/* ── Base line style (ADDED) ──────────────────────────────────────────── */
+/* Every line — locked or writable — gets this base height and font       */
+.editor-line {
+  font-family: 'DM Mono', monospace;
   font-size: 13px;
   line-height: 1.6;
+  min-height: 24px;
+  padding: 0 16px;
   white-space: pre;
-  pointer-events: none;
-  color: #e2e8f0;
-  overflow: visible;
-  font-family: 'DM Mono', monospace;
+  box-sizing: border-box;
 }
 
-/* Textarea on top */
-.editor-textarea {
-  position: absolute;
-  top: 0;
-  left: 44px;
-  right: 0;
-  bottom: 0;
-  padding: 14px 16px;
-  font-size: 13px;
-  line-height: 1.6;
+/* ── Locked lines (ADDED) ─────────────────────────────────────────────── */
+/* Read-only — user cannot click into or edit these                        */
+.locked-line {
+  color: #4a5568;           /* dimmed — clearly not editable */
+  cursor: default;
+  user-select: none;        /* cannot even select/copy — reinforces locked feel */
+}
+
+/* Comments are dimmer and italic — visually distinct from code            */
+.locked-comment {
+  color: #374151;
+  font-style: italic;
+}
+
+/* Existing code lines — slightly brighter than comments but still dimmed  */
+.locked-code {
+  color: #4a5568;
+}
+
+/* ── Writable slot wrapper (ADDED) ───────────────────────────────────── */
+/* Flex row — indent prefix + textarea side by side                        */
+.writable-line-wrap {
+  display: flex;
+  align-items: center;
+  padding: 0;            /* indent handled by writable-indent span */
+  min-height: 24px;
+  border-left: 2px solid rgba(56,189,248,0.25);  /* subtle blue left border — "you write here" */
+  background: rgba(56,189,248,0.03);
+  margin: 1px 0;
+}
+
+/* Indent prefix — non-editable spaces matching the line's indentation     */
+.writable-indent {
   font-family: 'DM Mono', monospace;
-  color: transparent;
-  caret-color: #f1f5f9;
+  font-size: 13px;
+  white-space: pre;
+  color: transparent;   /* invisible — just takes up space for alignment  */
+  flex-shrink: 0;
+  padding-left: 16px;   /* matches editor-line padding */
+}
+
+/* ── Writable textarea (ADDED) ───────────────────────────────────────── */
+/* The actual editable input — bright and clearly distinct from locked     */
+.writable-line {
+  flex: 1;
   background: transparent;
   border: none;
   outline: none;
   resize: none;
-  white-space: pre;
-  overflow: auto;
-  width: calc(100% - 44px);
+  overflow: hidden;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e2e8f0;               /* bright white — clearly editable */
+  caret-color: #38bdf8;         /* bright blue cursor */
+  padding: 2px 16px 2px 0;
+  min-height: 24px;
+  height: 24px;
+  width: 100%;
   box-sizing: border-box;
-  z-index: 1;
+  white-space: pre;
+  tab-size: 4;
 }
 
-/* Syntax tokens */
+/* Hint text inside writable slots — soft, NOT the answer, just direction  */
+.writable-line::placeholder {
+  color: #2d4a6b;               /* dim blue-grey — noticeable but subtle */
+  font-style: italic;
+}
+
+/* Writable line gets a brighter border when focused                        */
+.writable-line-wrap:focus-within {
+  border-left-color: #38bdf8;
+  background: rgba(56,189,248,0.06);
+}
+
+/* Token colours — kept for FillEditor and DebugEditor */
 .tok-keyword    { color: #f97316; }
 .tok-type       { color: #38bdf8; }
 .tok-string     { color: #4ade80; }
@@ -212,14 +235,10 @@
 .tok-method     { color: #fbbf24; }
 .tok-annotation { color: #818cf8; }
 
-/* ── Output panel ─────────────────────────────────────────────────────── */
-.editor-output {
-  border-top: 1px solid #1e293b;
-  transition: border-color 0.3s;
-}
-
+/* ── Output panel (unchanged) ────────────────────────────────────────── */
+.editor-output { border-top: 1px solid #1e293b; transition: border-color 0.3s; }
 .editor-output.output-correct { border-top-color: rgba(74,222,128,0.4); }
-.editor-output.output-wrong   { border-top-color: rgba(239,68,68,0.4); }
+.editor-output.output-wrong   { border-top-color: rgba(239,68,68,0.4);  }
 
 .output-header {
   display: flex;
@@ -229,26 +248,12 @@
   background: #080a0f;
   border-bottom: 1px solid #1e293b;
 }
-
-.output-label {
-  font-size: 11px;
-  color: #475569;
-  letter-spacing: 1px;
-}
-
+.output-label { font-size: 11px; color: #475569; letter-spacing: 1px; }
 .output-correct .output-label { color: #4ade80; }
 .output-wrong   .output-label { color: #ef4444; }
 
-.output-expected-label {
-  font-size: 11px;
-  color: #334155;
-  letter-spacing: 0.3px;
-}
-
-.output-expected-label code {
-  color: #64748b;
-  font-family: 'DM Mono', monospace;
-}
+.output-expected-label { font-size: 11px; color: #334155; }
+.output-expected-label code { color: #64748b; font-family: 'DM Mono', monospace; }
 
 .output-content {
   padding: 12px 14px;
@@ -260,7 +265,6 @@
   font-family: 'DM Mono', monospace;
   white-space: pre-wrap;
 }
-
 .output-correct .output-content { color: #86efac; }
 .output-wrong   .output-content { color: #fca5a5; }
 

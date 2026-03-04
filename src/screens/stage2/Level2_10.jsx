@@ -1,115 +1,139 @@
-// src/screens/stage2/Level2_9.jsx — Encapsulation
+// src/screens/stage2/Level2_10.jsx
+// Rebuilt: annotated bug comments explain WHAT is wrong and WHY
 import { useState } from 'react';
+import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
 import DebugEditor from './DebugEditor';
+import './Level2_10.css';
 
 const SUPPORT = {
   intro: {
-    concept: "Encapsulation — private fields, getters & setters",
-    tagline: "Hide the data. Control access. Never let outside code break your object's state.",
-    whatYouWillDo: "Debug a broken Account class where fields are public (exposing them to accidental corruption), setters are missing validation, and a getter returns the wrong field.",
-    whyItMatters: "Encapsulation is the reason your banking app does not let you set your balance directly from the front end. Private fields + validated setters = controlled, safe state changes. This pattern is everywhere in Spring Boot entity design.",
+    concept: "Inheritance — extends & super",
+    tagline: "Child classes inherit everything from the parent. super calls the parent constructor.",
+    whatYouWillDo: "Fix 3 bugs in an inheritance hierarchy — a class missing extends, a super() call in the wrong position, and a missing @Override annotation.",
+    whyItMatters: "Inheritance is how you model real-world hierarchies without repeating code. In Spring Boot, BaseEntity gives every entity an id and timestamps — all entities extend it and get those fields for free.",
   },
   hints: [
-    "Private fields: declare fields as private so they cannot be accessed directly from outside the class. Use public getters (getFieldName()) and setters (setFieldName(value)) to control access.",
-    "Getters return the field value. The convention is getFieldName() returning the field type. Setters accept a new value and optionally validate it before assigning.",
-    "Validation in setters: check the new value before assigning it. If invalid (negative balance, null name), either ignore it, throw an exception, or assign a default.",
+    "The 'extends' keyword creates the inheritance link: class Patient extends Person. Without it, Patient is a completely separate class with no access to Person's fields or methods.",
+    "super() calls the PARENT constructor and must be the VERY FIRST line in the child constructor. Java enforces this strictly — if super() is not first, you get a compile error.",
+    "@Override tells the compiler you intend to override a parent method. Without it the code still works, but if you misspell the method name Java silently creates a NEW method instead of overriding — a subtle bug."
   ],
   reveal: {
-    concept: "Encapsulation & Access Control",
-    whatYouLearned: "Private fields hide data from outside classes. Getters provide read access, setters provide validated write access. This is the standard Java Bean pattern — every Spring Boot model follows it. Lombok's @Getter and @Setter annotations auto-generate these methods so you do not have to write them manually.",
-    realWorldUse: "In a banking entity, the balance field is private. The only way to change it is through deposit() and withdraw() methods that check for sufficient funds and log transactions. If balance were public, any code anywhere could set it to any value — including negative.",
-    developerSays: "Make everything private by default. Only expose what must be public. This is not just style — it is the only way to reason about complex systems. If any code anywhere can change any field at any time, you cannot guarantee your object's state is valid.",
+    concept: "Inheritance — extends & super",
+    whatYouLearned: "extends creates an is-a relationship. Patient extends Person means every Patient is a Person and inherits all accessible fields and methods. super() calls the parent constructor and must be first. @Override signals intentional overriding and lets the compiler catch typos.",
+    realWorldUse: "Spring Boot's BaseEntity pattern: abstract class BaseEntity has @Id Long id, LocalDateTime createdAt, LocalDateTime updatedAt. Every entity extends BaseEntity. Zero duplication of audit fields. Hibernate handles the rest via @MappedSuperclass.",
+    developerSays: "Do not overuse inheritance. Use it only for genuine is-a relationships. Patient is-a Person — correct. Do not use it just to share methods — that is what interfaces are for. When in doubt, favour composition over inheritance.",
   },
 };
 
-const BROKEN = `public class Main {
+const BROKEN_CODE = `public class Main {
 
-    static class BankAccount {
-        // BUG 1: Fields should be private, not public
-        public String owner;
-        public double balance;
+    static class Person {
+        String name;
+        int age;
 
-        public BankAccount(String owner, double initialBalance) {
-            this.owner   = owner;
-            this.balance = initialBalance;
+        public Person(String name, int age) {
+            this.name = name;
+            this.age  = age;
         }
 
-        // BUG 2: Getter returns wrong field (returns owner instead of balance)
-        public double getBalance() {
-            return owner;
+        public String getInfo() {
+            return name + " (age " + age + ")";
+        }
+    }
+
+    // BUG 1: Missing 'extends Person' — Patient does not inherit from Person
+    // Without it, Patient has no access to name, age, or getInfo()
+    // Fix: add 'extends Person' after 'Patient'
+    static class Patient {
+        String ward;
+
+        public Patient(String name, int age, String ward) {
+
+            // BUG 2: super() must be the FIRST line — it is currently after the assignment
+            // Java requires the parent to be initialised before the child sets anything
+            // Fix: move super(name, age) to be the first line
+            this.ward = ward;
+            super(name, age);
         }
 
-        public String getOwner() { return owner; }
-
-        // BUG 3: Setter has no validation — allows negative balance
-        public void setBalance(double balance) {
-            this.balance = balance;
+        // BUG 3: @Override is missing — without it Java does not know this overrides getInfo
+        // If you ever mistype the method name, Java silently creates a new method instead
+        // Fix: add @Override on the line above this method
+        public String getInfo() {
+            return super.getInfo() + " | Ward: " + ward;
         }
     }
 
     public static void main(String[] args) {
-        BankAccount acc = new BankAccount("Alice", 1000.0);
-        acc.setBalance(1500.0);
-        System.out.println(acc.getOwner() + ": £" + acc.getBalance());
+        Patient p = new Patient("Bob", 45, "Oncology");
+        System.out.println(p.getInfo());
     }
 }`;
 
 const SOLUTION = `public class Main {
 
-    static class BankAccount {
-        private String owner;
-        private double balance;
+    static class Person {
+        String name;
+        int age;
 
-        public BankAccount(String owner, double initialBalance) {
-            this.owner   = owner;
-            this.balance = initialBalance;
+        public Person(String name, int age) {
+            this.name = name;
+            this.age  = age;
         }
 
-        public double getBalance() {
-            return balance;
+        public String getInfo() {
+            return name + " (age " + age + ")";
+        }
+    }
+
+    static class Patient extends Person {
+        String ward;
+
+        public Patient(String name, int age, String ward) {
+            super(name, age);
+            this.ward = ward;
         }
 
-        public String getOwner() { return owner; }
-
-        public void setBalance(double balance) {
-            if (balance >= 0) {
-                this.balance = balance;
-            }
+        @Override
+        public String getInfo() {
+            return super.getInfo() + " | Ward: " + ward;
         }
     }
 
     public static void main(String[] args) {
-        BankAccount acc = new BankAccount("Alice", 1000.0);
-        acc.setBalance(1500.0);
-        System.out.println(acc.getOwner() + ": £" + acc.getBalance());
+        Patient p = new Patient("Bob", 45, "Oncology");
+        System.out.println(p.getInfo());
     }
 }`;
 
 const BUGS = [
-  { id: 'public-fields', description: 'Bug 1: Fields are public — should be private', check: code => /private\s+String\s+owner/.test(code) && /private\s+double\s+balance/.test(code) },
-  { id: 'wrong-getter',  description: 'Bug 2: getBalance() returns owner instead of balance', check: code => /public\s+double\s+getBalance\(\)[\s\S]*?return\s+balance/.test(code) },
-  { id: 'no-validation', description: 'Bug 3: setBalance() allows negative values — add validation', check: code => /if\s*\(\s*balance\s*>=\s*0\s*\)/.test(code) || /if\s*\(\s*balance\s*>\s*0\s*\)/.test(code) },
+  { id: 1, line: 19, description: "Missing 'extends Person' — Patient has no connection to Person", fix: "Add 'extends Person' after 'Patient'" },
+  { id: 2, line: 26, description: "super() is not first — Java requires parent init before child setup", fix: "Move super(name, age) to be the first line of the constructor" },
+  { id: 3, line: 31, description: "Missing @Override — compiler cannot verify the override is correct", fix: "Add @Override on the line above the getInfo method" }
 ];
 
-const simulate = code => {
-  if (/private\s+double\s+balance/.test(code) && /return\s+balance/.test(code) && (/if.*balance.*>=.*0/.test(code) || /if.*balance.*>.*0/.test(code))) return 'Alice: £1500.0';
-  return '[Fix all bugs to see output]';
-};
-
-export default function Level2_9() {
+export default function Level2_10() {
+  const { selectedDomain } = useGame();
   const [isCorrect, setIsCorrect] = useState(false);
+
   return (
-    <Stage2Shell levelId={9} canProceed={isCorrect} conceptReveal={SUPPORT.reveal}>
+    <Stage2Shell levelId={10} canProceed={isCorrect} conceptReveal={SUPPORT.reveal}>
       <LevelSupportWrapper conceptIntro={SUPPORT.intro} hints={SUPPORT.hints} levelComplete={isCorrect}>
-        <div style={{ display:'flex', flexDirection:'column', gap:24, paddingBottom:32 }}>
-          <div style={{ background:'#0d1117', border:'1px solid #1e293b', borderRadius:16, padding:24 }}>
-            <div style={{ fontFamily:'DM Mono,monospace', fontSize:11, color:'#38bdf8', letterSpacing:3, marginBottom:10 }}>// Debug Mission</div>
-            <h2 style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, color:'#f1f5f9', marginBottom:8 }}>Fix the BankAccount encapsulation.</h2>
-            <p style={{ fontSize:14, color:'#64748b', lineHeight:1.6 }}>3 bugs: exposed fields, wrong getter, missing validation. Every bug lets outside code corrupt the account state.</p>
+        <div className="l210-container">
+          <div className="l210-brief">
+            <div className="l210-brief-tag">// Debug Mission</div>
+            <h2>Fix the broken code for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
+            <p>Each bug is marked with a comment explaining what is wrong and why. Read the comment above each bug, understand it, then fix the line.</p>
           </div>
-          <DebugEditor brokenCode={BROKEN} bugs={BUGS} solution={SOLUTION} expectedOutput="Alice: £1500.0" simulateOutput={simulate} onAllFixed={() => setIsCorrect(true)} />
+          <DebugEditor
+            brokenCode={BROKEN_CODE}
+            solution={SOLUTION}
+            bugs={BUGS}
+            expectedOutput="Bob (age 45) | Ward: Oncology"
+            onAllFixed={() => setIsCorrect(true)}
+          />
         </div>
       </LevelSupportWrapper>
     </Stage2Shell>

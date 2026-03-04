@@ -6,41 +6,51 @@ import LevelSupportWrapper from '../../components/LevelSupport';
 import FillEditor from './FillEditor';
 import './Level2_5.css';
 
+// ── What this level teaches ───────────────────────────────────────────────
+// Loops — for loop, while loop, keywords and operators
+// Fill mode: student fills in loop keywords (for, while) and operators (<= > ++ --)
+// Comments explain the loop structure piece by piece
+// ─────────────────────────────────────────────────────────────────────────
+
 const SUPPORT = {
   intro: {
-    concept: "Loops — for, while, for-each",
-    tagline: "Do something repeatedly without writing it repeatedly. Loops are automation at the code level.",
-    whatYouWillDo: "You will use a for loop to process a list of patients, a while loop to simulate a waiting room queue, and understand when to use each.",
+    concept: "Loops — for and while",
+    tagline: "Do something repeatedly without writing it repeatedly.",
+    whatYouWillDo: "Fill in the loop keywords and operators. The body of each loop is already written. Your job is to fill in the keywords that START the loop and the operators that CONTROL how long it runs.",
     whyItMatters: "Without loops, processing 1000 records requires writing 1000 lines. With a loop, it takes 3. Every database query result, every list of products, every batch job — processed by a loop.",
   },
   hints: [
-    "for loop structure: for (initialise; condition; update) { body }. Example: for (int i = 0; i < 5; i++) — starts i at 0, runs while i is less than 5, increments i each time. Runs 5 times (i = 0,1,2,3,4).",
-    "while loop structure: while (condition) { body }. The condition is checked before each iteration. If it starts false, the body never runs. Always make sure the condition eventually becomes false or you get an infinite loop.",
-    "The for-each loop: for (Type item : collection) — iterates over every element in an array or collection without needing an index. Cleaner and safer than a manual for loop when you do not need the index.",
+    "for loop structure: for (initialise; condition; update). Example: for (int i = 1; i <= 5; i++) — starts i at 1, runs WHILE i is less than or equal to 5, adds 1 each time. Runs 5 times.",
+    "while loop structure: while (condition). The condition is checked BEFORE each run. If queue starts at 3 and we do queue-- each time, the loop runs 3 times (queue = 3, 2, 1) then stops when queue = 0.",
+    "Operators: <= means 'less than or equal to'. > means 'strictly greater than'. ++ adds 1 (used in for loop update). -- subtracts 1 (used to drain the queue counter).",
   ],
   reveal: {
     concept: "Iteration with for and while Loops",
-    whatYouLearned: "for loops are best when you know the number of iterations in advance. while loops are best when the stop condition depends on something that changes inside the loop. for-each is cleanest for iterating over collections. All three reduce repeated code to a single pattern.",
-    realWorldUse: "In Spring Boot, the JPA repository returns a List<Patient>. You loop through it to build a response DTO, apply filters, calculate totals. Every time your API returns a list of data — patients, orders, products — a loop is doing the heavy lifting behind the scenes.",
-    developerSays: "New developers write the same operation ten times manually. Experienced developers write a loop. The moment you find yourself copy-pasting a block of code and changing one number — stop. That is a loop waiting to be written.",
+    whatYouLearned: "for loops are best when you know the number of iterations upfront. while loops are best when the stop condition changes inside the loop body. Both evaluate a condition before each run — if it starts false, the body never runs. for-each (for Type item : collection) is the cleanest way to iterate collections.",
+    realWorldUse: "In Spring Boot, JPA's findAll() returns a List<Patient>. You loop through it to build a response, apply filters, calculate totals. Every time your API returns a list of data, a loop is doing the heavy lifting.",
+    developerSays: "The moment you find yourself copy-pasting a block of code and changing one number — stop. That is a loop waiting to be written.",
   },
 };
 
 const TEMPLATE = `public class Main {
     public static void main(String[] args) {
 
-        // for loop — process 5 patients
+        // for loop — used when you know the count upfront
+        // Structure: for (start; condition; update)
+        // i starts at 1, loop runs WHILE i <= 5, i increases by 1 each time
         System.out.println("Processing patients:");
         ___FOR___ (int i = 1; i ___LTE___ 5; i___INC___) {
             System.out.println("  Patient #" + i + " processed");
         }
 
-        // while loop — drain a waiting queue
+        // while loop — used when the stop condition changes inside the loop
+        // Checks queue > 0 before each run
+        // queue-- inside the loop makes it eventually false
         int queue = 3;
         System.out.println("Waiting room queue:");
         ___WHILE___ (queue ___GT___ 0) {
             System.out.println("  Calling patient from queue. Remaining: " + queue);
-            queue___DEC___;
+            queue___DEC___;   // decrements queue by 1 each iteration
         }
 
         System.out.println("Queue empty. Done.");
@@ -48,12 +58,12 @@ const TEMPLATE = `public class Main {
 }`;
 
 const BLANKS = [
-  { id: 'FOR',   answer: 'for',   placeholder: 'keyword', hint: 'The for loop keyword. Followed by (init; condition; update).' },
-  { id: 'LTE',   answer: '<=',    placeholder: 'op',      hint: 'Less than or equal. Loop runs while i is 1, 2, 3, 4, 5.' },
-  { id: 'INC',   answer: '++',    placeholder: 'op',      hint: 'Increment. Adds 1 to i each iteration.' },
-  { id: 'WHILE', answer: 'while', placeholder: 'keyword', hint: 'The while loop keyword. Condition checked before each iteration.' },
-  { id: 'GT',    answer: '>',     placeholder: 'op',      hint: 'Greater than. Loop runs as long as queue has patients.' },
-  { id: 'DEC',   answer: '--',    placeholder: 'op',      hint: 'Decrement. Removes one from queue each iteration.' },
+  { id: 'FOR',   answer: 'for',   placeholder: 'keyword', hint: 'Opens a for loop. Followed by (init; condition; update) in brackets.' },
+  { id: 'LTE',   answer: '<=',    placeholder: 'op',      hint: 'Less than or EQUAL to. Loop runs while i is 1, 2, 3, 4, 5.' },
+  { id: 'INC',   answer: '++',    placeholder: 'op',      hint: 'Increment. Adds 1 to i after each run. Goes right after i.' },
+  { id: 'WHILE', answer: 'while', placeholder: 'keyword', hint: 'Opens a while loop. Followed by (condition) in brackets.' },
+  { id: 'GT',    answer: '>',     placeholder: 'op',      hint: 'Greater than (strictly). Loop runs while queue has any patients.' },
+  { id: 'DEC',   answer: '--',    placeholder: 'op',      hint: 'Decrement. Removes one from the queue counter each iteration.' },
 ];
 
 export default function Level2_5() {
@@ -68,8 +78,10 @@ export default function Level2_5() {
           <div className="l25-brief">
             <div className="l25-brief-tag">// Mission Brief</div>
             <h2>Process the queue for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
-            <p>Fill in the keywords and operators to run both loops. Trace through the logic — how many times does each loop execute?</p>
-
+            <p>
+              Fill in 6 keywords and operators. Read the comments in the code — they explain
+              exactly what each loop does and how many times it runs.
+            </p>
             <div className="l25-loop-compare">
               <div className="l25-loop-box">
                 <div className="l25-loop-type">for loop</div>
@@ -88,7 +100,7 @@ export default function Level2_5() {
             template={TEMPLATE}
             blanks={BLANKS}
             onAllCorrect={() => setIsCorrect(true)}
-            expectedOutput={`Processing patients:\n  Patient #1 processed\n  Patient #2 processed\n  Patient #3 processed\n  Patient #4 processed\n  Patient #5 processed\nWaiting room queue:\n  Calling patient from queue. Remaining: 3\n  Calling patient from queue. Remaining: 2\n  Calling patient from queue. Remaining: 1\nQueue empty. Done.`}
+            expectedOutput={"Processing patients:\n  Patient #1 processed\n  Patient #2 processed\n  Patient #3 processed\n  Patient #4 processed\n  Patient #5 processed\nWaiting room queue:\n  Calling patient from queue. Remaining: 3\n  Calling patient from queue. Remaining: 2\n  Calling patient from queue. Remaining: 1\nQueue empty. Done."}
           />
         </div>
       </LevelSupportWrapper>

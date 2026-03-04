@@ -1,33 +1,39 @@
-// src/screens/stage2/Level2_9.jsx — Encapsulation
+// src/screens/stage2/Level2_9.jsx
+// Rebuilt: annotated bug comments explain WHAT is wrong and WHY
 import { useState } from 'react';
+import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
 import DebugEditor from './DebugEditor';
+import './Level2_9.css';
 
 const SUPPORT = {
   intro: {
     concept: "Encapsulation — private fields, getters & setters",
-    tagline: "Hide the data. Control access. Never let outside code break your object's state.",
-    whatYouWillDo: "Debug a broken Account class where fields are public (exposing them to accidental corruption), setters are missing validation, and a getter returns the wrong field.",
-    whyItMatters: "Encapsulation is the reason your banking app does not let you set your balance directly from the front end. Private fields + validated setters = controlled, safe state changes. This pattern is everywhere in Spring Boot entity design.",
+    tagline: "Hide the data. Control access. Never let outside code corrupt your object's state.",
+    whatYouWillDo: "Fix 3 bugs in a BankAccount class — public fields that should be private, a getter returning the wrong field, and a setter with no validation.",
+    whyItMatters: "Encapsulation is why a banking app does not let you set your balance directly. Private fields plus validated setters means every state change goes through controlled logic.",
   },
   hints: [
-    "Private fields: declare fields as private so they cannot be accessed directly from outside the class. Use public getters (getFieldName()) and setters (setFieldName(value)) to control access.",
-    "Getters return the field value. The convention is getFieldName() returning the field type. Setters accept a new value and optionally validate it before assigning.",
-    "Validation in setters: check the new value before assigning it. If invalid (negative balance, null name), either ignore it, throw an exception, or assign a default.",
+    "Private fields: declare fields as 'private' so they cannot be read or changed directly from outside the class. Use public getters (getBalance()) and setters (setBalance(v)) to control access.",
+    "A getter returns the field value. The convention is getFieldName() returning the field type. Check: does getBalance() actually return balance, or is it returning the wrong field?",
+    "Validation in setters: check the new value before assigning it. A balance should never go negative. If the new value is invalid, ignore it or throw an exception."
   ],
   reveal: {
-    concept: "Encapsulation & Access Control",
-    whatYouLearned: "Private fields hide data from outside classes. Getters provide read access, setters provide validated write access. This is the standard Java Bean pattern — every Spring Boot model follows it. Lombok's @Getter and @Setter annotations auto-generate these methods so you do not have to write them manually.",
-    realWorldUse: "In a banking entity, the balance field is private. The only way to change it is through deposit() and withdraw() methods that check for sufficient funds and log transactions. If balance were public, any code anywhere could set it to any value — including negative.",
-    developerSays: "Make everything private by default. Only expose what must be public. This is not just style — it is the only way to reason about complex systems. If any code anywhere can change any field at any time, you cannot guarantee your object's state is valid.",
+    concept: "Encapsulation — private fields, getters & setters",
+    whatYouLearned: "Private fields hide data. Getters provide read access, setters provide validated write access. This is the Java Bean pattern — every Spring Boot model uses it. Lombok's @Getter and @Setter annotations generate these methods automatically so you do not have to write them by hand.",
+    realWorldUse: "In a banking entity, balance is private. The only way to change it is through deposit() and withdraw() methods that check funds and log transactions. If balance were public, any code could set it to any value — including negative. That is the risk encapsulation prevents.",
+    developerSays: "Make everything private by default. Only expose what must be public. If any code anywhere can change any field at any time, you cannot guarantee your object's state is valid. That makes debugging impossible in large systems.",
   },
 };
 
-const BROKEN = `public class Main {
+const BROKEN_CODE = `public class Main {
 
     static class BankAccount {
-        // BUG 1: Fields should be private, not public
+
+        // BUG 1: Fields are public — any code can read or change them directly
+        // This bypasses all validation — anyone can set balance to -1000000
+        // Fix: change 'public' to 'private' for both fields
         public String owner;
         public double balance;
 
@@ -36,14 +42,18 @@ const BROKEN = `public class Main {
             this.balance = initialBalance;
         }
 
-        // BUG 2: Getter returns wrong field (returns owner instead of balance)
+        // BUG 2: getBalance() returns 'owner' (a String) instead of 'balance' (a double)
+        // This would not even compile — return type says double but owner is a String
+        // Fix: return the correct field — balance
         public double getBalance() {
             return owner;
         }
 
         public String getOwner() { return owner; }
 
-        // BUG 3: Setter has no validation — allows negative balance
+        // BUG 3: Setter has no validation — allows any value including negative balance
+        // setBalance(-999999) would succeed, corrupting the account state
+        // Fix: only assign if balance >= 0
         public void setBalance(double balance) {
             this.balance = balance;
         }
@@ -88,28 +98,31 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 'public-fields', description: 'Bug 1: Fields are public — should be private', check: code => /private\s+String\s+owner/.test(code) && /private\s+double\s+balance/.test(code) },
-  { id: 'wrong-getter',  description: 'Bug 2: getBalance() returns owner instead of balance', check: code => /public\s+double\s+getBalance\(\)[\s\S]*?return\s+balance/.test(code) },
-  { id: 'no-validation', description: 'Bug 3: setBalance() allows negative values — add validation', check: code => /if\s*\(\s*balance\s*>=\s*0\s*\)/.test(code) || /if\s*\(\s*balance\s*>\s*0\s*\)/.test(code) },
+  { id: 1, line: 8, description: "Fields are 'public' — any code can read or modify them directly, bypassing validation", fix: "Change 'public' to 'private' for both fields" },
+  { id: 2, line: 17, description: "getBalance() returns 'owner' (a String) instead of 'balance' (a double)", fix: "Change 'return owner' to 'return balance'" },
+  { id: 3, line: 23, description: "Setter assigns any value — including negative — with no validation", fix: "Wrap the assignment in: if (balance >= 0) { ... }" }
 ];
 
-const simulate = code => {
-  if (/private\s+double\s+balance/.test(code) && /return\s+balance/.test(code) && (/if.*balance.*>=.*0/.test(code) || /if.*balance.*>.*0/.test(code))) return 'Alice: £1500.0';
-  return '[Fix all bugs to see output]';
-};
-
 export default function Level2_9() {
+  const { selectedDomain } = useGame();
   const [isCorrect, setIsCorrect] = useState(false);
+
   return (
     <Stage2Shell levelId={9} canProceed={isCorrect} conceptReveal={SUPPORT.reveal}>
       <LevelSupportWrapper conceptIntro={SUPPORT.intro} hints={SUPPORT.hints} levelComplete={isCorrect}>
-        <div style={{ display:'flex', flexDirection:'column', gap:24, paddingBottom:32 }}>
-          <div style={{ background:'#0d1117', border:'1px solid #1e293b', borderRadius:16, padding:24 }}>
-            <div style={{ fontFamily:'DM Mono,monospace', fontSize:11, color:'#38bdf8', letterSpacing:3, marginBottom:10 }}>// Debug Mission</div>
-            <h2 style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, color:'#f1f5f9', marginBottom:8 }}>Fix the BankAccount encapsulation.</h2>
-            <p style={{ fontSize:14, color:'#64748b', lineHeight:1.6 }}>3 bugs: exposed fields, wrong getter, missing validation. Every bug lets outside code corrupt the account state.</p>
+        <div className="l29-container">
+          <div className="l29-brief">
+            <div className="l29-brief-tag">// Debug Mission</div>
+            <h2>Fix the broken code for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
+            <p>Each bug is marked with a comment explaining what is wrong and why. Read the comment above each bug, understand it, then fix the line.</p>
           </div>
-          <DebugEditor brokenCode={BROKEN} bugs={BUGS} solution={SOLUTION} expectedOutput="Alice: £1500.0" simulateOutput={simulate} onAllFixed={() => setIsCorrect(true)} />
+          <DebugEditor
+            brokenCode={BROKEN_CODE}
+            solution={SOLUTION}
+            bugs={BUGS}
+            expectedOutput="Alice: £1500.0"
+            onAllFixed={() => setIsCorrect(true)}
+          />
         </div>
       </LevelSupportWrapper>
     </Stage2Shell>

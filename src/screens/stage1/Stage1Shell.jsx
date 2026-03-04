@@ -82,7 +82,7 @@ function Stage1Shell({ children, levelId, canProceed, conceptUnlocked, conceptTe
     if (levelId < 8) {
       navigate(`/stage/1/level/${levelId + 1}`);
     } else {
-      navigate('/stage/2/level/1');
+      navigate('/stage/2/level/0');
     }
   }
 

@@ -1,0 +1,284 @@
+/* src/screens/stage2/SimpleCodeEditor.css */
+
+.sce-root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Steps ──────────────────────────────────────────────────── */
+.sce-steps {
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+.sce-steps-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #475569;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.sce-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sce-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #080a0f;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 11px 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.sce-step:hover { border-color: #334155; }
+.sce-step-active { border-color: #38bdf8 !important; background: rgba(56,189,248,0.04); }
+.sce-step-done   { border-color: rgba(74,222,128,0.3) !important; opacity: 0.6; }
+.sce-step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1e293b;
+  color: #94a3b8;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.sce-step-active .sce-step-num { background: #38bdf8; color: #080a0f; }
+.sce-step-done   .sce-step-num { background: rgba(74,222,128,0.2); color: #4ade80; }
+.sce-step-body { display: flex; flex-direction: column; gap: 4px; }
+.sce-step-text { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+.sce-step-active .sce-step-text { color: #f1f5f9; }
+.sce-step-hint {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #38bdf8;
+  padding: 4px 8px;
+  background: rgba(56,189,248,0.06);
+  border-radius: 5px;
+  margin-top: 2px;
+  display: inline-block;
+}
+
+/* ── Editor wrapper ─────────────────────────────────────────── */
+.sce-editor-wrap {
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.sce-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid #1e293b;
+  background: #080a0f;
+}
+.sce-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sce-file-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: #94a3b8;
+}
+.sce-line-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #334155;
+}
+.sce-reset-btn {
+  background: none;
+  border: 1px solid #1e293b;
+  color: #475569;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sce-reset-btn:hover { border-color: #334155; color: #64748b; }
+
+/* ── Editor body ────────────────────────────────────────────── */
+.sce-editor-body {
+  display: flex;
+  overflow: auto;
+}
+.sce-line-nums {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  min-width: 44px;
+  background: #080a0f;
+  border-right: 1px solid #1e293b;
+  user-select: none;
+  flex-shrink: 0;
+}
+.sce-line-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.7;
+  text-align: right;
+  padding: 0 12px 0 8px;
+}
+
+/* The textarea — clean, no overlay */
+.sce-textarea {
+  flex: 1;
+  background: #0d1117;
+  color: #e2e8f0;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  padding: 16px 20px;
+  min-height: inherit;
+  width: 100%;
+  caret-color: #38bdf8;
+  tab-size: 4;
+}
+.sce-textarea::selection { background: rgba(56,189,248,0.2); }
+.sce-textarea::placeholder { color: #334155; }
+
+/* ── Run row ────────────────────────────────────────────────── */
+.sce-run-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-top: 1px solid #1e293b;
+  background: #080a0f;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.sce-run-tip {
+  font-size: 12px;
+  color: #475569;
+  font-style: italic;
+  flex: 1;
+}
+.sce-run-btn {
+  padding: 12px 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  background: #38bdf8;
+  color: #080a0f;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.sce-run-btn:hover:not(:disabled) { background: #7dd3fc; transform: translateY(-1px); }
+.sce-run-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.sce-run-btn.sce-running { background: #1e293b; color: #64748b; }
+.sce-run-btn.sce-correct { background: #4ade80; color: #052e16; }
+
+/* ── Output panel ───────────────────────────────────────────── */
+.sce-output {
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.sce-output-ok  { border-color: rgba(74,222,128,0.3); }
+.sce-output-err { border-color: rgba(239,68,68,0.2); }
+
+.sce-output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  background: #080a0f;
+  border-bottom: 1px solid #1e293b;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sce-output-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #64748b;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.sce-output-vs {
+  font-size: 12px;
+  color: #475569;
+}
+.sce-output-vs code {
+  font-family: 'DM Mono', monospace;
+  color: #4ade80;
+  background: rgba(74,222,128,0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.sce-output-body { display: flex; }
+.sce-output-single { flex-direction: column; }
+.sce-output-compare { flex-direction: row; }
+@media (max-width: 600px) { .sce-output-compare { flex-direction: column; } }
+
+.sce-output-box {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sce-output-box + .sce-output-box { border-left: 1px solid #1e293b; }
+.sce-output-box-expected { background: rgba(74,222,128,0.03); }
+
+.sce-output-box-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #334155;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sce-output-ok  .sce-output-box-label { color: #4ade80; opacity: 0.6; }
+
+.sce-output-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: #e2e8f0;
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.sce-output-ok .sce-output-text { color: #86efac; }
+.sce-output-box-expected .sce-output-text { color: #4ade80; }
+
+.sce-diff-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 18px;
+  background: rgba(251,191,36,0.04);
+  border-top: 1px solid rgba(251,191,36,0.1);
+  font-size: 12px;
+  color: #78716c;
+  line-height: 1.6;
+}

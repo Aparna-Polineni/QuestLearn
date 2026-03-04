@@ -1,46 +1,54 @@
-// src/screens/stage2/Level2_14.jsx
+// src/screens/stage2/Level2_14.jsx — Static vs Instance
 import { useState } from 'react';
+import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
 import DebugEditor from './DebugEditor';
+import './Level2_14.css';
 
 const SUPPORT = {
   intro: {
     concept: "Static vs Instance Members",
-    tagline: "Static belongs to the class. Instance belongs to each object. Mixing them up is one of the most common Java bugs.",
-    whatYouWillDo: "Debug a class where a counter should be static (shared across all objects) but is instance (each object gets its own), and a utility method is instance when it should be static.",
-    whyItMatters: "In Spring Boot, @Bean methods are effectively static-like — one instance shared across the application. Instance fields hold per-request data. Mixing these up causes data corruption in production: one user seeing another user's data.",
+    tagline: "static belongs to the class — one copy shared by all. Instance belongs to each object — every object has its own.",
+    whatYouWillDo: "Fix 2 bugs — a counter that should be static (shared across all Hospital objects) but is instance (each object starts its own count), and a utility method that should be static but is not.",
+    whyItMatters: "In Spring Boot, @Service classes are singletons — one instance shared across all requests. Their fields must be stateless. Accidentally storing request data in an instance field causes one user to see another user's data in production.",
   },
   hints: [
-    "static fields belong to the class — one copy shared by all instances. Instance fields belong to each object — each object has its own copy. A patient counter should be static: one count for the whole system.",
-    "static methods can only access static fields and other static methods directly. They cannot use this because there is no object context. Instance methods can access both static and instance members.",
-    "You call static methods on the class: ClassName.methodName(). You call instance methods on an object: object.methodName(). Calling a static method on an instance works but is bad practice — it hides the fact it is static.",
+    "static fields belong to the CLASS — one copy shared by all instances. Without static, patientCount is per-object: h1 has its own count, h2 has its own. They never add up. With static there is one shared count.",
+    "static methods can only access static fields and other static methods. They have no 'this' reference — no object context. A utility method that uses no instance data should be static.",
+    "Call static methods on the class, not an object: Hospital.formatBedNumber(2, 5) not h1.formatBedNumber(2, 5). Calling on an instance works but is misleading — it hides the fact that no object is needed.",
   ],
   reveal: {
     concept: "Static vs Instance: Class vs Object Scope",
-    whatYouLearned: "static = one copy for the whole class. instance = one copy per object. Static methods cannot access instance fields (no object context). Common statics: counters, constants, utility/factory methods. Common instances: every field that describes a specific object.",
-    realWorldUse: "In Spring Boot, @Service classes are singletons by default — one instance shared across all requests. Their fields should be stateless (no instance data that changes per request). If you accidentally store request data in a service field, request A's data leaks into request B. That is a static-vs-instance bug at the framework level.",
-    developerSays: "The classic mistake: int count = 0 as an instance field when you wanted a shared counter. Every new object starts at 0 and counts independently. Make it static int count = 0 and there is one counter for all objects. I have seen this bug in production systems counting things that should never be zero.",
+    whatYouLearned: "static = one copy for the entire class, shared by all objects. instance = one copy per object, each object has its own. Static methods cannot use 'this' — no object exists in that context. Common statics: counters, constants, utility/factory methods.",
+    realWorldUse: "In Spring Boot, @Service classes are singletons — one instance handles all requests. Their fields should be stateless. If you store request data in a service field, request A's data leaks into request B. That is a static-vs-instance scoping bug at the framework level.",
+    developerSays: "Classic mistake: int count = 0 as an instance field when you wanted a shared counter. Every new object starts at 0 and counts independently. Make it static int count = 0 and there is one counter for all objects. I have seen this bug in production systems counting things that were never supposed to be zero.",
   },
 };
 
-const BROKEN = `public class Main {
+const BROKEN_CODE = `public class Main {
 
     static class Hospital {
         String name;
 
-        // BUG 1: patientCount should be static — shared across all Hospital instances
+        // BUG 1: patientCount is an instance field — each Hospital gets its own count
+        // h1.admitPatient() increments h1's count. h2.admitPatient() increments h2's count
+        // They are completely separate — they never add up to a total
+        // With our test: h1 count = 2, h2 count = 1. Hospital.patientCount does not exist
+        // Fix: add 'static' before 'int patientCount'
         int patientCount = 0;
 
-        Hospital(String name) {
-            this.name = name;
-        }
+        Hospital(String name) { this.name = name; }
 
         void admitPatient() {
             patientCount++;
         }
 
-        // BUG 2: This is a utility method with no instance data — should be static
+        // BUG 2: formatBedNumber uses no instance data — it should be static
+        // Without static, you need a Hospital object to call it even though
+        // the method has nothing to do with any specific hospital
+        // Hospital.formatBedNumber(2, 5) won't work without static
+        // Fix: add 'static' before 'String formatBedNumber'
         String formatBedNumber(int ward, int bed) {
             return "W" + ward + "-B" + bed;
         }
@@ -54,11 +62,10 @@ const BROKEN = `public class Main {
         h1.admitPatient();
         h2.admitPatient();
 
-        // Should print 3 — total patients across both hospitals
-        // But with instance field it prints 2 and 1 separately
+        // After fixing bug 1: patientCount is shared, total = 3
         System.out.println("Total patients: " + Hospital.patientCount);
 
-        // Should call as Hospital.formatBedNumber(2, 5) — no object needed
+        // After fixing bug 2: can call without an object
         System.out.println("Bed: " + Hospital.formatBedNumber(2, 5));
     }
 }`;
@@ -70,9 +77,7 @@ const SOLUTION = `public class Main {
 
         static int patientCount = 0;
 
-        Hospital(String name) {
-            this.name = name;
-        }
+        Hospital(String name) { this.name = name; }
 
         void admitPatient() {
             patientCount++;
@@ -97,40 +102,28 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  {
-    id: 'instance-counter',
-    description: 'Bug 1: patientCount is instance — should be static (shared across all hospitals)',
-    check: code => /static\s+int\s+patientCount/.test(code),
-  },
-  {
-    id: 'instance-utility',
-    description: 'Bug 2: formatBedNumber() is instance — should be static (no instance data used)',
-    check: code => /static\s+String\s+formatBedNumber/.test(code),
-  },
+  { id: 1, line: 10, description: "patientCount is instance — each Hospital has its own count, they never add up", fix: "Add 'static' before 'int patientCount = 0'" },
+  { id: 2, line: 21, description: "formatBedNumber uses no instance data but is not static — cannot call without an object", fix: "Add 'static' before 'String formatBedNumber'" },
 ];
 
-const simulate = code => {
-  if (/static\s+int\s+patientCount/.test(code) && /static\s+String\s+formatBedNumber/.test(code)) {
-    return 'Total patients: 3\nBed: W2-B5';
-  }
-  return '[Fix both bugs to see output]';
-};
-
 export default function Level2_14() {
-  const [ok, setOk] = useState(false);
+  const { selectedDomain } = useGame();
+  const [isCorrect, setIsCorrect] = useState(false);
   return (
-    <Stage2Shell levelId={14} canProceed={ok} conceptReveal={SUPPORT.reveal}>
-      <LevelSupportWrapper conceptIntro={SUPPORT.intro} hints={SUPPORT.hints} levelComplete={ok}>
-        <div style={{ display:'flex', flexDirection:'column', gap:24, paddingBottom:32 }}>
-          <div style={{ background:'#0d1117', border:'1px solid #1e293b', borderRadius:16, padding:24 }}>
-            <div style={{ fontFamily:'DM Mono,monospace', fontSize:11, color:'#f97316', letterSpacing:3, marginBottom:10 }}>// Debug Mission</div>
-            <h2 style={{ fontFamily:'Syne,sans-serif', fontSize:22, fontWeight:800, color:'#f1f5f9', marginBottom:8 }}>Fix the static vs instance confusion.</h2>
-            <p style={{ fontSize:14, color:'#64748b', lineHeight:1.6 }}>2 bugs — each member is in the wrong scope. Fix them and the total patient count jumps from 2 to 3.</p>
+    <Stage2Shell levelId={14} canProceed={isCorrect} conceptReveal={SUPPORT.reveal}>
+      <LevelSupportWrapper conceptIntro={SUPPORT.intro} hints={SUPPORT.hints} levelComplete={isCorrect}>
+        <div className="l214-container">
+          <div className="l214-brief">
+            <div className="l214-brief-tag">// Debug Mission</div>
+            <h2>Fix the static vs instance bugs for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
+            <p>2 bugs — both fixed by adding the 'static' keyword in the right place. Read the comments to understand what changes when a field or method becomes static.</p>
           </div>
           <DebugEditor
-            brokenCode={BROKEN} bugs={BUGS} solution={SOLUTION}
+            brokenCode={BROKEN_CODE}
+            solution={SOLUTION}
+            bugs={BUGS}
             expectedOutput={"Total patients: 3\nBed: W2-B5"}
-            simulateOutput={simulate} onAllFixed={() => setOk(true)}
+            onAllFixed={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>

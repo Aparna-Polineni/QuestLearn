@@ -1,31 +1,32 @@
-// src/screens/stage2/Level2_20.jsx
+// src/screens/stage2/Level2_20.jsx — Lambdas & Streams
 import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
 import CodeEditor from './CodeEditor';
+import './Level2_20.css';
 
 const SUPPORT = {
   intro: {
     concept: "Java 8 Lambdas & Streams",
     tagline: "Lambdas turn multi-line anonymous classes into one-liners. Streams process collections declaratively.",
-    whatYouWillDo: "Use lambdas with ArrayList's forEach and sort, then chain stream operations (filter, map, collect) to process a patient list in a way that would have taken 20 lines before Java 8.",
-    whyItMatters: "Modern Spring Boot code is full of lambdas and streams. Every .map(), .filter(), .collect() in your service layer is a lambda. If you cannot read them, you cannot read Spring Boot code. This is the gateway to functional-style Java.",
+    whatYouWillDo: "Write three TODO sections — forEach with a lambda, a stream pipeline with sorted/distinct/limit, and a stream with filter/map/collect.",
+    whyItMatters: "Modern Spring Boot code is full of lambdas and streams. Every .map(), .filter(), .collect() in a service layer is a lambda. If you cannot read them, you cannot read Spring Boot code.",
   },
   hints: [
-    "Lambda syntax: (parameter) -> expression or (parameter) -> { statements; }. Example: (String s) -> s.toUpperCase() or just s -> s.toUpperCase() when type is inferred.",
-    "Stream pipeline: list.stream().filter(x -> x > 5).map(x -> x * 2).collect(Collectors.toList()). filter keeps elements matching the predicate. map transforms each element. collect gathers results into a list.",
-    "List.sort with lambda: patients.sort((a, b) -> a.compareTo(b)) or use Comparator.comparing(). forEach: list.forEach(item -> System.out.println(item)) or method reference: list.forEach(System.out::println).",
+    "forEach with lambda: list.forEach(name -> System.out.println(\"  \" + name)); The arrow -> separates the parameter from the body. No type needed — Java infers it from the list type.",
+    "Stream pipeline: list.stream().sorted().distinct().limit(3).forEach(name -> System.out.println(\"  \" + name)); Chain the operations left to right. Nothing runs until the terminal operation (forEach, collect, count).",
+    "filter + map + collect: list.stream().distinct().filter(name -> name.length() > 4).map(String::toUpperCase).collect(Collectors.toList()); — filter keeps matches, map transforms each one, collect gathers into a new List.",
   ],
   reveal: {
     concept: "Lambdas, Streams & Functional Java",
-    whatYouLearned: "Lambdas are anonymous functions: (params) -> body. Stream API chains operations: filter (keep matching), map (transform), sorted, distinct, limit, collect. Functional interfaces (Predicate, Function, Consumer, Supplier) are the types that accept lambdas. Java 8 streams are lazy — no computation until terminal operation (collect, forEach, count).",
-    realWorldUse: "In Spring Boot services: List<PatientDto> dtos = patients.stream().filter(p -> p.isActive()).map(p -> toDto(p)).collect(Collectors.toList()). That is the exact pattern for converting database entities to API response objects. Before Java 8, this was a for loop with a manual list. Streams make it readable and composable.",
-    developerSays: "When I review code, streams and lambdas are how I distinguish Java 7 developers from Java 8+ developers. If I see a for loop building a new list with an if inside, I rewrite it as a stream. Not because it is shorter — because the intent is clearer. filter+map+collect reads like English: filter active patients, map to DTO, collect into list.",
+    whatYouLearned: "Lambdas: (params) -> body. Stream pipeline: filter (keep matching), map (transform), sorted, distinct, limit, collect. Streams are lazy — nothing executes until the terminal operation. Streams do not modify the original list — they produce new results.",
+    realWorldUse: "In Spring Boot services: List<PatientDto> dtos = patients.stream().filter(p -> p.isActive()).map(p -> toDto(p)).collect(Collectors.toList()); That is the exact pattern for converting database entities to API response objects. Before Java 8 this was a for loop with a manual list.",
+    developerSays: "When I see a for loop building a new list with an if inside, I rewrite it as a stream — not because it is shorter, but because the intent is clearer. filter + map + collect reads like English: keep the ones that match, transform each one, gather into a list.",
   },
 };
 
-const INITIAL = `import java.util.ArrayList;
+const INITIAL_CODE = `import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,27 +38,27 @@ public class Main {
         patients.add("Alice");
         patients.add("Bob");
         patients.add("Diana");
-        patients.add("Alice"); // duplicate
+        patients.add("Alice"); // duplicate — intentional
 
-        // TASK 1: Print all patients using forEach + lambda
+        // ── TASK 1: Print all with forEach + lambda ──────────────────
+        // Use: patients.forEach(name -> System.out.println("  " + name))
+        // Print the header first, then the forEach
         System.out.println("All patients:");
-        patients.forEach(name -> System.out.println("  " + name));
 
-        // TASK 2: Sort alphabetically and print first 3 using stream
+        // TODO: use forEach with a lambda to print each patient indented with "  "
+
+        // ── TASK 2: Sorted, distinct, first 3 ───────────────────────
+        // Chain: .stream().sorted().distinct().limit(3)
+        // Then forEach to print each one indented
         System.out.println("First 3 alphabetically:");
-        patients.stream()
-                .sorted()
-                .distinct()
-                .limit(3)
-                .forEach(name -> System.out.println("  " + name));
 
-        // TASK 3: Filter names longer than 4 chars, uppercase, collect to list
-        List<String> longNames = patients.stream()
-                .distinct()
-                .filter(name -> name.length() > 4)
-                .map(String::toUpperCase)
-                .collect(Collectors.toList());
-        System.out.println("Long names: " + longNames);
+        // TODO: stream().sorted().distinct().limit(3).forEach(print with "  " indent)
+
+        // ── TASK 3: Filter long names, uppercase, collect ────────────
+        // Chain: .stream().distinct().filter(name.length() > 4).map(toUpperCase).collect
+        // Print: "Long names: " + the collected list
+        // TODO: build longNames list with stream, then print it
+
     }
 }`;
 
@@ -66,36 +67,26 @@ const EXPECTED = `All patients:\n  Charlie\n  Alice\n  Bob\n  Diana\n  Alice\nFi
 export default function Level2_20() {
   const { selectedDomain } = useGame();
   const [ok, setOk] = useState(false);
-
   return (
     <Stage2Shell levelId={20} canProceed={ok} conceptReveal={SUPPORT.reveal}>
       <LevelSupportWrapper conceptIntro={SUPPORT.intro} hints={SUPPORT.hints} levelComplete={ok}>
-        <div style={{ display:'flex', flexDirection:'column', gap:24, paddingBottom:32 }}>
-          {/* Stage boss header */}
-          <div style={{ background:'linear-gradient(135deg,rgba(249,115,22,0.08),rgba(56,189,248,0.05))', border:'1px solid rgba(249,115,22,0.25)', borderRadius:16, padding:28, textAlign:'center' }}>
-            <div style={{ fontSize:40, marginBottom:8 }}>🏆</div>
-            <div style={{ fontFamily:'DM Mono,monospace', fontSize:11, color:'#f97316', letterSpacing:4, marginBottom:8 }}>STAGE 2 FINAL LEVEL</div>
-            <h2 style={{ fontFamily:'Syne,sans-serif', fontSize:26, fontWeight:800, color:'#f1f5f9', marginBottom:8 }}>Java 8 Lambdas & Streams</h2>
-            <p style={{ fontSize:14, color:'#64748b', lineHeight:1.6, maxWidth:480, margin:'0 auto' }}>
-              The code is written — run it, understand each stream operation, then verify the output. Completing this level means you have covered all 20 Java Core fundamentals.
-            </p>
-          </div>
-
-          <div style={{ background:'#0d1117', border:'1px solid #1e293b', borderRadius:16, padding:24 }}>
-            <div style={{ fontFamily:'DM Mono,monospace', fontSize:11, color:'#38bdf8', letterSpacing:3, marginBottom:10 }}>// Build Mission</div>
-            <p style={{ fontSize:14, color:'#64748b', lineHeight:1.6 }}>
-              Read each stream chain. Trace through what filter(), sorted(), distinct(), limit(), map() and forEach() do to the patient list. Run it and verify the output matches exactly.
-            </p>
-            <div style={{ background:'#080a0f', border:'1px solid #1e293b', borderRadius:10, padding:14, marginTop:12, fontFamily:'DM Mono,monospace', fontSize:12 }}>
-              <div style={{ color:'#475569', marginBottom:6, letterSpacing:1 }}>EXPECTED OUTPUT:</div>
-              {EXPECTED.split('\\n').map((line, i) => <div key={i} style={{ color:'#4ade80' }}>{line}</div>)}
+        <div className="l220-container">
+          <div className="l220-brief">
+            <div className="l220-brief-tag">// Build Mission</div>
+            <h2>Process data with lambdas for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
+            <p>The list is built and locked. Write only in the <code style={{color:'#38bdf8'}}>// TODO</code> lines — one lambda, one stream pipeline, one stream with collect.</p>
+            <div className="l220-expected-box">
+              <div className="l220-expected-label">Expected output</div>
+              <pre className="l220-expected-output">{EXPECTED}</pre>
             </div>
           </div>
-
           <CodeEditor
-            initialCode={INITIAL}
+            initialCode={INITIAL_CODE}
             expectedOutput={EXPECTED}
             onOutputChange={(_, correct) => setOk(correct)}
+            hints={SUPPORT.hints}
+            height={400}
+            writableMarker="// TODO"
           />
         </div>
       </LevelSupportWrapper>

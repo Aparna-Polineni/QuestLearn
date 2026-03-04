@@ -6,52 +6,62 @@ import LevelSupportWrapper from '../../components/LevelSupport';
 import FillEditor from './FillEditor';
 import './Level2_6.css';
 
+// ── What this level teaches ───────────────────────────────────────────────
+// Methods — static modifier, return keyword, parameter types, void
+// Fill mode: student fills 4 blanks covering the anatomy of a method
+// Comments annotate each part of each method declaration
+// ─────────────────────────────────────────────────────────────────────────
+
 const SUPPORT = {
   intro: {
-    concept: "Methods — Parameters, Return Types, Scope",
-    tagline: "Methods turn repeated logic into reusable named operations. Write once, call many times.",
-    whatYouWillDo: "You will write methods that take parameters and return values — a calculateBMI method, a getPatientStatus method, and a method that returns void. You will understand the difference between void and typed return values.",
-    whyItMatters: "Every Spring Boot controller method, every service layer function, every repository query — they are all methods. Understanding parameters, return types, and scope is the foundation of writing any non-trivial Java code.",
+    concept: "Methods — Parameters, Return Types, void",
+    tagline: "A method is named, reusable logic. Write once, call many times.",
+    whatYouWillDo: "Fill in 4 keywords that complete the method declarations. The method bodies are already written. Your job is to fill in: the static modifier, the return keyword, a parameter type, and void.",
+    whyItMatters: "Every Spring Boot controller, service, and repository is made of methods. Understanding the anatomy — modifier, return type, name, parameters — is the foundation of writing any non-trivial Java code.",
   },
   hints: [
-    "Method signature: returnType methodName(paramType paramName) { body }. If the method returns nothing, use void. If it returns a value, declare the type and use the return keyword.",
-    "Parameters are local to the method. Changing a parameter inside a method does not affect the variable outside it (for primitives). This is called pass-by-value.",
-    "A method must have a return statement if its return type is not void. The return type in the signature must match what you actually return — Java will not compile otherwise.",
+    "Method signature format: modifier returnType methodName(paramType paramName). Example: static double calculateBMI(double weight, double height). The modifier comes first, then what it returns, then its name.",
+    "static means the method belongs to the CLASS, not to an object. Required when calling from main() because main is also static — static methods can only directly call other static methods.",
+    "void means the method returns NOTHING. Use it when a method just does something (prints, saves) but does not need to send a value back to the caller.",
   ],
   reveal: {
     concept: "Methods, Parameters & Return Types",
-    whatYouLearned: "Methods encapsulate logic behind a name. They declare what they accept (parameters) and what they give back (return type). void means nothing is returned. static methods belong to the class, not an instance. Calling a method executes its body and returns control (and optionally a value) to the caller.",
-    realWorldUse: "In Spring Boot, every API endpoint is a controller method. Every database query is a repository method. Every calculation lives in a service method. Well-designed methods do one thing, have clear parameter names, and return a typed value. That structure makes the codebase readable six months later.",
-    developerSays: "If a method is longer than 20 lines, it is doing too many things. Extract smaller methods with clear names. I would rather read calculateMonthlyInterest(principal, rate, months) than a 50-line block of undocumented arithmetic.",
+    whatYouLearned: "Methods encapsulate logic behind a name. static methods belong to the class. Return type declares what value comes back — or void if nothing. The return keyword sends the value back and exits the method immediately. Parameters are the inputs — typed and named.",
+    realWorldUse: "In Spring Boot every API endpoint is a controller method, every database query is a repository method, every calculation is a service method. Well-designed methods do one thing, have clear names, and return typed values. That makes the codebase readable six months later.",
+    developerSays: "If a method is longer than 20 lines, it is doing too many things. Extract smaller methods with clear names. I would rather read calculateMonthlyInterest(principal, rate, months) than 50 lines of undocumented arithmetic.",
   },
 };
 
 const TEMPLATE = `public class Main {
 
-    // Returns a double — calculates BMI
+    // Method 1: Returns a double — calculates BMI from weight and height
+    // 'static' = belongs to class, can be called without creating an object
+    // 'double' = this method sends back a decimal number
     ___STATIC___ double calculateBMI(double weightKg, double heightM) {
         double bmi = weightKg / (heightM * heightM);
+        // 'return' sends the value back to whoever called this method
         ___RETURN___ bmi;
     }
 
-    // Returns a String — patient status based on age
+    // Method 2: Returns a String — decides patient category by age
+    // The parameter type tells Java what kind of value 'age' accepts
     static String getStatus(___INT_PARAM___ age) {
-        if (age < 18) return "Paediatric";
+        if (age < 18)  return "Paediatric";
         if (age >= 65) return "Senior";
         return "Adult";
     }
 
-    // Returns nothing — just prints
+    // Method 3: Returns nothing — just prints a separator line
+    // 'void' means the caller gets nothing back, the method just runs
     static ___VOID___ printSeparator() {
         System.out.println("-------------------");
     }
 
     public static void main(String[] args) {
+        double bmi    = calculateBMI(70, 1.75);   // calls method, stores result
+        String status = getStatus(72);             // calls method, stores result
 
-        double bmi    = calculateBMI(70, 1.75);
-        String status = getStatus(72);
-
-        printSeparator();
+        printSeparator();                          // calls method, no return value
         System.out.println("BMI: " + bmi);
         System.out.println("Status: " + status);
         printSeparator();
@@ -59,10 +69,10 @@ const TEMPLATE = `public class Main {
 }`;
 
 const BLANKS = [
-  { id: 'STATIC',    answer: 'static', placeholder: 'modifier', hint: 'Makes the method callable without creating an object. Required to call from main.' },
-  { id: 'RETURN',    answer: 'return', placeholder: 'keyword',  hint: 'Sends a value back to the caller and exits the method.' },
-  { id: 'INT_PARAM', answer: 'int',    placeholder: 'type',     hint: 'The parameter type. This method accepts a whole number (patient age).' },
-  { id: 'VOID',      answer: 'void',   placeholder: 'type',     hint: 'Return type that means "this method gives nothing back".' },
+  { id: 'STATIC',    answer: 'static', placeholder: 'modifier', hint: 'Makes the method callable without an object. Required to call it from main.' },
+  { id: 'RETURN',    answer: 'return', placeholder: 'keyword',  hint: 'Sends a value back to the caller and exits the method immediately.' },
+  { id: 'INT_PARAM', answer: 'int',    placeholder: 'type',     hint: 'The parameter type for age — a whole number (not decimal).' },
+  { id: 'VOID',      answer: 'void',   placeholder: 'type',     hint: 'Return type meaning "this method gives nothing back to the caller".' },
 ];
 
 export default function Level2_6() {
@@ -77,8 +87,10 @@ export default function Level2_6() {
           <div className="l26-brief">
             <div className="l26-brief-tag">// Mission Brief</div>
             <h2>Build reusable methods for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
-            <p>Fill in 4 keywords. Each blank teaches a different piece of method anatomy: the static modifier, the return keyword, parameter types, and void.</p>
-
+            <p>
+              Fill in 4 keywords — each one teaches a different part of method anatomy.
+              Read the comments above each method to understand what each blank does before filling it in.
+            </p>
             <div className="l26-anatomy">
               <div className="l26-anatomy-label">Method anatomy:</div>
               <div className="l26-anatomy-code">
@@ -92,7 +104,7 @@ export default function Level2_6() {
                 <br />{'}'}
               </div>
               <div className="l26-anatomy-parts">
-                <span className="l26-ap l26-ap-mod">static = can call without object</span>
+                <span className="l26-ap l26-ap-mod">static = no object needed</span>
                 <span className="l26-ap l26-ap-ret">String = return type</span>
                 <span className="l26-ap l26-ap-par">int age = parameter</span>
                 <span className="l26-ap l26-ap-key">return = sends value back</span>
@@ -104,7 +116,7 @@ export default function Level2_6() {
             template={TEMPLATE}
             blanks={BLANKS}
             onAllCorrect={() => setIsCorrect(true)}
-            expectedOutput={`-------------------\nBMI: 22.857142857142858\nStatus: Senior\n-------------------`}
+            expectedOutput="-------------------\nBMI: 22.857142857142858\nStatus: Senior\n-------------------"
           />
         </div>
       </LevelSupportWrapper>

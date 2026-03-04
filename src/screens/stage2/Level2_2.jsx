@@ -6,42 +6,65 @@ import LevelSupportWrapper from '../../components/LevelSupport';
 import FillEditor from './FillEditor';
 import './Level2_2.css';
 
+// ── What this level teaches ───────────────────────────────────────────────
+// Variables & Data Types — the 5 core types in Java
+// Fill mode: student fills in the TYPE keywords, not the values
+// All other code (comments, structure, println) is pre-written and locked
+// ─────────────────────────────────────────────────────────────────────────
+
 const SUPPORT = {
   intro: {
     concept: "Variables & Data Types",
-    tagline: "A variable is a named box that holds a value. The type of the box decides what fits inside.",
-    whatYouWillDo: "You will declare variables of every primitive type Java has — int, double, boolean, char — plus String. You will understand why Java makes you declare the type before the name.",
-    whyItMatters: "Java is statically typed. This means every variable must declare its type before it can hold a value. This catches bugs at compile time before your program ever runs — a feature worth understanding deeply.",
+    tagline: "A variable is a named box. The type tells Java what can go inside.",
+    whatYouWillDo: "Fill in the 6 type keywords for each variable. The values and println statements are already written — your job is to tell Java what TYPE each variable holds.",
+    whyItMatters: "Java is statically typed — every variable must declare its type before it can hold a value. The compiler reads your types and catches mismatches before your program ever runs. This prevents entire categories of bugs that only appear in production at 3am.",
   },
   hints: [
-    "Java's primitives: int (whole numbers), double (decimals), boolean (true/false), char (single character in single quotes). String is not a primitive — it is a class, which is why it starts with a capital letter.",
-    "Declaration syntax: type name = value; — for example: int age = 25; or String name = \"Alex\"; The type always comes first, then the variable name, then = and the value.",
-    "boolean variables can only hold true or false (lowercase, no quotes). char holds a single character in single quotes like 'A'. String holds text in double quotes like \"Hello\".",
+    "Java's primitive types: int (whole numbers like 42), double (decimals like 98.6), boolean (only true or false), char (single character in single quotes like 'A'). String is NOT a primitive — it is a class, which is why it starts with a capital S.",
+    "Declaration syntax is always: type name = value; — for example int age = 25; or String name = \"Alex\"; The type always comes first, then the variable name, then = and the value.",
+    "boolean variables can only hold true or false (lowercase, no quotes). char holds exactly one character in single quotes: 'A' not \"A\". String holds any text in double quotes.",
   ],
   reveal: {
     concept: "Static Typing in Java",
-    whatYouLearned: "Java requires you to declare the type of every variable before using it. int for whole numbers, double for decimals, boolean for true/false, char for single characters, String for text. Each type tells Java how much memory to allocate and what operations are legal.",
-    realWorldUse: "In Spring Boot REST APIs, every field in a data model is explicitly typed. When you receive JSON from a client, Spring's Jackson library uses the declared types to validate and convert the incoming data. Wrong type — exception thrown. Correct type — object created. Static typing is your first line of defence against bad data.",
-    developerSays: "Every junior developer underestimates static typing at first. Then they use a dynamically typed language and a bug appears in production at 3am because someone passed a String where an int was expected. Java's type system would have caught that at compile time. The verbosity is the point.",
+    whatYouLearned: "Java requires every variable to declare its type. int for whole numbers, double for decimals, boolean for true/false, char for single characters, String for text. Each type tells Java how much memory to allocate and what operations are legal on that variable.",
+    realWorldUse: "In Spring Boot REST APIs every field in a data model is explicitly typed. When JSON arrives from a client, Spring's Jackson library uses your declared types to validate and convert the data. Wrong type — exception thrown immediately. Correct type — object created cleanly. Static typing is your first defence against bad data.",
+    developerSays: "Every junior developer underestimates static typing. Then they use a dynamically typed language and a bug appears in production at 3am because someone passed a String where an int was expected. Java's type system catches that at compile time. The verbosity is the point.",
   },
 };
 
+// ── Type reference cards shown above the editor ───────────────────────────
+// Real-world explanation of WHEN and WHY you use each type
+const TYPE_CARDS = [
+  { type: 'int',     example: '42',      desc: 'Whole numbers — patient count, age, room number, quantity' },
+  { type: 'double',  example: '98.6',    desc: 'Decimal numbers — temperature, weight, price, BMI' },
+  { type: 'boolean', example: 'true',    desc: 'True or false — isActive, isAdult, hasInsurance' },
+  { type: 'char',    example: "'A'",     desc: 'Single character — blood type, grade, initial' },
+  { type: 'String',  example: '"hello"', desc: 'Text — name, address, diagnosis, any words' },
+];
+
+// ── Template: locked code with blanks for TYPE keywords only ──────────────
+// Comments explain what each variable stores and why that type fits
 const TEMPLATE = `public class ___CLASS___ {
     public static void main(String[] args) {
 
-        // Integer: whole numbers
+        // int: whole numbers — no decimal point
+        // Use for: counts, ages, room numbers, quantities
         ___INT_TYPE___ patientCount = 42;
 
-        // Decimal: numbers with a decimal point
+        // double: numbers with a decimal point
+        // Use for: temperatures, weights, prices, measurements
         ___DOUBLE_TYPE___ temperature = 98.6;
 
-        // Boolean: true or false only
+        // boolean: exactly two values — true or false, nothing else
+        // Use for: flags, status checks, on/off switches
         ___BOOL_TYPE___ isActive = true;
 
-        // Single character: always in single quotes
+        // char: a single character — always in single quotes
+        // Use for: blood types, grades, initials
         ___CHAR_TYPE___ bloodType = 'A';
 
-        // String: text in double quotes (capital S — it's a class)
+        // String: text of any length — always in double quotes
+        // Capital S because String is a class, not a primitive
         ___STRING_TYPE___ doctorName = "Dr. Patel";
 
         System.out.println("Patients: " + patientCount);
@@ -53,12 +76,12 @@ const TEMPLATE = `public class ___CLASS___ {
 }`;
 
 const BLANKS = [
-  { id: 'CLASS',       answer: 'Main',    placeholder: 'ClassName', hint: 'The class name. Must match the filename.' },
-  { id: 'INT_TYPE',    answer: 'int',     placeholder: 'type',      hint: 'Whole numbers. 4 bytes. Range: -2 billion to 2 billion.' },
+  { id: 'CLASS',       answer: 'Main',    placeholder: 'ClassName', hint: 'The class name. Must match filename Main.java exactly.' },
+  { id: 'INT_TYPE',    answer: 'int',     placeholder: 'type',      hint: 'Whole numbers. 4 bytes. Use for counts, ages, IDs.' },
   { id: 'DOUBLE_TYPE', answer: 'double',  placeholder: 'type',      hint: 'Decimal numbers. 8 bytes. More precise than float.' },
-  { id: 'BOOL_TYPE',   answer: 'boolean', placeholder: 'type',      hint: 'True or false. Smallest type. Used in every if statement.' },
-  { id: 'CHAR_TYPE',   answer: 'char',    placeholder: 'type',      hint: 'A single character. Always in single quotes.' },
-  { id: 'STRING_TYPE', answer: 'String',  placeholder: 'type',      hint: 'Text. Capital S — it is a class, not a primitive.' },
+  { id: 'BOOL_TYPE',   answer: 'boolean', placeholder: 'type',      hint: 'True or false only. Used in every if statement.' },
+  { id: 'CHAR_TYPE',   answer: 'char',    placeholder: 'type',      hint: 'Single character. Always in single quotes like \'A\'.' },
+  { id: 'STRING_TYPE', answer: 'String',  placeholder: 'type',      hint: 'Text. Capital S — it is a class, not a primitive type.' },
 ];
 
 export default function Level2_2() {
@@ -70,6 +93,7 @@ export default function Level2_2() {
       <LevelSupportWrapper conceptIntro={SUPPORT.intro} hints={SUPPORT.hints} levelComplete={isCorrect}>
         <div className="l22-container">
 
+          {/* Mission brief */}
           <div className="l22-brief">
             <div className="l22-brief-tag">// Mission Brief</div>
             <h2 className="l22-brief-title">
@@ -77,17 +101,14 @@ export default function Level2_2() {
               <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.
             </h2>
             <p className="l22-brief-text">
-              Every system stores data — patient counts, temperatures, doctor names. Before you can store anything in Java, you must declare what <em>type</em> of data it is. Fill in the 6 type keywords below.
+              Every system stores data — patient counts, temperatures, doctor names.
+              Before you can store anything in Java, you must declare what <em>type</em> it is.
+              The variables and values are already written. Fill in the 6 type keywords.
             </p>
 
+            {/* Type reference — real-world use cases, not just definitions */}
             <div className="l22-type-ref">
-              {[
-                { type: 'int',     example: '42',       desc: 'Whole number' },
-                { type: 'double',  example: '98.6',     desc: 'Decimal number' },
-                { type: 'boolean', example: 'true',     desc: 'True or false' },
-                { type: 'char',    example: "'A'",      desc: 'Single character' },
-                { type: 'String',  example: '"hello"',  desc: 'Text (class)' },
-              ].map(t => (
+              {TYPE_CARDS.map(t => (
                 <div key={t.type} className="l22-type-card">
                   <span className="l22-type-name">{t.type}</span>
                   <span className="l22-type-example">{t.example}</span>
@@ -97,12 +118,12 @@ export default function Level2_2() {
             </div>
           </div>
 
+          {/* Fill editor — only the type keyword blanks are editable */}
           <FillEditor
             template={TEMPLATE}
             blanks={BLANKS}
             onAllCorrect={() => setIsCorrect(true)}
-            expectedOutput={
-`Patients: 42\nTemp: 98.6\nActive: true\nBlood: A\nDoctor: Dr. Patel`}
+            expectedOutput="Patients: 42\nTemp: 98.6\nActive: true\nBlood: A\nDoctor: Dr. Patel"
           />
         </div>
       </LevelSupportWrapper>

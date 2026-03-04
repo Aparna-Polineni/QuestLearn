@@ -9,6 +9,7 @@ import './Stage2Shell.css';
 
 const LEVELS = [
   // Part A — Absolute Basics
+  { id: 0,  title: "Java Concepts",             icon: "🧠", part: "A" },
   { id: 1,  title: "Hello World",              icon: "👋", part: "A" },
   { id: 2,  title: "Variables & Types",        icon: "📦", part: "A" },
   { id: 3,  title: "Operators & Arithmetic",   icon: "➕", part: "A" },
@@ -127,7 +128,7 @@ function Stage2Shell({ children, levelId, canProceed, conceptReveal, undoControl
         <div className="s2-action-left">
           <button
             className="s2-back-btn"
-            onClick={() => levelId > 1
+            onClick={() => levelId > 0
               ? navigate(`/stage/2/level/${levelId - 1}`)
               : navigate('/stage/1/level/8')
             }

@@ -6,49 +6,64 @@ import LevelSupportWrapper from '../../components/LevelSupport';
 import DebugEditor from './DebugEditor';
 import './Level2_7.css';
 
+// ── What this level teaches ───────────────────────────────────────────────
+// Classes & Objects — class keyword, constructor naming, return type, new keyword
+// Debug mode: 4 bugs pre-marked in the broken code
+// Each bug comment explains WHAT is wrong and WHY it matters
+// ─────────────────────────────────────────────────────────────────────────
+
 const SUPPORT = {
   intro: {
     concept: "Classes & Objects",
     tagline: "A class is a blueprint. An object is a real thing built from that blueprint.",
-    whatYouWillDo: "You will debug a broken Patient class that has 4 deliberate mistakes — missing keywords, wrong syntax, incorrect access. Fix them and see the object come to life.",
-    whyItMatters: "Every entity in your system — Patient, Doctor, Order, Product — will become a Java class. Understanding class structure is the gateway to all of OOP, Spring Boot models, database entities, and REST responses.",
+    whatYouWillDo: "Fix 4 bugs in a broken Patient class. Each bug is marked with a comment explaining what is wrong. Read the explanation, understand why it breaks, then fix it.",
+    whyItMatters: "Every entity in your system — Patient, Doctor, Order, Product — becomes a Java class. Getting class structure right is the gateway to Spring Boot models, database entities, and REST responses.",
   },
   hints: [
-    "A class declaration: public class ClassName { fields; methods; }. The class name must match the filename exactly (case-sensitive).",
-    "Fields (instance variables) are declared inside the class but outside methods. They belong to each object. Methods belong to the class definition but operate on each object's data.",
-    "To create an object from a class: ClassName variable = new ClassName(); The new keyword allocates memory. The constructor (a method with the same name as the class) initialises the object.",
+    "A class declaration must have the 'class' keyword: public class ClassName { }. Without 'class', Java does not know this is a class declaration.",
+    "The constructor method must have the EXACT same name as the class — including capitalisation. Patient constructor = public Patient(...). If it is lowercase 'patient', Java treats it as a regular method with no return type.",
+    "To create an object: ClassName variable = new ClassName(args). The 'new' keyword allocates memory and calls the constructor. Without 'new', Java tries to call a method named Patient — which does not exist.",
   ],
   reveal: {
     concept: "Classes, Objects & the new Keyword",
-    whatYouLearned: "A class is a template: it defines fields (data) and methods (behaviour). An object is an instance — a specific copy of the class with its own values. The new keyword creates an object in memory and calls the constructor to initialise it. Every object you create has its own copy of the fields.",
-    realWorldUse: "In Spring Boot, every database table maps to a Java class called an Entity. @Entity Patient class maps to a patients table. Each row in the table becomes a Patient object in memory. When your API returns JSON, Spring converts the object's fields to JSON keys automatically.",
-    developerSays: "The mental shift from procedural to object-oriented thinking is the hardest thing for new Java developers. Stop thinking about steps. Start thinking about things — what data does this thing have, and what can it do? That is the class.",
+    whatYouLearned: "A class is a template defining fields (data) and methods (behaviour). An object is an instance — a specific copy with its own values. The new keyword creates an object in memory. The constructor initialises it. Class name must match filename. Constructor name must match class name exactly.",
+    realWorldUse: "In Spring Boot every database table maps to a Java class annotated with @Entity. Each row in the table becomes a Patient object in memory. When your API returns JSON, Spring converts the object's fields to JSON keys automatically.",
+    developerSays: "The mental shift from steps to things is the hardest part of OOP. Stop thinking about what happens. Start thinking about what things exist — what data does this thing have, and what can it do? That is the class.",
   },
 };
 
+// ── Broken code: each bug annotated with what is wrong and why ────────────
 const BROKEN_CODE = `public class Main {
 
-    // BUG 1: Missing 'class' keyword in Patient declaration
+    // BUG 1: Missing 'class' keyword — Java cannot understand this declaration
+    // Fix: add the 'class' keyword between 'public' and 'Patient'
     public Patient {
         String name;
         int age;
         String ward;
 
-        // BUG 2: Constructor name must match class name exactly
+        // BUG 2: Constructor name must EXACTLY match the class name
+        // 'patient' (lowercase p) makes this a regular method, not a constructor
+        // Java cannot use it to create a Patient object
+        // Fix: capitalise to match — public Patient(...)
         public patient(String name, int age, String ward) {
             this.name = name;
             this.age  = age;
             this.ward = ward;
         }
 
-        // BUG 3: Missing return type
+        // BUG 3: Methods must declare a return type — even if returning a String
+        // Without 'String' here, Java does not know what getInfo() gives back
+        // Fix: add 'String' return type before the method name
         public getInfo() {
             return name + " | Age: " + age + " | Ward: " + ward;
         }
     }
 
     public static void main(String[] args) {
-        // BUG 4: Missing 'new' keyword
+        // BUG 4: Missing 'new' keyword — without it Java looks for a METHOD
+        // called Patient, not a constructor call to create an object
+        // Fix: add 'new' before Patient(...)
         Patient p = Patient("Alice", 34, "Cardiology");
         System.out.println(p.getInfo());
     }
@@ -79,35 +94,11 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  {
-    id: 'missing-class',
-    description: 'Bug 1: Patient declaration missing "class" keyword',
-    check: code => /public\s+(static\s+)?class\s+Patient/.test(code),
-  },
-  {
-    id: 'wrong-constructor',
-    description: 'Bug 2: Constructor name is "patient" — must match class "Patient"',
-    check: code => /public\s+Patient\s*\(/.test(code),
-  },
-  {
-    id: 'missing-return-type',
-    description: 'Bug 3: getInfo() method missing return type "String"',
-    check: code => /public\s+String\s+getInfo\s*\(/.test(code),
-  },
-  {
-    id: 'missing-new',
-    description: 'Bug 4: Object creation missing "new" keyword',
-    check: code => /new\s+Patient\s*\(/.test(code),
-  },
+  { id: 1, line: 4,  description: "Missing 'class' keyword — Java cannot declare a class without it",       fix: "Add 'class' between 'public' and 'Patient'" },
+  { id: 2, line: 12, description: "Constructor named 'patient' (lowercase) — must match class name exactly", fix: "Change 'patient' to 'Patient'" },
+  { id: 3, line: 20, description: "Method missing return type — Java needs to know what getInfo() returns",  fix: "Add 'String' return type before 'getInfo'" },
+  { id: 4, line: 30, description: "Missing 'new' keyword — without it Java cannot create an object",         fix: "Add 'new' before Patient(...)" },
 ];
-
-function simulateOutput(code) {
-  const hasNew = /new\s+Patient\s*\(/.test(code);
-  if (hasNew && /public\s+String\s+getInfo/.test(code)) {
-    return 'Alice | Age: 34 | Ward: Cardiology';
-  }
-  return '[Fix all bugs to see output]';
-}
 
 export default function Level2_7() {
   const { selectedDomain } = useGame();
@@ -117,19 +108,16 @@ export default function Level2_7() {
     <Stage2Shell levelId={7} canProceed={isCorrect} conceptReveal={SUPPORT.reveal}>
       <LevelSupportWrapper conceptIntro={SUPPORT.intro} hints={SUPPORT.hints} levelComplete={isCorrect}>
         <div className="l27-container">
-
           <div className="l27-brief">
             <div className="l27-brief-tag">// Debug Mission</div>
-            <h2>Fix the broken <span style={{ color: selectedDomain?.color }}>{selectedDomain?.id === 'hospital' ? 'Patient' : 'Entity'}</span> class.</h2>
-            <p>This Patient class has 4 deliberate bugs. Each bug breaks a core rule of Java class syntax. Find and fix all 4 — the bug chips at the top turn green as you fix each one.</p>
+            <h2>Fix the broken Patient class for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
+            <p>There are 4 bugs. Each one is marked with a comment explaining what is wrong and why it breaks the code. Read the comment, understand it, then fix the line below it.</p>
           </div>
-
           <DebugEditor
             brokenCode={BROKEN_CODE}
-            bugs={BUGS}
             solution={SOLUTION}
+            bugs={BUGS}
             expectedOutput="Alice | Age: 34 | Ward: Cardiology"
-            simulateOutput={simulateOutput}
             onAllFixed={() => setIsCorrect(true)}
           />
         </div>

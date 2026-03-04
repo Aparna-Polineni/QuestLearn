@@ -3,17 +3,18 @@
 .l21-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   max-width: 900px;
   margin: 0 auto;
+  padding-bottom: 40px;
 }
 
-/* Task */
+/* ── Task card ──────────────────────────────────────────────────── */
 .l21-task {
   background: rgba(255,255,255,0.02);
   border: 1px solid #1e293b;
   border-radius: 16px;
-  padding: 20px 24px;
+  padding: 22px 26px;
 }
 
 .l21-task-tag {
@@ -27,7 +28,7 @@
 
 .l21-task-title {
   font-family: 'Syne', sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
   color: #f1f5f9;
   margin-bottom: 10px;
@@ -38,26 +39,17 @@
   font-size: 14px;
   color: #94a3b8;
   line-height: 1.7;
-  margin-bottom: 14px;
-}
-
-.l21-task-desc code {
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  color: #fbbf24;
-  background: rgba(251,191,36,0.08);
-  padding: 1px 6px;
-  border-radius: 4px;
+  margin-bottom: 16px;
 }
 
 .l21-expected {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   background: #080a0f;
-  border: 1px solid #1e293b;
+  border: 1px solid rgba(74,222,128,0.2);
   border-radius: 10px;
-  padding: 12px 16px;
+  padding: 12px 18px;
 }
 
 .l21-expected-label {
@@ -71,66 +63,177 @@
 
 .l21-expected-output {
   font-family: 'DM Mono', monospace;
-  font-size: 14px;
+  font-size: 15px;
   color: #4ade80;
   letter-spacing: 0.3px;
 }
 
-/* Anatomy breakdown */
+/* ── Anatomy section ────────────────────────────────────────────── */
 .l21-anatomy {
-  background: rgba(255,255,255,0.02);
+  background: #0d1117;
   border: 1px solid #1e293b;
   border-radius: 16px;
-  padding: 18px 22px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.l21-anatomy-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .l21-anatomy-label {
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: #475569;
-  letter-spacing: 3px;
+  font-size: 11px;
+  color: #94a3b8;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 14px;
 }
 
+.l21-anatomy-sub {
+  font-size: 12px;
+  color: #334155;
+  font-style: italic;
+}
+
+/* ── Annotated code display ─────────────────────────────────────── */
+.l21-code-annotated {
+  background: #060810;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.l21-code-line {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.l21-indent  { padding-left: 28px; }
+.l21-indent2 { padding-left: 56px; }
+
+.l21-ann-kw   { font-weight: 600; }
+.l21-ann-brace { color: #475569; }
+.l21-ann-punct { color: #94a3b8; }
+
+/* ── Anatomy cards grid ─────────────────────────────────────────── */
 .l21-anatomy-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+
+.l21-anatomy-card {
+  background: #080a0f;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.2s;
+}
+
+.l21-anatomy-card:hover {
+  border-color: #334155;
+}
+
+.l21-anatomy-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.l21-anatomy-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.l21-anatomy-token {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.l21-anatomy-explain {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+  padding-left: 28px; /* aligns with text after icon */
+}
+
+/* ── Editor section ─────────────────────────────────────────────── */
+.l21-editor-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.l21-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  padding: 10px 16px;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-.anatomy-item {
+.l21-editor-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #38bdf8;
+  letter-spacing: 1px;
+}
+
+.l21-editor-tip {
+  font-size: 11px;
+  color: #334155;
+  font-style: italic;
+}
+
+/* ── Success banner ─────────────────────────────────────────────── */
+.l21-success {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  background: #080a0f;
-  border: 1px solid #1e293b;
-  border-radius: 8px;
-  padding: 8px 12px;
-}
-
-.anatomy-token {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-  flex-shrink: 0;
-  min-width: 110px;
-}
-
-.anatomy-meaning {
-  font-size: 12px;
-  color: #64748b;
-  line-height: 1.5;
-}
-
-/* Success */
-.l21-success {
-  background: rgba(74,222,128,0.06);
+  gap: 16px;
+  background: rgba(74,222,128,0.05);
   border: 1px solid rgba(74,222,128,0.2);
-  border-radius: 10px;
-  padding: 12px 16px;
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.l21-success-icon {
+  font-size: 20px;
+  color: #4ade80;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.l21-success-title {
+  font-family: 'DM Mono', monospace;
   font-size: 13px;
   color: #86efac;
-  font-family: 'DM Mono', monospace;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.l21-success-sub {
+  font-size: 13px;
+  color: #4ade80;
+  opacity: 0.7;
+  line-height: 1.6;
 }

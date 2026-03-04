@@ -1,16 +1,32 @@
 // src/screens/stage2/Level2_11.jsx — Polymorphism
 import { useState } from 'react';
+import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
 import DebugEditor from './DebugEditor';
+import './Level2_11.css';
 
-const S = {
-  intro: { concept:"Polymorphism", tagline:"One reference type, many implementations. The same method call does different things depending on the actual object.", whatYouWillDo:"Debug a broken polymorphism demo — a Shape reference holding different subclasses, broken method overriding, and wrong casting.", whyItMatters:"Polymorphism is why Spring Boot can accept any class that implements an interface. Your service accepts a PaymentProcessor interface — whether it is PayPalProcessor or StripeProcessor, the same method call works." },
-  hints: ["Polymorphism: a parent-type reference variable can hold a child-type object. Shape s = new Circle() is valid if Circle extends Shape.", "@Override in child classes is required for true polymorphism. Without it, Java might call the parent's method instead of the child's.", "When iterating a list of parent-type objects, Java calls the actual object's overridden method — this is runtime polymorphism (dynamic dispatch)."],
-  reveal: { concept:"Runtime Polymorphism & Dynamic Dispatch", whatYouLearned:"A parent reference can point to any child object. When you call a method on it, Java runs the actual object's version at runtime. This is dynamic dispatch. It enables writing code that works with any subtype without knowing the exact type.", realWorldUse:"Spring's @Repository interface is implemented by JpaRepository, MongoRepository, and others. Your service just declares @Autowired UserRepository — which implementation it gets is decided at runtime by Spring's dependency injection. Polymorphism makes this possible.", developerSays:"Polymorphism is the reason your code stays clean as requirements change. Add a new payment method? Implement the interface. The rest of the code does not change. That is open/closed principle — open for extension, closed for modification." },
+const SUPPORT = {
+  intro: {
+    concept: "Polymorphism",
+    tagline: "One reference type, many implementations. The same method call behaves differently depending on the actual object.",
+    whatYouWillDo: "Fix 3 bugs in a polymorphism demo — a missing @Override, a wrong return type that breaks the contract, and an array typed as Object[] instead of Shape[].",
+    whyItMatters: "Polymorphism is why Spring Boot can accept any class that implements an interface. Your service accepts a PaymentProcessor — whether it is PayPalProcessor or StripeProcessor, the same method call works.",
+  },
+  hints: [
+    "@Override annotation on the child method tells Java this intentionally overrides the parent. Without it, a typo in the method name silently creates a new method instead of overriding — the parent's version runs instead.",
+    "The overriding method must have the EXACT same return type as the parent. If the parent's getArea() returns String, every override must also return String. Changing to double breaks the contract.",
+    "For polymorphism to work, the array/variable must be typed as the PARENT class (Shape[]), not Object[]. With Object[], you lose the ability to call Shape methods without casting.",
+  ],
+  reveal: {
+    concept: "Runtime Polymorphism & Dynamic Dispatch",
+    whatYouLearned: "A parent reference can point to any child object. When you call a method, Java runs the actual object's overridden version at runtime — this is dynamic dispatch. @Override catches mistakes at compile time. The array type must match the parent to allow polymorphic method calls.",
+    realWorldUse: "Spring's @Repository interface is implemented by JpaRepository, MongoRepository, and others. Your service just declares @Autowired UserRepository — which implementation it gets is decided at runtime by Spring's dependency injection. Polymorphism makes this possible.",
+    developerSays: "Polymorphism keeps your code stable as requirements change. Add a new payment method? Implement the interface. The rest of the code does not change. That is the open/closed principle — open for extension, closed for modification.",
+  },
 };
 
-const BROKEN = `public class Main {
+const BROKEN_CODE = `public class Main {
 
     static class Shape {
         public String getArea() { return "unknown"; }
@@ -20,7 +36,10 @@ const BROKEN = `public class Main {
         double radius;
         Circle(double r) { this.radius = r; }
 
-        // BUG 1: Missing @Override — this shadowing instead of overriding
+        // BUG 1: Missing @Override — without it Java does not verify this overrides Shape.getArea()
+        // If you misspell getArea as getArae, Java creates a NEW method instead of overriding
+        // The parent's "unknown" version would run instead of this one
+        // Fix: add @Override on the line above 'public String getArea()'
         public String getArea() {
             return "Circle area: " + (3.14 * radius * radius);
         }
@@ -31,14 +50,19 @@ const BROKEN = `public class Main {
         Rectangle(double w, double h) { this.w = w; this.h = h; }
 
         @Override
-        // BUG 2: Wrong return type — must match parent (String, not double)
+        // BUG 2: Return type is 'double' but the parent declares 'String'
+        // This breaks the polymorphism contract — all overrides must match the parent's return type
+        // Trying to call getArea() on a Shape reference would be ambiguous
+        // Fix: change 'double' to 'String' and return a formatted string
         public double getArea() {
             return w * h;
         }
     }
 
     public static void main(String[] args) {
-        // BUG 3: Array type should be Shape[] to enable polymorphism
+        // BUG 3: Array typed as Object[] — too broad, loses the Shape contract
+        // With Object[], you cannot call .getArea() without an unsafe cast
+        // Fix: change Object[] to Shape[] and the loop variable from Object to Shape
         Object[] shapes = { new Circle(5), new Rectangle(4, 6) };
         for (Object s : shapes) {
             System.out.println(((Shape)s).getArea());
@@ -81,24 +105,31 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 'missing-override', description: 'Bug 1: @Override missing on Circle.getArea()', check: c => /@Override[\s\S]{0,30}public\s+String\s+getArea[\s\S]*?Circle/.test(c) || (c.match(/@Override/g)||[]).length >= 2 },
-  { id: 'wrong-return',     description: 'Bug 2: Rectangle.getArea() returns double — must return String', check: c => /class\s+Rectangle[\s\S]*?public\s+String\s+getArea/.test(c) },
-  { id: 'wrong-array',      description: 'Bug 3: Array type is Object[] — should be Shape[]', check: c => /Shape\[\]\s+shapes/.test(c) },
+  { id: 1, line: 15, description: "Missing @Override — Java cannot verify this correctly overrides Shape.getArea()", fix: "Add @Override on the line above 'public String getArea()'" },
+  { id: 2, line: 27, description: "Return type 'double' breaks the parent contract — must match 'String'", fix: "Change 'double' to 'String' and return a formatted String" },
+  { id: 3, line: 34, description: "Array typed as Object[] — too broad, loses the Shape contract and method access", fix: "Change Object[] to Shape[] and loop variable from Object to Shape" },
 ];
-const simulate = c => /Shape\[\]/.test(c) && /String\s+getArea/.test(c) ? 'Circle area: 78.5\nRectangle area: 24.0' : '[Fix all bugs to see output]';
 
 export default function Level2_11() {
-  const [ok, setOk] = useState(false);
+  const { selectedDomain } = useGame();
+  const [isCorrect, setIsCorrect] = useState(false);
+
   return (
-    <Stage2Shell levelId={11} canProceed={ok} conceptReveal={S.reveal}>
-      <LevelSupportWrapper conceptIntro={S.intro} hints={S.hints} levelComplete={ok}>
-        <div style={{display:'flex',flexDirection:'column',gap:24,paddingBottom:32}}>
-          <div style={{background:'#0d1117',border:'1px solid #1e293b',borderRadius:16,padding:24}}>
-            <div style={{fontFamily:'DM Mono,monospace',fontSize:11,color:'#f97316',letterSpacing:3,marginBottom:10}}>// Debug Mission</div>
-            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:800,color:'#f1f5f9',marginBottom:8}}>Fix the polymorphic Shape hierarchy.</h2>
-            <p style={{fontSize:14,color:'#64748b',lineHeight:1.6}}>3 bugs prevent polymorphism from working. Fix them to make one loop handle any shape type.</p>
+    <Stage2Shell levelId={11} canProceed={isCorrect} conceptReveal={SUPPORT.reveal}>
+      <LevelSupportWrapper conceptIntro={SUPPORT.intro} hints={SUPPORT.hints} levelComplete={isCorrect}>
+        <div className="l211-container">
+          <div className="l211-brief">
+            <div className="l211-brief-tag">// Debug Mission</div>
+            <h2>Fix the polymorphism bugs for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
+            <p>3 bugs — each breaks polymorphism in a different way. Read the comment above each bug to understand exactly why it fails.</p>
           </div>
-          <DebugEditor brokenCode={BROKEN} bugs={BUGS} solution={SOLUTION} expectedOutput={"Circle area: 78.5\nRectangle area: 24.0"} simulateOutput={simulate} onAllFixed={() => setOk(true)} />
+          <DebugEditor
+            brokenCode={BROKEN_CODE}
+            solution={SOLUTION}
+            bugs={BUGS}
+            expectedOutput={"Circle area: 78.5\nRectangle area: 24.0"}
+            onAllFixed={() => setIsCorrect(true)}
+          />
         </div>
       </LevelSupportWrapper>
     </Stage2Shell>
