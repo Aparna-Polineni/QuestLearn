@@ -1,11 +1,83 @@
 // src/screens/stage2/FillEditor.jsx
-// Shows Java code with blanks that the player fills in
-// Blanks are marked with ___BLANK_ID___ in the template
+// Syntax highlighting via React tokens — no dangerouslySetInnerHTML
+// Each code segment is tokenised into spans with colour classes
 
 import { useState, useEffect } from 'react';
 import './FillEditor.css';
 
-// Parse template into segments: {type: 'code'|'blank', content, id, answer, hint}
+// ── Tokeniser ──────────────────────────────────────────────────────────────
+// Splits a line of Java code into typed tokens.
+// Returns array of: { type: 'keyword'|'type'|'string'|'comment'|'number'|'annotation'|'plain', text }
+// This is pure string splitting — no innerHTML, no HTML injection.
+
+const KEYWORDS = new Set([
+  'public','private','protected','static','final','void','class','new',
+  'return','if','else','for','while','do','break','continue','import',
+  'package','extends','implements','interface','abstract','try','catch',
+  'finally','throw','throws','instanceof','this','super','null','true',
+  'false','enum','switch','case','default'
+]);
+
+const TYPES = new Set([
+  'int','long','double','float','boolean','char','byte','short','String','var'
+]);
+
+function tokeniseLine(line) {
+  const tokens = [];
+
+  // Full-line or trailing comment — everything from // onwards is green
+  const commentIdx = line.indexOf('//');
+  let codePart  = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
+  const commentPart = commentIdx >= 0 ? line.slice(commentIdx) : null;
+
+  // Tokenise the code portion word by word
+  // Regex splits on word boundaries while keeping delimiters
+  const parts = codePart.split(/(\b\w+\b|"[^"]*"|@\w+|\d+\.?\d*)/g);
+
+  parts.forEach(part => {
+    if (!part) return;
+    if (part.startsWith('"') && part.endsWith('"')) {
+      tokens.push({ type: 'string', text: part });
+    } else if (part.startsWith('@')) {
+      tokens.push({ type: 'annotation', text: part });
+    } else if (/^\d+\.?\d*$/.test(part)) {
+      tokens.push({ type: 'number', text: part });
+    } else if (KEYWORDS.has(part)) {
+      tokens.push({ type: 'keyword', text: part });
+    } else if (TYPES.has(part)) {
+      tokens.push({ type: 'type', text: part });
+    } else {
+      tokens.push({ type: 'plain', text: part });
+    }
+  });
+
+  // Append the comment as one green token
+  if (commentPart) {
+    tokens.push({ type: 'comment', text: commentPart });
+  }
+
+  return tokens;
+}
+
+// Renders a plain code string with syntax colouring
+// Returns an array of <span> React elements — safe, no innerHTML
+function HighlightedCode({ text }) {
+  const lines = text.split('\n');
+  return (
+    <>
+      {lines.map((line, li) => (
+        <span key={li}>
+          {tokeniseLine(line).map((tok, ti) => (
+            <span key={ti} className={`tok-${tok.type}`}>{tok.text}</span>
+          ))}
+          {li < lines.length - 1 ? '\n' : ''}
+        </span>
+      ))}
+    </>
+  );
+}
+
+// ── Template parser ────────────────────────────────────────────────────────
 function parseTemplate(template) {
   const segments = [];
   const regex = /___([A-Z0-9_]+)___/g;
@@ -27,18 +99,9 @@ function parseTemplate(template) {
   return segments;
 }
 
-// NOTE: Syntax highlighting removed from FillEditor.
-// The previous highlight() function injected <span class="tok-*"> HTML tags via
-// dangerouslySetInnerHTML. Because React renders <pre> children as plain text,
-// those tags appeared LITERALLY on screen: <span class="tok-keyword">public</span>
-// Fix: code segments are now plain text. No HTML injection.
-
 // ── Single blank input ─────────────────────────────────────────────────────
 function BlankInput({ blank, value, onChange, isCorrect, isWrong, showAnswer }) {
-  const width = Math.max(
-    (blank.answer?.length || 6) * 9 + 16,
-    80
-  );
+  const width = Math.max((blank.answer?.length || 6) * 9 + 16, 80);
 
   return (
     <span className="blank-wrapper">
@@ -62,35 +125,31 @@ function BlankInput({ blank, value, onChange, isCorrect, isWrong, showAnswer }) 
 
 // ── Main FillEditor ────────────────────────────────────────────────────────
 function FillEditor({
-  template,        // string with ___BLANK_ID___ markers
-  blanks,          // [{ id, answer, placeholder, hint }]
-  onAllCorrect,    // callback when all blanks are filled correctly
+  template,
+  blanks,
+  onAllCorrect,
   showRunButton = true,
   expectedOutput = '',
-  simulateOutput,  // fn(answers) => string | null
+  simulateOutput,
 }) {
   const segments = parseTemplate(template);
   const [values,      setValues]      = useState({});
   const [checked,     setChecked]     = useState(false);
   const [showAnswers, setShowAnswers] = useState(false);
   const [output,      setOutput]      = useState('');
-  const [revealed,    setRevealed]    = useState(0); // hint reveal index
+  const [revealed,    setRevealed]    = useState(0);
 
-  const blankMap = Object.fromEntries(blanks.map(b => [b.id, b]));
-
+  const blankMap   = Object.fromEntries(blanks.map(b => [b.id, b]));
   const correctMap = {};
   blanks.forEach(b => {
-    const val = (values[b.id] || '').trim();
-    correctMap[b.id] = val === b.answer.trim();
+    correctMap[b.id] = (values[b.id] || '').trim() === b.answer.trim();
   });
 
   const allCorrect = blanks.every(b => correctMap[b.id]);
   const anyFilled  = Object.values(values).some(v => v.trim().length > 0);
 
   useEffect(() => {
-    if (allCorrect && blanks.length > 0) {
-      onAllCorrect && onAllCorrect(true);
-    }
+    if (allCorrect && blanks.length > 0) onAllCorrect?.(true);
   }, [allCorrect]);
 
   function handleChange(id, val) {
@@ -100,10 +159,7 @@ function FillEditor({
 
   function handleCheck() {
     setChecked(true);
-    if (simulateOutput) {
-      const out = simulateOutput(values);
-      setOutput(out || '');
-    }
+    if (simulateOutput) setOutput(simulateOutput(values) || '');
   }
 
   function handleRevealNext() {
@@ -111,17 +167,11 @@ function FillEditor({
     setShowAnswers(true);
   }
 
-  // Render template with blanks
+  // Render template segments — code gets syntax highlighting, blanks get inputs
   function renderTemplate() {
     return segments.map((seg, i) => {
       if (seg.type === 'code') {
-        // Render as plain text — no HTML injection, no span tags bleeding through
-        // Colour is applied via CSS on the parent .fill-code-content
-        return (
-          <span key={i} className="fill-code">
-            {seg.content}
-          </span>
-        );
+        return <HighlightedCode key={i} text={seg.content} />;
       }
       const blank   = blankMap[seg.id];
       const val     = values[seg.id] || '';
@@ -175,7 +225,7 @@ function FillEditor({
         </div>
       </div>
 
-      {/* Hint for currently revealed blank */}
+      {/* Hint bar */}
       {showAnswers && revealed > 0 && blanks[revealed - 1]?.hint && (
         <div className="fill-hint-bar">
           <span className="fill-hint-icon">💡</span>
@@ -203,16 +253,14 @@ function FillEditor({
           <div className="fill-output-header">
             <span>{allCorrect ? '✓ Output — correct' : '✗ Output — not quite'}</span>
             {expectedOutput && (
-              <span className="fill-expected">
-                Expected: <code>{expectedOutput}</code>
-              </span>
+              <span className="fill-expected">Expected: <code>{expectedOutput}</code></span>
             )}
           </div>
           <pre className="fill-output-content">{output || '(no output)'}</pre>
         </div>
       )}
 
-      {/* All correct celebration */}
+      {/* All correct */}
       {allCorrect && (
         <div className="fill-all-correct">
           ✓ All {blanks.length} blanks filled correctly. Code is complete and valid.

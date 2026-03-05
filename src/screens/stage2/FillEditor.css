@@ -279,3 +279,29 @@
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Syntax token colours ──────────────────────────────────────────────────
+   Applied by the React tokeniser in FillEditor.jsx.
+   Each .tok-* class colours a different part of Java code.
+   No innerHTML — these are real React <span> elements.        */
+
+/* Keywords: public, class, static, return, if, for, new ...   → blue */
+.tok-keyword   { color: #60a5fa; }
+
+/* Primitive & common types: int, String, boolean, void ...    → cyan */
+.tok-type      { color: #38bdf8; }
+
+/* String literals: "hello", "Cardiology" ...                  → amber/orange */
+.tok-string    { color: #fb923c; }
+
+/* Comments: // anything after double slash                    → green (most visible diff) */
+.tok-comment   { color: #4ade80; font-style: italic; }
+
+/* Numbers: 42, 3.14, 100 ...                                  → purple */
+.tok-number    { color: #c084fc; }
+
+/* Annotations: @Override, @Entity, @Builder ...               → yellow */
+.tok-annotation { color: #facc15; }
+
+/* Plain identifiers, operators, punctuation                   → white */
+.tok-plain     { color: #e2e8f0; }

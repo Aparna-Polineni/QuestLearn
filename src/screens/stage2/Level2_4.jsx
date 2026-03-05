@@ -32,12 +32,12 @@ const SUPPORT = {
   },
 };
 
-// ── Logic operators shown for reference ───────────────────────────────────
+// ── Conditional keywords shown for reference ──────────────────────────────
 const LOGIC_OPS = [
-  { op: '||',  meaning: 'OR — either condition triggers the branch' },
-  { op: '&&',  meaning: 'AND — both conditions must be true' },
-  { op: '>',   meaning: 'Greater than (strictly — does NOT include equal)' },
-  { op: '>=',  meaning: 'Greater than or equal to' },
+  { op: 'if',      meaning: 'First branch — always starts the block, has a condition' },
+  { op: 'else if', meaning: 'Additional branch — only checked if everything above was false' },
+  { op: 'else',    meaning: 'Catch-all — runs when NO condition above matched, no brackets' },
+  { op: '|| / &&', meaning: 'OR / AND — combine two conditions into one boolean check' },
 ];
 
 // ── Template: comments trace the logic for the student ────────────────────
