@@ -1,0 +1,81 @@
+/* ─── Level3_7.css — Routing ────────────────────────────────────────────── */
+
+.l37-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.l37-tag {
+  color: #475569;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+}
+.l37-brief {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid #334155;
+}
+.l37-brief h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 10px;
+}
+.l37-brief p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Simulated nav bar inside code previews */
+.nav {
+  display: flex;
+  gap: 20px;
+  padding: 12px 20px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  border-radius: 8px 8px 0 0;
+}
+.nav a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 5px;
+  transition: background .12s;
+}
+.nav a:hover { background: #334155; }
+.nav a.active {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+/* Patient row in the router example */
+.patient-row {
+  padding: 11px 16px;
+  background: #1e293b;
+  border-radius: 8px;
+  margin-bottom: 7px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  transition: background .12s, border-color .12s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.patient-row:hover {
+  background: #263347;
+  border-color: #475569;
+}
+.patient-row::after {
+  content: '→';
+  color: #475569;
+  margin-left: auto;
+}

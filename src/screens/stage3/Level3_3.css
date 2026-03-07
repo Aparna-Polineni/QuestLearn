@@ -1,0 +1,130 @@
+/* ─── Level3_3.css — useState ──────────────────────────────────────────── */
+
+.l33-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.l33-tag {
+  color: #475569;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+}
+
+.l33-brief {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid #334155;
+}
+.l33-brief h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+.l33-brief p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 16px;
+}
+
+/* useState mental model box */
+.l33-model {
+  background: #0f172a;
+  border: 1px solid #1e3a5f;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.l33-model-row {
+  text-align: center;
+}
+.l33-arrow {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #818cf8;
+  background: #1e1e3a;
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-block;
+  border: 1px solid #3a3a6a;
+}
+.l33-model-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-top: 1px solid #1e293b;
+  padding-top: 12px;
+}
+.l33-model-sub span {
+  font-size: 12px;
+  color: #64748b;
+  font-family: 'Fira Code', monospace;
+  padding: 2px 0;
+}
+.l33-model-sub span::before {
+  content: '// ';
+  color: #334155;
+}
+
+/* Patient monitor preview widget */
+.monitor {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.monitor h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  font-size: 12px;
+}
+.monitor p {
+  font-size: 14px;
+  color: #e2e8f0;
+  margin: 0;
+}
+.monitor button {
+  background: #334155;
+  border: 1px solid #475569;
+  color: #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s;
+  align-self: flex-start;
+}
+.monitor button:hover { background: #475569; }
+.monitor input,
+.monitor textarea {
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.monitor input:focus,
+.monitor textarea:focus {
+  outline: none;
+  border-color: #818cf8;
+}

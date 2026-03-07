@@ -1,0 +1,152 @@
+/* ─── Level3_12.css — useReducer ────────────────────────────────────────── */
+
+.l312-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.l312-tag {
+  color: #475569;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+}
+.l312-brief {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid #334155;
+}
+.l312-brief h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 10px;
+}
+.l312-brief p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 18px;
+}
+
+/* dispatch → reducer → state flow */
+.l312-pattern {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 14px 18px;
+  border: 1px solid #1e293b;
+}
+.l312-box {
+  background: #1e3a5f;
+  color: #60a5fa;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  font-weight: 700;
+  border: 1px solid #1e4a7a;
+  white-space: nowrap;
+}
+.l312-arr {
+  color: #334155;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Filter panel preview */
+.filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 18px 20px;
+  border: 1px solid #334155;
+}
+.filter-panel h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin: 0 0 4px;
+}
+.filter-panel select,
+.filter-panel input {
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color .15s;
+}
+.filter-panel select:focus,
+.filter-panel input:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+.filter-panel input::placeholder { color: #475569; }
+
+.filter-panel button {
+  background: #334155;
+  border: 1px solid #475569;
+  color: #94a3b8;
+  padding: 8px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .12s, color .12s;
+  align-self: flex-start;
+}
+.filter-panel button:hover {
+  background: #475569;
+  color: #f1f5f9;
+}
+
+.filter-panel p {
+  color: #64748b;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin: 4px 0 0;
+  padding: 8px 12px;
+  background: #0f172a;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+}
+
+/* useState vs useReducer comparison */
+.l312-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+.l312-compare-col {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid #1e293b;
+}
+.l312-compare-col h4 {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  font-family: 'Fira Code', monospace;
+  color: #64748b;
+}
+.l312-compare-col p {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.6;
+}

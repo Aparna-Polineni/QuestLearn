@@ -1,0 +1,149 @@
+/* ─── Level3_8.css — API Integration ───────────────────────────────────── */
+
+.l38-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.l38-tag {
+  color: #475569;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+}
+.l38-brief {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid #334155;
+}
+.l38-brief h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 10px;
+}
+.l38-brief p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Dashboard preview */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: #1e293b;
+  border-radius: 14px;
+  border: 1px solid #334155;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #334155;
+}
+.dashboard-header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0;
+}
+.dashboard-header select {
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  padding: 7px 12px;
+  border-radius: 7px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.dashboard-header select:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+
+/* Patient grid */
+.patient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.patient-card {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: border-color .15s;
+}
+.patient-card:hover { border-color: #475569; }
+.patient-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 4px;
+}
+.patient-card p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+.priority-critical {
+  border-left: 3px solid #f87171;
+  background: #1a0f0f;
+}
+.priority-high {
+  border-left: 3px solid #fb923c;
+  background: #1a1208;
+}
+
+.patient-count {
+  color: #475569;
+  font-size: 12px;
+  text-align: right;
+  font-family: 'Fira Code', monospace;
+  margin: 0;
+}
+
+/* Loading / error reused here */
+.loading {
+  color: #60a5fa;
+  font-size: 14px;
+  padding: 28px;
+  text-align: center;
+  background: #0f1f35;
+  border-radius: 10px;
+  border: 1px dashed #1e3a5f;
+}
+.error {
+  color: #f87171;
+  font-size: 14px;
+  padding: 12px 16px;
+  background: #1f1515;
+  border-radius: 9px;
+  border: 1px solid #3a2020;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.error button {
+  background: #334155;
+  border: 1px solid #475569;
+  color: #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: auto;
+}

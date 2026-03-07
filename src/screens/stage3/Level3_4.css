@@ -1,0 +1,124 @@
+/* ─── Level3_4.css — Lists & .map() ────────────────────────────────────── */
+
+.l34-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.l34-tag {
+  color: #475569;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+}
+.l34-brief {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid #334155;
+}
+.l34-brief h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 10px;
+}
+.l34-brief p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 18px;
+}
+
+/* Pattern steps row */
+.l34-pattern {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 14px 18px;
+  border: 1px solid #1e293b;
+}
+.l34-step {
+  background: #1e3a5f;
+  color: #60a5fa;
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Fira Code', monospace;
+  border: 1px solid #1e4a7a;
+  white-space: nowrap;
+}
+.l34-arrow {
+  color: #334155;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Patient list preview */
+.patient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.patient-list h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin: 0 0 12px;
+}
+
+/* Patient row */
+.patient-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 16px;
+  background: #1e293b;
+  border-radius: 9px;
+  font-size: 14px;
+  border: 1px solid #334155;
+  transition: background .12s;
+}
+.patient-row:hover { background: #263347; }
+.row-critical {
+  border-left: 3px solid #f87171;
+  background: #1f1515;
+  border-color: #3a2020;
+}
+.row-critical:hover { background: #251818; }
+
+.patient-name {
+  flex: 1;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+.patient-hr {
+  color: #94a3b8;
+  font-size: 13px;
+  font-family: 'Fira Code', monospace;
+}
+.critical-badge {
+  background: #3a1e1e;
+  color: #f87171;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .4px;
+  border: 1px solid #5a2e2e;
+}
+.empty-message {
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+  padding: 28px 20px;
+  background: #1e293b;
+  border-radius: 10px;
+  border: 1px dashed #334155;
+}

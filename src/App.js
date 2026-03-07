@@ -42,6 +42,25 @@ import Level2_18 from './screens/stage2/Level2_18';
 import Level2_19 from './screens/stage2/Level2_19';
 import Level2_20 from './screens/stage2/Level2_20';
 
+// Stage 3 — all 16 levels
+
+import Level3_0  from './screens/stage3/Level3_0';
+import Level3_1  from './screens/stage3/Level3_1';
+import Level3_2  from './screens/stage3/Level3_2';
+import Level3_3  from './screens/stage3/Level3_3';
+import Level3_4  from './screens/stage3/Level3_4';
+import Level3_5  from './screens/stage3/Level3_5';
+import Level3_6  from './screens/stage3/Level3_6';
+import Level3_7  from './screens/stage3/Level3_7';
+import Level3_8  from './screens/stage3/Level3_8';
+import Level3_9  from './screens/stage3/Level3_9';
+import Level3_10 from './screens/stage3/Level3_10';
+import Level3_11 from './screens/stage3/Level3_11';
+import Level3_12 from './screens/stage3/Level3_12';
+import Level3_13 from './screens/stage3/Level3_13';
+import Level3_14 from './screens/stage3/Level3_14';
+import Level3_15 from './screens/stage3/Level3_15';
+
 function ComingSoon({ label }) {
   return (
     <div style={{ minHeight:'100vh', background:'#080a0f', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16 }}>
@@ -109,12 +128,22 @@ function AppRoutes() {
       <Route path="/stage/2/level/20" element={<R><Level2_20 /></R>} />
 
       {/* Stages 3–8 placeholders */}
-      <Route path="/stage/3/*" element={<R><ComingSoon label="Stage 3 — Java Advanced" /></R>} />
-      <Route path="/stage/4/*" element={<R><ComingSoon label="Stage 4 — Frontend React" /></R>} />
-      <Route path="/stage/5/*" element={<R><ComingSoon label="Stage 5 — Spring Boot" /></R>} />
-      <Route path="/stage/6/*" element={<R><ComingSoon label="Stage 6 — Database & SQL" /></R>} />
-      <Route path="/stage/7/*" element={<R><ComingSoon label="Stage 7 — Full Stack Integration" /></R>} />
-      <Route path="/stage/8/*" element={<R><ComingSoon label="Stage 8 — DevOps" /></R>} />
+      <Route path="/stage/3/level/0"  element={<Level3_0  />} />
+      <Route path="/stage/3/level/1"  element={<Level3_1  />} />
+      <Route path="/stage/3/level/2"  element={<Level3_2  />} />
+      <Route path="/stage/3/level/3"  element={<Level3_3  />} />
+      <Route path="/stage/3/level/4"  element={<Level3_4  />} />
+      <Route path="/stage/3/level/5"  element={<Level3_5  />} />
+      <Route path="/stage/3/level/6"  element={<Level3_6  />} />
+      <Route path="/stage/3/level/7"  element={<Level3_7  />} />
+      <Route path="/stage/3/level/8"  element={<Level3_8  />} />
+      <Route path="/stage/3/level/9"  element={<Level3_9  />} />
+      <Route path="/stage/3/level/10" element={<Level3_10 />} />
+      <Route path="/stage/3/level/11" element={<Level3_11 />} />
+      <Route path="/stage/3/level/12" element={<Level3_12 />} />
+      <Route path="/stage/3/level/13" element={<Level3_13 />} />
+      <Route path="/stage/3/level/14" element={<Level3_14 />} />
+      <Route path="/stage/3/level/15" element={<Level3_15 />} />
 
       <Route path="*" element={<Navigate to="/auth" replace />} />
     </Routes>

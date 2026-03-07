@@ -1,0 +1,106 @@
+/* ─── Level3_9.css — Error & Loading Debug ──────────────────────────────── */
+
+.l39-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.l39-tag {
+  color: #f87171;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+  font-weight: 700;
+}
+.l39-brief {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid #334155;
+  border-left: 3px solid #f87171;
+}
+.l39-brief h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 10px;
+}
+.l39-brief p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Vitals list preview */
+.vitals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 18px 20px;
+  background: #1e293b;
+  border-radius: 12px;
+  border: 1px solid #334155;
+}
+.vitals-list h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+}
+.vital-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 12px;
+  background: #0f172a;
+  border-radius: 7px;
+  font-size: 13px;
+  color: #e2e8f0;
+  border: 1px solid #1e293b;
+}
+.vital-row span:first-child {
+  font-weight: 600;
+  color: #94a3b8;
+  min-width: 100px;
+}
+.vital-row span:last-child {
+  color: #64748b;
+  font-size: 12px;
+  margin-left: auto;
+  font-family: 'Fira Code', monospace;
+}
+
+.spinner {
+  color: #60a5fa;
+  padding: 24px;
+  text-align: center;
+  font-size: 14px;
+  background: #0f1f35;
+  border-radius: 10px;
+  border: 1px dashed #1e3a5f;
+}
+.spinner::before { content: '⏳ '; }
+
+.error-msg {
+  color: #f87171;
+  font-size: 14px;
+  background: #1f1515;
+  padding: 11px 15px;
+  border-radius: 8px;
+  border: 1px solid #3a2020;
+}
+.error-msg::before { content: '⚠ '; }
+
+.empty-state {
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+  padding: 28px 20px;
+  background: #1e293b;
+  border-radius: 10px;
+  border: 1px dashed #334155;
+}

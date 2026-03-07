@@ -1,0 +1,111 @@
+/* ─── Level3_13.css — Performance Debug ────────────────────────────────── */
+
+.l313-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.l313-tag {
+  color: #f87171;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+  font-weight: 700;
+}
+.l313-brief {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid #334155;
+  border-left: 3px solid #f87171;
+}
+.l313-brief h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 10px;
+}
+.l313-brief p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Patient card (rendered in code preview) */
+.patient-card {
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 12px 16px;
+  border: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  transition: border-color .12s;
+}
+.patient-card:hover { border-color: #475569; }
+.patient-card strong {
+  color: #f1f5f9;
+  font-size: 14px;
+  font-weight: 700;
+}
+.patient-card span {
+  color: #64748b;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+}
+
+/* memo/useMemo/useCallback reference cards */
+.l313-tools {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+.l313-tool-card {
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 14px 15px;
+  border: 1px solid #1e293b;
+}
+.l313-tool-card h4 {
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: #818cf8;
+}
+.l313-tool-card p {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.6;
+}
+.l313-tool-card .use-when {
+  font-size: 11px;
+  color: #475569;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #1e293b;
+}
+
+/* Render counter badge (for the profiler demo) */
+.render-badge {
+  display: inline-block;
+  background: #3a1a1a;
+  color: #f87171;
+  border: 1px solid #5a2e2e;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  font-weight: 700;
+  margin-left: 8px;
+}
+.render-badge.optimised {
+  background: #1a3a1a;
+  color: #4ade80;
+  border-color: #2e5a2e;
+}

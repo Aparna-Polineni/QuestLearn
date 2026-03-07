@@ -1,0 +1,36 @@
+/* Level3_15.css — Complete Frontend Capstone */
+.l315-container { display:flex; flex-direction:column; gap:20px; }
+.l315-tag { color:#60a5fa; font-size:12px; font-family:'Fira Code',monospace; margin-bottom:8px; font-weight:700; }
+.l315-brief { background:#1e293b; border-radius:12px; padding:24px; border:1px solid #334155; }
+.l315-brief h2 { font-size:22px; font-weight:800; margin:0 0 10px; }
+.l315-brief h2 span { font-weight:800; }
+.l315-brief p { color:#94a3b8; line-height:1.6; margin:0; font-size:14px; }
+
+.patient-management { display:flex; flex-direction:column; gap:16px; padding:20px; background:#1e293b; border-radius:12px; }
+.pm-header { display:flex; align-items:center; justify-content:space-between; padding-bottom:14px; border-bottom:1px solid #334155; }
+.pm-header h1 { font-size:20px; font-weight:700; margin:0; }
+.pm-header span { color:#64748b; font-size:13px; }
+.pm-toolbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.pm-toolbar select { background:#0f172a; border:1px solid #334155; color:#e2e8f0; padding:7px 12px; border-radius:6px; font-size:13px; }
+.pm-toolbar button { background:#3b82f6; border:none; color:#fff; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:600; }
+.pm-toolbar button:hover { background:#2563eb; }
+
+.patient-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+.patient-card { background:#0f172a; border-radius:8px; padding:12px; border:1px solid #334155; }
+.patient-card strong { color:#f1f5f9; display:block; margin-bottom:4px; font-size:14px; }
+.patient-card span { color:#64748b; font-size:12px; display:block; }
+.priority-critical { border-color:#f87171; }
+.priority-high { border-color:#fb923c; }
+
+.spinner { color:#60a5fa; text-align:center; padding:20px; font-size:14px; }
+.error { background:#1f1515; color:#f87171; padding:12px 16px; border-radius:8px; font-size:14px; display:flex; align-items:center; gap:10px; }
+.error button { background:#334155; border:none; color:#e2e8f0; padding:4px 10px; border-radius:4px; cursor:pointer; font-size:12px; }
+
+.admission-form { background:#0f172a; border-radius:10px; padding:18px; border:1px solid #334155; display:flex; flex-direction:column; gap:10px; }
+.admission-form h3 { font-size:15px; margin:0 0 4px; color:#e2e8f0; }
+.admission-form input,
+.admission-form select { background:#1e293b; border:1px solid #334155; color:#e2e8f0; padding:8px 12px; border-radius:6px; font-size:13px; width:100%; box-sizing:border-box; }
+.admission-form button[type="submit"] { background:#3b82f6; border:none; color:#fff; font-weight:700; padding:9px; border-radius:7px; cursor:pointer; }
+.form-error { color:#f87171; font-size:12px; }
+
+.pm-footer { color:#475569; font-size:13px; text-align:right; padding-top:8px; border-top:1px solid #1e293b; }

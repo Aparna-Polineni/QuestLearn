@@ -3,7 +3,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
-import ConceptReveal from '../../components/ConceptReveal';
+import { ConceptReveal } from '../../components/LevelSupport';
 import './Stage3Shell.css';
 
 const LEVEL_TITLES = {

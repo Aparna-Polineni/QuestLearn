@@ -1,0 +1,111 @@
+/* ─── Level3_6.css — useEffect ──────────────────────────────────────────── */
+
+.l36-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.l36-tag {
+  color: #475569;
+  font-size: 12px;
+  font-family: 'Fira Code', monospace;
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+}
+.l36-brief {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 24px 28px;
+  border: 1px solid #334155;
+}
+.l36-brief h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 10px;
+}
+.l36-brief p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 18px;
+}
+
+/* Lifecycle flow strip */
+.l36-lifecycle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 12px 16px;
+  border: 1px solid #1e293b;
+}
+.l36-step {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.l36-step-arrow {
+  color: #334155;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Vitals panel preview */
+.vitals-panel {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 18px 20px;
+  border: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vitals-panel h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+}
+.vitals-panel p {
+  font-size: 14px;
+  color: #e2e8f0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #1e293b;
+}
+.vitals-panel p:last-child { border-bottom: none; }
+
+/* Loading / error states */
+.loading {
+  color: #60a5fa;
+  font-size: 14px;
+  padding: 24px;
+  text-align: center;
+  background: #0f1f35;
+  border-radius: 10px;
+  border: 1px dashed #1e3a5f;
+}
+.loading::before { content: '⏳ '; }
+
+.error {
+  color: #f87171;
+  font-size: 14px;
+  padding: 12px 16px;
+  background: #1f1515;
+  border-radius: 9px;
+  border: 1px solid #3a2020;
+}
+.error::before { content: '⚠ '; }

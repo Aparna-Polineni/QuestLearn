@@ -1,0 +1,20 @@
+/* Level3_0.css — React Concepts intro */
+.l30-container { display:flex; flex-direction:column; gap:28px; }
+.l30-header { text-align:center; padding:8px 0 4px; }
+.l30-tag { font-size:12px; font-family:'Fira Code',monospace; margin-bottom:10px; }
+.l30-header h1 { font-size:28px; font-weight:800; margin:0 0 10px; color:#f1f5f9; }
+.l30-sub { color:#94a3b8; font-size:15px; line-height:1.7; max-width:620px; margin:0 auto; }
+.l30-nav { display:flex; flex-wrap:wrap; gap:8px; background:#1e293b; border-radius:12px; padding:16px; }
+.l30-pill { background:none; border:1px solid #334155; color:#94a3b8; padding:8px 14px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500; transition:all .15s; }
+.l30-pill:hover { background:#334155; color:#e2e8f0; }
+.l30-pill.active { background:#1e3a5f; font-weight:700; }
+.l30-card { background:#1e293b; border:2px solid #334155; border-radius:16px; padding:28px 32px; min-height:220px; transition:border-color .2s; }
+.l30-card-icon { font-size:40px; margin-bottom:12px; }
+.l30-card-title { font-size:20px; font-weight:800; margin:0 0 14px; }
+.l30-card-body { color:#cbd5e1; font-size:15px; line-height:1.8; margin:0 0 20px; }
+.l30-example { background:#0f172a; border:1px solid #334155; border-radius:10px; padding:18px 20px; font-family:'Fira Code',monospace; font-size:13px; color:#e2e8f0; line-height:1.7; overflow-x:auto; white-space:pre; margin:0; }
+.l30-dots { display:flex; justify-content:center; gap:8px; }
+.l30-dot { width:10px; height:10px; border-radius:50%; background:#334155; border:none; cursor:pointer; transition:all .2s; }
+.l30-dot.active { width:24px; border-radius:5px; }
+.l30-dot:hover:not(.active) { background:#475569; }
+.l30-proceed { text-align:center; color:#475569; font-size:14px; padding:8px 0; }
