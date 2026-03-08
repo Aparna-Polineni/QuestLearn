@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import DebugEditor from './DebugEditor';
+import FillEditor from './FillEditor';
 import './Level2_13.css';
 
 const SUPPORT = {
@@ -35,10 +35,8 @@ const BROKEN_CODE = `public class Main {
         String getPaymentMethod();
     }
 
-    // BUG 1: Using 'extends' for an interface — classes IMPLEMENT interfaces
-    // 'extends' is for inheriting from another class, not for interfaces
-    // Fix: change 'extends' to 'implements'
-    static class CreditCard extends Payable {
+    // BUG 1: Classes use a different keyword than 'extends' for interfaces
+    static class CreditCard ___IMPLEMENTS___ Payable {
         private String cardNumber;
 
         CreditCard(String cardNumber) {
@@ -50,20 +48,16 @@ const BROKEN_CODE = `public class Main {
             return amount * (1 + TAX_RATE);
         }
 
-        // BUG 2: Missing implementation of getPaymentMethod()
-        // CreditCard claims to implement Payable but is missing one method
-        // Java will not compile a class that leaves interface methods unimplemented
-        // Fix: add getPaymentMethod() returning "Credit Card"
+        // BUG 2: Missing required interface method — add it returning "Credit Card"
+        @Override
+        public String ___GET_PAYMENT___() { return "Credit Card"; }
     }
 
     static class BankTransfer implements Payable {
 
-        // BUG 3: Parameter type is 'float' but interface declares 'double'
-        // This does NOT override calculateTotal — it creates a different method
-        // The interface's version is never overridden and stays abstract — compile error
-        // Fix: change 'float amount' to 'double amount'
+        // BUG 3: Parameter type must match the interface signature exactly
         @Override
-        public double calculateTotal(float amount) {
+        public double calculateTotal(___DOUBLE___ amount) {
             return amount * (1 + TAX_RATE);
         }
 
@@ -124,9 +118,9 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 1, line: 13, description: "Using 'extends' for an interface — must use 'implements'", fix: "Change 'extends Payable' to 'implements Payable'" },
-  { id: 2, line: 25, description: "getPaymentMethod() is missing — interface contract not fully implemented", fix: "Add: @Override public String getPaymentMethod() { return \"Credit Card\"; }" },
-  { id: 3, line: 34, description: "Parameter is 'float' not 'double' — does not match the interface signature", fix: "Change 'float amount' to 'double amount'" },
+  { id: 'IMPLEMENTS',   answer: 'implements',       placeholder: 'keyword', hint: "Classes use this keyword for interfaces. 'extends' is only for other classes." },
+  { id: 'GET_PAYMENT',  answer: 'getPaymentMethod', placeholder: 'method',  hint: "The interface requires both methods to be implemented. This one returns the payment type." },
+  { id: 'DOUBLE',       answer: 'double',           placeholder: 'type',    hint: "The interface declares double. Using float creates a different method — not an override." },
 ];
 
 export default function Level2_13() {
@@ -141,12 +135,44 @@ export default function Level2_13() {
             <h2>Fix the interface bugs for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
             <p>3 bugs — each breaks the interface contract in a different way. Read each comment to understand why the contract is violated.</p>
           </div>
-          <DebugEditor
-            brokenCode={BROKEN_CODE}
-            solution={SOLUTION}
-            bugs={BUGS}
-            expectedOutput={"Credit Card: 120.0\nBank Transfer: 120.0"}
-            onAllFixed={() => setIsCorrect(true)}
+          {/* Anatomy reference */}
+          <div className="l213-anatomy">
+            <div className="l213-anatomy-title">// Interface Anatomy</div>
+            <div className="l213-anatomy-grid">
+              <div className="l213-anat-row">
+                <span className="l213-anat-keyword">interface</span>
+                <span className="l213-anat-name"> Payable</span>
+                <span className="l213-anat-plain"> {'{'}</span>
+                <span className="l213-anat-desc">← defines a contract</span>
+              </div>
+              <div className="l213-anat-row l213-anat-indent">
+                <span className="l213-anat-type">double</span>
+                <span className="l213-anat-name"> calculateTotal</span>
+                <span className="l213-anat-plain">(double amount);</span>
+                <span className="l213-anat-desc">← ALL methods must be implemented</span>
+              </div>
+              <div className="l213-anat-row">
+                <span className="l213-anat-keyword">class </span>
+                <span className="l213-anat-name">CreditCard</span>
+                <span className="l213-anat-keyword"> implements </span>
+                <span className="l213-anat-name">Payable</span>
+                <span className="l213-anat-desc">← implements, not extends</span>
+              </div>
+              <div className="l213-anat-row l213-anat-indent">
+                <span className="l213-anat-type">double</span>
+                <span className="l213-anat-name"> calculateTotal</span>
+                <span className="l213-anat-plain">(</span>
+                <span className="l213-anat-type">double</span>
+                <span className="l213-anat-plain"> amount)</span>
+                <span className="l213-anat-desc">← param type must match exactly</span>
+              </div>
+            </div>
+          </div>
+
+          <FillEditor
+            template={BROKEN_CODE}
+            blanks={BUGS}
+            onAllCorrect={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>

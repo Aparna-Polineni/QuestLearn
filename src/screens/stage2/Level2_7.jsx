@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import DebugEditor from './DebugEditor';
+import FillEditor from './FillEditor';
 import './Level2_7.css';
 
 // ── What this level teaches ───────────────────────────────────────────────
@@ -35,36 +35,32 @@ const SUPPORT = {
 // ── Broken code: each bug annotated with what is wrong and why ────────────
 const BROKEN_CODE = `public class Main {
 
-    // BUG 1: Missing 'class' keyword — Java cannot understand this declaration
-    // Fix: add the 'class' keyword between 'public' and 'Patient'
-    public Patient {
+    // BUG 1: Missing 'class' keyword between 'public' and 'Patient'
+    // Add the missing keyword to make this a valid class declaration
+    public ___CLASS___ Patient {
         String name;
         int age;
         String ward;
 
         // BUG 2: Constructor name must EXACTLY match the class name
-        // 'patient' (lowercase p) makes this a regular method, not a constructor
-        // Java cannot use it to create a Patient object
-        // Fix: capitalise to match — public Patient(...)
-        public patient(String name, int age, String ward) {
+        // Change the lowercase constructor name to match 'Patient'
+        public ___PATIENT___(String name, int age, String ward) {
             this.name = name;
             this.age  = age;
             this.ward = ward;
         }
 
-        // BUG 3: Methods must declare a return type — even if returning a String
-        // Without 'String' here, Java does not know what getInfo() gives back
-        // Fix: add 'String' return type before the method name
-        public getInfo() {
+        // BUG 3: Methods must declare a return type before the method name
+        // Add the return type — this method returns text
+        public ___STRING___ getInfo() {
             return name + " | Age: " + age + " | Ward: " + ward;
         }
     }
 
     public static void main(String[] args) {
-        // BUG 4: Missing 'new' keyword — without it Java looks for a METHOD
-        // called Patient, not a constructor call to create an object
-        // Fix: add 'new' before Patient(...)
-        Patient p = Patient("Alice", 34, "Cardiology");
+        // BUG 4: Missing keyword before Patient(...) to create an object
+        // Add the missing keyword that allocates memory and calls the constructor
+        Patient p = ___NEW___ Patient("Alice", 34, "Cardiology");
         System.out.println(p.getInfo());
     }
 }`;
@@ -94,10 +90,10 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 1, line: 4,  description: "Missing 'class' keyword — Java cannot declare a class without it",       fix: "Add 'class' between 'public' and 'Patient'" },
-  { id: 2, line: 12, description: "Constructor named 'patient' (lowercase) — must match class name exactly", fix: "Change 'patient' to 'Patient'" },
-  { id: 3, line: 20, description: "Method missing return type — Java needs to know what getInfo() returns",  fix: "Add 'String' return type before 'getInfo'" },
-  { id: 4, line: 30, description: "Missing 'new' keyword — without it Java cannot create an object",         fix: "Add 'new' before Patient(...)" },
+  { id: 'CLASS',   answer: 'class',   placeholder: 'keyword', hint: "Keyword that declares a class. Goes between 'public' and the class name." },
+  { id: 'PATIENT', answer: 'Patient', placeholder: 'name',    hint: "Constructor must have the EXACT same name as the class — including capitalisation." },
+  { id: 'STRING',  answer: 'String',  placeholder: 'type',    hint: "This method returns text. What is the Java type for text?" },
+  { id: 'NEW',     answer: 'new',     placeholder: 'keyword', hint: "Keyword that allocates memory and calls the constructor to create an object." },
 ];
 
 export default function Level2_7() {
@@ -113,12 +109,45 @@ export default function Level2_7() {
             <h2>Fix the broken Patient class for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
             <p>There are 4 bugs. Each one is marked with a comment explaining what is wrong and why it breaks the code. Read the comment, understand it, then fix the line below it.</p>
           </div>
-          <DebugEditor
-            brokenCode={BROKEN_CODE}
-            solution={SOLUTION}
-            bugs={BUGS}
-            expectedOutput="Alice | Age: 34 | Ward: Cardiology"
-            onAllFixed={() => setIsCorrect(true)}
+          {/* Anatomy reference */}
+          <div className="l27-anatomy">
+            <div className="l27-anatomy-title">// Java Class Anatomy</div>
+            <div className="l27-anatomy-grid">
+              <div className="l27-anat-row">
+                <span className="l27-anat-keyword">public</span>
+                <span className="l27-anat-keyword">class</span>
+                <span className="l27-anat-name">ClassName</span>
+                <span className="l27-anat-brace">{'{'}</span>
+                <span className="l27-anat-desc">← class keyword required</span>
+              </div>
+              <div className="l27-anat-row l27-anat-indent">
+                <span className="l27-anat-keyword">public</span>
+                <span className="l27-anat-name">ClassName</span>
+                <span className="l27-anat-plain">(args) {'{ }'}</span>
+                <span className="l27-anat-desc">← constructor: same name, NO return type</span>
+              </div>
+              <div className="l27-anat-row l27-anat-indent">
+                <span className="l27-anat-keyword">public</span>
+                <span className="l27-anat-type">String</span>
+                <span className="l27-anat-name">getInfo</span>
+                <span className="l27-anat-plain">() {'{ }'}</span>
+                <span className="l27-anat-desc">← method: must declare return type</span>
+              </div>
+              <div className="l27-anat-row">
+                <span className="l27-anat-type">ClassName</span>
+                <span className="l27-anat-plain">obj =</span>
+                <span className="l27-anat-keyword">new</span>
+                <span className="l27-anat-name">ClassName</span>
+                <span className="l27-anat-plain">(args);</span>
+                <span className="l27-anat-desc">← new keyword creates the object</span>
+              </div>
+            </div>
+          </div>
+
+          <FillEditor
+            template={BROKEN_CODE}
+            blanks={BUGS}
+            onAllCorrect={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>

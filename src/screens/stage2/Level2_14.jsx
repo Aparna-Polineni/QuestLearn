@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import DebugEditor from './DebugEditor';
+import FillEditor from './FillEditor';
 import './Level2_14.css';
 
 const SUPPORT = {
@@ -31,12 +31,9 @@ const BROKEN_CODE = `public class Main {
     static class Hospital {
         String name;
 
-        // BUG 1: patientCount is an instance field — each Hospital gets its own count
-        // h1.admitPatient() increments h1's count. h2.admitPatient() increments h2's count
-        // They are completely separate — they never add up to a total
-        // With our test: h1 count = 2, h2 count = 1. Hospital.patientCount does not exist
-        // Fix: add 'static' before 'int patientCount'
-        int patientCount = 0;
+        // BUG 1: patientCount must be shared across ALL Hospital objects
+        // Add the keyword that makes a field belong to the class, not each instance
+        ___STATIC1___ int patientCount = 0;
 
         Hospital(String name) { this.name = name; }
 
@@ -44,28 +41,22 @@ const BROKEN_CODE = `public class Main {
             patientCount++;
         }
 
-        // BUG 2: formatBedNumber uses no instance data — it should be static
-        // Without static, you need a Hospital object to call it even though
-        // the method has nothing to do with any specific hospital
-        // Hospital.formatBedNumber(2, 5) won't work without static
-        // Fix: add 'static' before 'String formatBedNumber'
-        String formatBedNumber(int ward, int bed) {
+        // BUG 2: formatBedNumber uses no instance data — it should belong to the class
+        // Add the keyword so it can be called as Hospital.formatBedNumber(2, 5)
+        ___STATIC2___ String formatBedNumber(int ward, int bed) {
             return "W" + ward + "-B" + bed;
         }
     }
 
     public static void main(String[] args) {
         Hospital h1 = new Hospital("City Hospital");
-        Hospital h2 = new Hospital("St. Mary's");
+        Hospital h2 = new Hospital("St. Mary\'s");
 
         h1.admitPatient();
         h1.admitPatient();
         h2.admitPatient();
 
-        // After fixing bug 1: patientCount is shared, total = 3
         System.out.println("Total patients: " + Hospital.patientCount);
-
-        // After fixing bug 2: can call without an object
         System.out.println("Bed: " + Hospital.formatBedNumber(2, 5));
     }
 }`;
@@ -102,8 +93,8 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 1, line: 10, description: "patientCount is instance — each Hospital has its own count, they never add up", fix: "Add 'static' before 'int patientCount = 0'" },
-  { id: 2, line: 21, description: "formatBedNumber uses no instance data but is not static — cannot call without an object", fix: "Add 'static' before 'String formatBedNumber'" },
+  { id: 'STATIC1', answer: 'static', placeholder: 'keyword', hint: "This keyword makes patientCount shared across ALL Hospital instances." },
+  { id: 'STATIC2', answer: 'static', placeholder: 'keyword', hint: "Same keyword — makes the method callable on the class itself: Hospital.formatBedNumber()" },
 ];
 
 export default function Level2_14() {
@@ -118,12 +109,47 @@ export default function Level2_14() {
             <h2>Fix the static vs instance bugs for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
             <p>2 bugs — both fixed by adding the 'static' keyword in the right place. Read the comments to understand what changes when a field or method becomes static.</p>
           </div>
-          <DebugEditor
-            brokenCode={BROKEN_CODE}
-            solution={SOLUTION}
-            bugs={BUGS}
-            expectedOutput={"Total patients: 3\nBed: W2-B5"}
-            onAllFixed={() => setIsCorrect(true)}
+          {/* Anatomy reference */}
+          <div className="l214-anatomy">
+            <div className="l214-anatomy-title">// static vs Instance</div>
+            <div className="l214-anatomy-grid">
+              <div className="l214-anat-row">
+                <span className="l214-anat-label bad">instance</span>
+                <span className="l214-anat-type">int</span>
+                <span className="l214-anat-name"> count</span>
+                <span className="l214-anat-plain"> = 0;</span>
+                <span className="l214-anat-desc">← each object gets its OWN copy</span>
+              </div>
+              <div className="l214-anat-row">
+                <span className="l214-anat-label good">static</span>
+                <span className="l214-anat-keyword">static</span>
+                <span className="l214-anat-type"> int</span>
+                <span className="l214-anat-name"> count</span>
+                <span className="l214-anat-plain"> = 0;</span>
+                <span className="l214-anat-desc">← ONE copy shared across ALL objects</span>
+              </div>
+              <div className="l214-anat-row">
+                <span className="l214-anat-label bad">instance</span>
+                <span className="l214-anat-type">String</span>
+                <span className="l214-anat-name"> format</span>
+                <span className="l214-anat-plain">(int w) {'{ }'}</span>
+                <span className="l214-anat-desc">← needs an object: h1.format(2)</span>
+              </div>
+              <div className="l214-anat-row">
+                <span className="l214-anat-label good">static</span>
+                <span className="l214-anat-keyword">static</span>
+                <span className="l214-anat-type"> String</span>
+                <span className="l214-anat-name"> format</span>
+                <span className="l214-anat-plain">(int w) {'{ }'}</span>
+                <span className="l214-anat-desc">← call on class: Hospital.format(2)</span>
+              </div>
+            </div>
+          </div>
+
+          <FillEditor
+            template={BROKEN_CODE}
+            blanks={BUGS}
+            onAllCorrect={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>

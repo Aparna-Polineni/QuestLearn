@@ -127,10 +127,34 @@ function VitalSignsList({ patientId }) {
 export default VitalSignsList;`;
 
 const BUGS = [
-  { id: 'finally',    line: 14, description: 'setLoading(false) inside try — never runs when fetch fails',       fix: 'Move setLoading(false) to a finally block so it always runs' },
-  { id: 'seterror',   line: 18, description: 'catch block swallows error without calling setError',              fix: 'Add setError(err.message) inside the catch block' },
-  { id: 'early',      line: 27, description: 'Error shown inside the layout — broken UI renders alongside it',   fix: 'Return early: if (error) return <div>Error: {error}</div>' },
-  { id: 'empty',      line: 31, description: 'No empty state — renders nothing when vitals array is empty',      fix: 'Add: if (vitals.length === 0) return <p>No vitals recorded</p>' },
+  {
+    id: 'finally',
+    line: 14,
+    description: 'setLoading(false) inside try — never runs when fetch fails',
+    fix: 'Move setLoading(false) to a finally block so it always runs',
+    check: c => c.includes('finally') && c.includes('setLoading(false)'),
+  },
+  {
+    id: 'seterror',
+    line: 18,
+    description: 'catch block swallows error without calling setError',
+    fix: 'Add setError(err.message) inside the catch block',
+    check: c => c.includes('setError(') && c.includes('catch'),
+  },
+  {
+    id: 'early',
+    line: 27,
+    description: 'Error shown inside the layout — broken UI renders alongside it',
+    fix: 'Return early: if (error) return <div>Error: {error}</div>',
+    check: c => /if\s*\(\s*error\s*\)/.test(c) && c.includes('return'),
+  },
+  {
+    id: 'empty',
+    line: 31,
+    description: 'No empty state — renders nothing when vitals array is empty',
+    fix: 'Add: if (vitals.length === 0) return <p>No vitals recorded</p>',
+    check: c => c.includes('vitals.length') && c.includes('return'),
+  },
 ];
 
 export default function Level3_9() {

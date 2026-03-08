@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import DebugEditor from './DebugEditor';
+import FillEditor from './FillEditor';
 import './Level2_10.css';
 
 const SUPPORT = {
@@ -43,24 +43,19 @@ const BROKEN_CODE = `public class Main {
         }
     }
 
-    // BUG 1: Missing 'extends Person' — Patient does not inherit from Person
-    // Without it, Patient has no access to name, age, or getInfo()
-    // Fix: add 'extends Person' after 'Patient'
-    static class Patient {
+    // BUG 1: Patient must extend Person to inherit its fields and methods
+    static class Patient ___EXTENDS___ Person {
         String ward;
 
         public Patient(String name, int age, String ward) {
 
-            // BUG 2: super() must be the FIRST line — it is currently after the assignment
-            // Java requires the parent to be initialised before the child sets anything
-            // Fix: move super(name, age) to be the first line
+            // BUG 2: super() must be the VERY FIRST line — swap these two lines
             this.ward = ward;
-            super(name, age);
+            ___SUPER___(name, age);
         }
 
-        // BUG 3: @Override is missing — without it Java does not know this overrides getInfo
-        // If you ever mistype the method name, Java silently creates a new method instead
-        // Fix: add @Override on the line above this method
+        // BUG 3: Add the annotation that tells Java this method overrides the parent
+        ___OVERRIDE___
         public String getInfo() {
             return super.getInfo() + " | Ward: " + ward;
         }
@@ -109,9 +104,9 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 1, line: 19, description: "Missing 'extends Person' — Patient has no connection to Person", fix: "Add 'extends Person' after 'Patient'" },
-  { id: 2, line: 26, description: "super() is not first — Java requires parent init before child setup", fix: "Move super(name, age) to be the first line of the constructor" },
-  { id: 3, line: 31, description: "Missing @Override — compiler cannot verify the override is correct", fix: "Add @Override on the line above the getInfo method" }
+  { id: 'EXTENDS',  answer: 'extends',   placeholder: 'keyword',     hint: "Keyword used to inherit from another class. Patient ___ Person." },
+  { id: 'SUPER',    answer: 'super',     placeholder: 'call',        hint: "Calls the parent class constructor. Must be the very first statement." },
+  { id: 'OVERRIDE', answer: '@Override', placeholder: 'annotation',  hint: "Annotation that tells Java this method overrides a parent method." },
 ];
 
 export default function Level2_10() {
@@ -127,12 +122,49 @@ export default function Level2_10() {
             <h2>Fix the broken code for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
             <p>Each bug is marked with a comment explaining what is wrong and why. Read the comment above each bug, understand it, then fix the line.</p>
           </div>
-          <DebugEditor
-            brokenCode={BROKEN_CODE}
-            solution={SOLUTION}
-            bugs={BUGS}
-            expectedOutput="Bob (age 45) | Ward: Oncology"
-            onAllFixed={() => setIsCorrect(true)}
+          {/* Anatomy reference */}
+          <div className="l210-anatomy">
+            <div className="l210-anatomy-title">// Inheritance Anatomy</div>
+            <div className="l210-anatomy-grid">
+              <div className="l210-anat-row">
+                <span className="l210-anat-keyword">class</span>
+                <span className="l210-anat-name">Patient</span>
+                <span className="l210-anat-keyword"> extends </span>
+                <span className="l210-anat-name">Person</span>
+                <span className="l210-anat-desc">← extends links child to parent</span>
+              </div>
+              <div className="l210-anat-row l210-anat-indent">
+                <span className="l210-anat-name">Patient</span>
+                <span className="l210-anat-plain">(args) {'{'}</span>
+              </div>
+              <div className="l210-anat-row l210-anat-indent2">
+                <span className="l210-anat-keyword">super</span>
+                <span className="l210-anat-plain">(name, age);</span>
+                <span className="l210-anat-desc">← MUST be first line</span>
+              </div>
+              <div className="l210-anat-row l210-anat-indent2">
+                <span className="l210-anat-plain">this.ward = ward;</span>
+              </div>
+              <div className="l210-anat-row l210-anat-indent">
+                <span className="l210-anat-plain">{'}'}</span>
+              </div>
+              <div className="l210-anat-row l210-anat-indent">
+                <span className="l210-anat-annotation">@Override</span>
+                <span className="l210-anat-desc">← verify override is correct</span>
+              </div>
+              <div className="l210-anat-row l210-anat-indent">
+                <span className="l210-anat-keyword">public</span>
+                <span className="l210-anat-type">String</span>
+                <span className="l210-anat-name"> getInfo</span>
+                <span className="l210-anat-plain">() {'{ ... }'}</span>
+              </div>
+            </div>
+          </div>
+
+          <FillEditor
+            template={BROKEN_CODE}
+            blanks={BUGS}
+            onAllCorrect={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>

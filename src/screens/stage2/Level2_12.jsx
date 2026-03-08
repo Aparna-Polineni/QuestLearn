@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import DebugEditor from './DebugEditor';
+import FillEditor from './FillEditor';
 import './Level2_12.css';
 
 const SUPPORT = {
@@ -33,11 +33,8 @@ const BROKEN_CODE = `public class Main {
 
         Animal(String name) { this.name = name; }
 
-        // Abstract method — subclasses MUST implement this
-        // It has no body — just a signature ending with semicolon
         abstract String sound();
 
-        // Concrete method — shared by all animals, no override needed
         void introduce() {
             System.out.println("I am " + name + " and I go: " + sound());
         }
@@ -50,22 +47,19 @@ const BROKEN_CODE = `public class Main {
         public String sound() { return "Woof"; }
     }
 
-    // BUG 1: Cat extends Animal but does NOT implement sound()
-    // Java will not compile a concrete class that leaves abstract methods empty
-    // Every class that is not itself abstract must implement ALL abstract methods
-    // Fix: add the sound() method to Cat — it should return "Meow"
+    // BUG 1: Cat must implement sound() — add the missing method body
     static class Cat extends Animal {
         Cat(String name) { super(name); }
-        // sound() is missing here!
+
+        @Override
+        public String sound() { return ___MEOW___; }
     }
 
     public static void main(String[] args) {
 
-        // BUG 2: Cannot create an object from an abstract class
-        // Animal is abstract — it is a blueprint, not a real thing
-        // You can only create objects from Dog, Cat, or other concrete subclasses
-        // Fix: remove this line (or replace with a Dog or Cat)
-        Animal a = new Animal("Generic");
+        // BUG 2: Cannot instantiate an abstract class — fix the type/constructor
+        // Change 'Animal' to a concrete subclass like Dog
+        ___CONCRETE___ a = new Dog("Generic");
         a.introduce();
 
         Dog d = new Dog("Rex");
@@ -114,8 +108,8 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 1, line: 29, description: "Cat is missing the sound() implementation — abstract methods cannot be left empty in concrete classes", fix: "Add: @Override public String sound() { return \"Meow\"; } inside Cat" },
-  { id: 2, line: 36, description: "Cannot instantiate an abstract class — new Animal() is a compile error", fix: "Remove the 'Animal a = new Animal(...)' line entirely" },
+  { id: 'MEOW',     answer: '"Meow"', placeholder: 'return value', hint: 'Cat says Meow — return it as a String literal (with quotes).' },
+  { id: 'CONCRETE', answer: 'Dog',    placeholder: 'type',         hint: 'Cannot use abstract Animal. Use a concrete subclass — Dog or Cat.' },
 ];
 
 export default function Level2_12() {
@@ -131,12 +125,50 @@ export default function Level2_12() {
             <h2>Fix the abstract class bugs for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
             <p>2 bugs — one about missing method implementation, one about trying to create an abstract object. Read each comment carefully.</p>
           </div>
-          <DebugEditor
-            brokenCode={BROKEN_CODE}
-            solution={SOLUTION}
-            bugs={BUGS}
-            expectedOutput={"I am Rex and I go: Woof\nI am Whiskers and I go: Meow"}
-            onAllFixed={() => setIsCorrect(true)}
+          {/* Anatomy reference */}
+          <div className="l212-anatomy">
+            <div className="l212-anatomy-title">// Abstract Class Rules</div>
+            <div className="l212-anatomy-grid">
+              <div className="l212-anat-row">
+                <span className="l212-anat-keyword">abstract class</span>
+                <span className="l212-anat-name"> Animal</span>
+                <span className="l212-anat-desc">← cannot be instantiated with new</span>
+              </div>
+              <div className="l212-anat-row l212-anat-indent">
+                <span className="l212-anat-keyword">abstract</span>
+                <span className="l212-anat-type"> String</span>
+                <span className="l212-anat-name"> sound</span>
+                <span className="l212-anat-plain">();</span>
+                <span className="l212-anat-desc">← no body, subclass MUST implement</span>
+              </div>
+              <div className="l212-anat-row">
+                <span className="l212-anat-keyword">class</span>
+                <span className="l212-anat-name"> Cat</span>
+                <span className="l212-anat-keyword"> extends </span>
+                <span className="l212-anat-name">Animal</span>
+                <span className="l212-anat-desc">← concrete: must implement sound()</span>
+              </div>
+              <div className="l212-anat-row">
+                <span className="l212-anat-label bad">✗</span>
+                <span className="l212-anat-keyword">new </span>
+                <span className="l212-anat-name">Animal</span>
+                <span className="l212-anat-plain">("x")</span>
+                <span className="l212-anat-desc">← compile error — abstract class</span>
+              </div>
+              <div className="l212-anat-row">
+                <span className="l212-anat-label good">✓</span>
+                <span className="l212-anat-keyword">new </span>
+                <span className="l212-anat-name">Dog</span>
+                <span className="l212-anat-plain">("Rex")</span>
+                <span className="l212-anat-desc">← concrete subclass — allowed</span>
+              </div>
+            </div>
+          </div>
+
+          <FillEditor
+            template={BROKEN_CODE}
+            blanks={BUGS}
+            onAllCorrect={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>

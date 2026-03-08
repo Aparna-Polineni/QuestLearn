@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import DebugEditor from './DebugEditor';
+import FillEditor from './FillEditor';
 import './Level2_9.css';
 
 const SUPPORT = {
@@ -31,31 +31,27 @@ const BROKEN_CODE = `public class Main {
 
     static class BankAccount {
 
-        // BUG 1: Fields are public — any code can read or change them directly
-        // This bypasses all validation — anyone can set balance to -1000000
-        // Fix: change 'public' to 'private' for both fields
-        public String owner;
-        public double balance;
+        // BUG 1: Fields must be private — change the access modifier on both
+        ___PRIVATE___ String owner;
+        ___PRIVATE2___ double balance;
 
         public BankAccount(String owner, double initialBalance) {
             this.owner   = owner;
             this.balance = initialBalance;
         }
 
-        // BUG 2: getBalance() returns 'owner' (a String) instead of 'balance' (a double)
-        // This would not even compile — return type says double but owner is a String
-        // Fix: return the correct field — balance
+        // BUG 2: getBalance() is returning the wrong field — fix the return value
         public double getBalance() {
-            return owner;
+            return ___BALANCE___;
         }
 
         public String getOwner() { return owner; }
 
-        // BUG 3: Setter has no validation — allows any value including negative balance
-        // setBalance(-999999) would succeed, corrupting the account state
-        // Fix: only assign if balance >= 0
+        // BUG 3: Add a validation check — only assign if the new balance is >= 0
         public void setBalance(double balance) {
-            this.balance = balance;
+            if (balance ___GTE___ 0) {
+                this.balance = balance;
+            }
         }
     }
 
@@ -98,9 +94,10 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 1, line: 8, description: "Fields are 'public' — any code can read or modify them directly, bypassing validation", fix: "Change 'public' to 'private' for both fields" },
-  { id: 2, line: 17, description: "getBalance() returns 'owner' (a String) instead of 'balance' (a double)", fix: "Change 'return owner' to 'return balance'" },
-  { id: 3, line: 23, description: "Setter assigns any value — including negative — with no validation", fix: "Wrap the assignment in: if (balance >= 0) { ... }" }
+  { id: 'PRIVATE',  answer: 'private', placeholder: 'modifier', hint: "Access modifier that hides the field from outside the class." },
+  { id: 'PRIVATE2', answer: 'private', placeholder: 'modifier', hint: "Same modifier — both fields should be private." },
+  { id: 'BALANCE',  answer: 'balance', placeholder: 'field',    hint: "This getter should return the balance field, not the owner field." },
+  { id: 'GTE',      answer: '>=',      placeholder: 'operator', hint: "Greater-than-or-equal operator. Only allow non-negative balances." },
 ];
 
 export default function Level2_9() {
@@ -116,12 +113,40 @@ export default function Level2_9() {
             <h2>Fix the broken code for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
             <p>Each bug is marked with a comment explaining what is wrong and why. Read the comment above each bug, understand it, then fix the line.</p>
           </div>
-          <DebugEditor
-            brokenCode={BROKEN_CODE}
-            solution={SOLUTION}
-            bugs={BUGS}
-            expectedOutput="Alice: £1500.0"
-            onAllFixed={() => setIsCorrect(true)}
+          {/* Anatomy reference */}
+          <div className="l29-anatomy">
+            <div className="l29-anatomy-title">// Encapsulation Pattern</div>
+            <div className="l29-anatomy-grid">
+              <div className="l29-anat-row">
+                <span className="l29-anat-keyword">private</span>
+                <span className="l29-anat-type">double</span>
+                <span className="l29-anat-name">balance</span><span className="l29-anat-plain">;</span>
+                <span className="l29-anat-desc">← private hides the field</span>
+              </div>
+              <div className="l29-anat-row">
+                <span className="l29-anat-keyword">public</span>
+                <span className="l29-anat-type">double</span>
+                <span className="l29-anat-name">getBalance</span>
+                <span className="l29-anat-plain">() {'{'} </span>
+                <span className="l29-anat-keyword">return</span>
+                <span className="l29-anat-name"> balance</span>
+                <span className="l29-anat-plain">; {'}'}</span>
+                <span className="l29-anat-desc">← getter returns the correct field</span>
+              </div>
+              <div className="l29-anat-row">
+                <span className="l29-anat-keyword">if</span>
+                <span className="l29-anat-plain">(balance</span>
+                <span className="l29-anat-name"> &gt;= </span>
+                <span className="l29-anat-plain">0) {'{ this.balance = balance; }'}</span>
+                <span className="l29-anat-desc">← setter validates before assigning</span>
+              </div>
+            </div>
+          </div>
+
+          <FillEditor
+            template={BROKEN_CODE}
+            blanks={BUGS}
+            onAllCorrect={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>

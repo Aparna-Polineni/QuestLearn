@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import DebugEditor from './DebugEditor';
+import FillEditor from './FillEditor';
 import './Level2_8.css';
 
 const SUPPORT = {
@@ -34,25 +34,17 @@ const BROKEN_CODE = `public class Main {
         String specialty;
         int yearsExp;
 
-        // BUG 1: Constructor has a return type — constructors must have NO return type
-        // 'void' makes this a regular method called Doctor, not a constructor
-        // Java cannot find a real constructor and the code fails to compile
-        // Fix: remove 'void'
-        public void Doctor(String name, String specialty, int yearsExp) {
+        // BUG 1: Constructor must have NO return type — remove the return type below
+        public ___REMOVE_VOID___ Doctor(String name, String specialty, int yearsExp) {
 
-            // BUG 2: Missing 'this.' — parameter names shadow the field names
-            // 'name = name' just assigns the parameter to itself — the field stays null
-            // Fix: add 'this.' before each field name on the LEFT side
-            name      = name;
-            specialty = specialty;
-            yearsExp  = yearsExp;
+            // BUG 2: 'this.' is missing — add it before each field on the LEFT side
+            ___THIS_NAME___      = name;
+            ___THIS_SPEC___      = specialty;
+            ___THIS_EXP___       = yearsExp;
         }
 
-        // BUG 3: Overloaded constructor has wrong name — 'doctor' not 'Doctor'
-        // Java is case-sensitive. 'doctor' is a different name from 'Doctor'
-        // This makes it a regular method, not a constructor — Java cannot use it
-        // Fix: capitalise to 'Doctor'
-        public doctor(String name, String specialty) {
+        // BUG 3: Constructor name is wrong case — fix the name to match the class
+        public ___DOCTOR_CAP___(String name, String specialty) {
             this.name      = name;
             this.specialty = specialty;
             this.yearsExp  = 0;
@@ -104,9 +96,11 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 1, line: 10, description: "Constructor has 'void' return type — constructors must have NO return type", fix: "Remove 'void'" },
-  { id: 2, line: 16, description: "Missing 'this.' — fields are never assigned, they stay null", fix: "Add 'this.' before name, specialty, yearsExp on the left side" },
-  { id: 3, line: 27, description: "Overloaded constructor named 'doctor' (lowercase) — must be 'Doctor'", fix: "Capitalise to 'Doctor'" }
+  { id: 'REMOVE_VOID', answer: '',       placeholder: '(delete me)', hint: "Constructors have no return type at all. Leave this blank — delete the word." },
+  { id: 'THIS_NAME',   answer: 'this.name',      placeholder: 'field',   hint: "Use 'this.' to refer to the field, not the parameter. this.name = name" },
+  { id: 'THIS_SPEC',   answer: 'this.specialty',  placeholder: 'field',   hint: "Same pattern — this.specialty assigns to the field, not the parameter." },
+  { id: 'THIS_EXP',    answer: 'this.yearsExp',   placeholder: 'field',   hint: "And this.yearsExp for the third field." },
+  { id: 'DOCTOR_CAP',  answer: 'Doctor',          placeholder: 'name',    hint: "Constructor name must EXACTLY match the class name — capital D." },
 ];
 
 export default function Level2_8() {
@@ -122,13 +116,43 @@ export default function Level2_8() {
             <h2>Fix the broken code for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
             <p>Each bug is marked with a comment explaining what is wrong and why. Read the comment above each bug, understand it, then fix the line.</p>
           </div>
-          <DebugEditor
-            brokenCode={BROKEN_CODE}
-            solution={SOLUTION}
-            bugs={BUGS}
-            expectedOutput="Dr. Sharma (Cardiology) — 12 yrs exp
-Dr. Khan (Neurology) — 0 yrs exp"
-            onAllFixed={() => setIsCorrect(true)}
+          {/* Anatomy reference */}
+          <div className="l28-anatomy">
+            <div className="l28-anatomy-title">// Constructor Rules</div>
+            <div className="l28-anatomy-grid">
+              <div className="l28-anat-row">
+                <span className="l28-anat-label good">✓ Correct</span>
+                <span className="l28-anat-keyword">public</span>
+                <span className="l28-anat-name">Doctor</span>
+                <span className="l28-anat-plain">(String name) {'{'}</span>
+                <span className="l28-anat-desc">← no return type, name matches class</span>
+              </div>
+              <div className="l28-anat-row">
+                <span className="l28-anat-label bad">✗ Bug 1</span>
+                <span className="l28-anat-keyword">public</span>
+                <span className="l28-anat-type">void</span>
+                <span className="l28-anat-name">Doctor</span>
+                <span className="l28-anat-plain">(String name) {'{'}</span>
+                <span className="l28-anat-desc">← void makes it a method, not a constructor</span>
+              </div>
+              <div className="l28-anat-row">
+                <span className="l28-anat-label good">✓ Bug 2 fix</span>
+                <span className="l28-anat-plain">this.name = name;</span>
+                <span className="l28-anat-desc">← this.field assigns the field, not the param</span>
+              </div>
+              <div className="l28-anat-row">
+                <span className="l28-anat-label bad">✗ Bug 3</span>
+                <span className="l28-anat-keyword">public</span>
+                <span className="l28-anat-plain">doctor</span>
+                <span className="l28-anat-desc">← lowercase 'd' — Java is case-sensitive</span>
+              </div>
+            </div>
+          </div>
+
+          <FillEditor
+            template={BROKEN_CODE}
+            blanks={BUGS}
+            onAllCorrect={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>

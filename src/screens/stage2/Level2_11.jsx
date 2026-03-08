@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2Shell from './Stage2Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import DebugEditor from './DebugEditor';
+import FillEditor from './FillEditor';
 import './Level2_11.css';
 
 const SUPPORT = {
@@ -36,10 +36,8 @@ const BROKEN_CODE = `public class Main {
         double radius;
         Circle(double r) { this.radius = r; }
 
-        // BUG 1: Missing @Override — without it Java does not verify this overrides Shape.getArea()
-        // If you misspell getArea as getArae, Java creates a NEW method instead of overriding
-        // The parent's "unknown" version would run instead of this one
-        // Fix: add @Override on the line above 'public String getArea()'
+        // BUG 1: Add the annotation that verifies this correctly overrides getArea()
+        ___OVERRIDE1___
         public String getArea() {
             return "Circle area: " + (3.14 * radius * radius);
         }
@@ -50,22 +48,17 @@ const BROKEN_CODE = `public class Main {
         Rectangle(double w, double h) { this.w = w; this.h = h; }
 
         @Override
-        // BUG 2: Return type is 'double' but the parent declares 'String'
-        // This breaks the polymorphism contract — all overrides must match the parent's return type
-        // Trying to call getArea() on a Shape reference would be ambiguous
-        // Fix: change 'double' to 'String' and return a formatted string
-        public double getArea() {
-            return w * h;
+        // BUG 2: Return type must match parent — change 'double' to the correct type
+        public ___STRING_RETURN___ getArea() {
+            return "Rectangle area: " + (w * h);
         }
     }
 
     public static void main(String[] args) {
-        // BUG 3: Array typed as Object[] — too broad, loses the Shape contract
-        // With Object[], you cannot call .getArea() without an unsafe cast
-        // Fix: change Object[] to Shape[] and the loop variable from Object to Shape
-        Object[] shapes = { new Circle(5), new Rectangle(4, 6) };
-        for (Object s : shapes) {
-            System.out.println(((Shape)s).getArea());
+        // BUG 3: Change the array type from Object[] to the correct type
+        ___SHAPE_ARRAY___[] shapes = { new Circle(5), new Rectangle(4, 6) };
+        for (___SHAPE_VAR___ s : shapes) {
+            System.out.println(s.getArea());
         }
     }
 }`;
@@ -105,9 +98,10 @@ const SOLUTION = `public class Main {
 }`;
 
 const BUGS = [
-  { id: 1, line: 15, description: "Missing @Override — Java cannot verify this correctly overrides Shape.getArea()", fix: "Add @Override on the line above 'public String getArea()'" },
-  { id: 2, line: 27, description: "Return type 'double' breaks the parent contract — must match 'String'", fix: "Change 'double' to 'String' and return a formatted String" },
-  { id: 3, line: 34, description: "Array typed as Object[] — too broad, loses the Shape contract and method access", fix: "Change Object[] to Shape[] and loop variable from Object to Shape" },
+  { id: 'OVERRIDE1',    answer: '@Override', placeholder: 'annotation', hint: "Annotation that verifies this method correctly overrides the parent's getArea()." },
+  { id: 'STRING_RETURN',answer: 'String',    placeholder: 'type',       hint: "The parent declares String getArea(). Override must match the return type exactly." },
+  { id: 'SHAPE_ARRAY',  answer: 'Shape',     placeholder: 'type',       hint: "Array should hold Shape objects — not the broad Object type." },
+  { id: 'SHAPE_VAR',    answer: 'Shape',     placeholder: 'type',       hint: "Loop variable type must also be Shape so you can call .getArea() without a cast." },
 ];
 
 export default function Level2_11() {
@@ -123,12 +117,40 @@ export default function Level2_11() {
             <h2>Fix the polymorphism bugs for your <span style={{ color: selectedDomain?.color }}>{selectedDomain?.name || 'system'}</span>.</h2>
             <p>3 bugs — each breaks polymorphism in a different way. Read the comment above each bug to understand exactly why it fails.</p>
           </div>
-          <DebugEditor
-            brokenCode={BROKEN_CODE}
-            solution={SOLUTION}
-            bugs={BUGS}
-            expectedOutput={"Circle area: 78.5\nRectangle area: 24.0"}
-            onAllFixed={() => setIsCorrect(true)}
+          {/* Anatomy reference */}
+          <div className="l211-anatomy">
+            <div className="l211-anatomy-title">// Polymorphism Rules</div>
+            <div className="l211-anatomy-grid">
+              <div className="l211-anat-row">
+                <span className="l211-anat-annotation">@Override</span>
+                <span className="l211-anat-desc">← must annotate overriding methods</span>
+              </div>
+              <div className="l211-anat-row">
+                <span className="l211-anat-keyword">public</span>
+                <span className="l211-anat-type">String</span>
+                <span className="l211-anat-name"> getArea</span>
+                <span className="l211-anat-plain">() {'{ ... }'}</span>
+                <span className="l211-anat-desc">← return type must match parent exactly</span>
+              </div>
+              <div className="l211-anat-row">
+                <span className="l211-anat-type">Shape</span>
+                <span className="l211-anat-plain">[] shapes = {'{'} ... {'}'}</span>
+                <span className="l211-anat-desc">← array type must be Shape, not Object</span>
+              </div>
+              <div className="l211-anat-row">
+                <span className="l211-anat-keyword">for </span>
+                <span className="l211-anat-plain">(</span>
+                <span className="l211-anat-type">Shape</span>
+                <span className="l211-anat-plain"> s : shapes)</span>
+                <span className="l211-anat-desc">← loop variable type = Shape</span>
+              </div>
+            </div>
+          </div>
+
+          <FillEditor
+            template={BROKEN_CODE}
+            blanks={BUGS}
+            onAllCorrect={() => setIsCorrect(true)}
           />
         </div>
       </LevelSupportWrapper>
