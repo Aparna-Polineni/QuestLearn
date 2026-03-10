@@ -1,19 +1,70 @@
-.l220-container { display:flex; flex-direction:column; gap:24px; padding:0 0 32px; }
+/* Level2_20.css — Lambdas & Streams */
+.l220-container { display:flex; flex-direction:column; gap:20px; }
+.l220-brief { background:#1e293b; border-radius:14px; padding:22px 26px; border:1px solid #334155; border-left:4px solid #a78bfa; }
+.l220-brief-tag { font-family:'Fira Code',monospace; font-size:11px; color:#a78bfa; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.l220-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; line-height:1.35; }
+.l220-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0 0 16px; }
+.l220-expected-box { background:#0f172a; border:1px solid #1e3a5f; border-radius:10px; padding:14px 18px; display:inline-block; }
+.l220-expected-label { font-family:'Fira Code',monospace; font-size:10px; color:#475569; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.l220-expected-output { font-family:'Fira Code',monospace; font-size:13px; color:#4ade80; margin:0; line-height:1.8; white-space:pre; }
 
-.l220-boss-header {
-  background: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(56,189,248,0.05));
-  border: 1px solid rgba(249,115,22,0.25);
-  border-radius: 16px;
-  padding: 28px;
-  text-align: center;
-}
-.l220-boss-icon { font-size:40px; margin-bottom:8px; }
-.l220-boss-tag { font-family:'DM Mono',monospace; font-size:11px; color:#f97316; letter-spacing:4px; text-transform:uppercase; margin-bottom:8px; }
-.l220-boss-title { font-family:'Syne',sans-serif; font-size:26px; font-weight:800; color:#f1f5f9; margin-bottom:8px; }
-.l220-boss-sub { font-size:14px; color:#64748b; line-height:1.6; max-width:480px; margin:0 auto; }
+.l220-anatomy { background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:22px 24px; display:flex; flex-direction:column; gap:0; }
+.l220-anatomy-header { font-family:'Fira Code',monospace; font-size:11px; color:#475569; letter-spacing:1px; text-transform:uppercase; padding-bottom:12px; border-bottom:1px solid #1e293b; margin-bottom:16px; }
 
-.l220-brief { background:#0d1117; border:1px solid #1e293b; border-radius:16px; padding:24px; }
-.l220-brief-tag { font-family:'DM Mono',monospace; font-size:11px; color:#38bdf8; letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
-.l220-brief p { font-size:14px; color:#64748b; line-height:1.6; margin-bottom:12px; }
-.l220-stream-ops { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
-.l220-op-chip { font-family:'DM Mono',monospace; font-size:11px; color:#4ade80; background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.2); border-radius:6px; padding:3px 10px; }
+/* Lambda diagram */
+.l220-lambda-diagram { background:#1e293b; border-radius:12px; padding:16px 20px; margin-bottom:4px; display:flex; flex-direction:column; gap:12px; }
+.l220-lambda-row { display:flex; flex-direction:column; gap:8px; }
+.l220-lambda-parts { display:flex; align-items:center; gap:0; font-family:'Fira Code',monospace; font-size:18px; font-weight:700; flex-wrap:wrap; }
+.l220-lam-param { color:#fbbf24; background:rgba(251,191,36,.1); padding:3px 12px; border-radius:6px; border:1px solid rgba(251,191,36,.3); }
+.l220-lam-arrow { color:#a78bfa; padding:0 8px; font-size:20px; }
+.l220-lam-body  { color:#86efac; background:rgba(134,239,172,.08); padding:3px 12px; border-radius:6px; border:1px solid rgba(134,239,172,.2); font-size:13px; }
+.l220-lambda-labels { display:flex; align-items:flex-start; gap:0; font-size:10px; color:#475569; text-align:center; padding-left:0; }
+.l220-lam-label { text-transform:uppercase; letter-spacing:.5px; line-height:1.3; }
+.param-label  { min-width:80px; color:#fbbf24; }
+.arrow-label  { min-width:60px; color:#a78bfa; padding:0 8px; }
+.body-label   { color:#86efac; }
+.l220-lambda-note { font-size:12px; color:#64748b; font-style:italic; line-height:1.4; }
+.l220-lambda-note code { font-family:'Fira Code',monospace; font-size:11px; background:#0f172a; color:#38bdf8; padding:0 4px; border-radius:3px; }
+
+/* Pipeline */
+.l220-pipeline { display:flex; align-items:flex-start; gap:0; flex-wrap:wrap; margin-bottom:4px; overflow-x:auto; padding-bottom:8px; }
+.l220-pipeline-source, .l220-pipeline-terminal { background:#1e293b; border-radius:10px; padding:12px 14px; display:flex; flex-direction:column; gap:6px; min-width:140px; }
+.l220-pipeline-source { border-top:2px solid #60a5fa; }
+.l220-pipeline-terminal { border-top:2px solid #f87171; }
+.l220-pipe-stage { background:#1e293b; border-radius:10px; padding:12px 14px; display:flex; flex-direction:column; gap:6px; min-width:160px; position:relative; }
+.l220-pipe-label { font-size:9px; font-weight:900; letter-spacing:.8px; text-transform:uppercase; }
+.terminal-label { color:#f87171; }
+.l220-pipe-note { font-size:11px; color:#475569; font-style:italic; line-height:1.3; }
+.l220-pipe-arrow { color:#334155; font-size:20px; display:flex; align-items:center; padding:0 4px; align-self:center; }
+.l220-pipe-arrow.small { font-size:14px; padding:0 2px; }
+
+/* Code block (pipeline) */
+.l220-code-block { background:#0f172a; border-radius:7px; padding:8px 12px; font-family:'Fira Code',monospace; font-size:12px; line-height:1.6; }
+.l220-code-line { display:flex; white-space:nowrap; }
+.l220-tok-plain { color:#e2e8f0; }
+.l220-tok-keyword { color:#c084fc; font-weight:600; }
+.l220-tok-type { color:#38bdf8; }
+.l220-tok-name { color:#fbbf24; }
+
+/* Tasks ref */
+.l220-tasks-ref { display:flex; flex-direction:column; gap:12px; margin-bottom:4px; }
+.l220-task-ref { background:#1e293b; border-radius:12px; padding:14px 18px; border-left:3px solid #a78bfa; }
+.l220-task-ref-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.l220-task-num   { background:rgba(167,139,250,.2); color:#a78bfa; border:1px solid rgba(167,139,250,.3); font-size:10px; font-weight:900; padding:2px 8px; border-radius:4px; white-space:nowrap; }
+.l220-task-title { font-size:13px; font-weight:700; color:#e2e8f0; }
+.l220-task-code  { font-family:'Fira Code',monospace; font-size:12px; color:#86efac; background:#0f172a; border-radius:8px; padding:10px 14px; margin:0 0 8px; white-space:pre; overflow-x:auto; line-height:1.6; }
+.l220-task-note  { font-size:12px; color:#64748b; font-style:italic; line-height:1.4; }
+
+/* Mistake */
+.l220-mistake { background:#1e293b; border:1px solid #334155; border-left:3px solid #f97316; border-radius:10px; padding:14px 18px; display:flex; flex-direction:column; gap:10px; }
+.l220-mistake-label { font-size:11px; font-weight:800; color:#f97316; letter-spacing:.5px; text-transform:uppercase; }
+.l220-mistake-rows { display:flex; flex-direction:column; gap:8px; }
+.l220-mistake-row { display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap; font-size:12.5px; line-height:1.5; }
+.l220-mistake-row code { font-family:'Fira Code',monospace; font-size:12px; padding:2px 8px; border-radius:5px; flex-shrink:0; }
+.l220-mistake-row.bad  code { background:rgba(239,68,68,.1); color:#f87171; border:1px solid rgba(239,68,68,.2); }
+.l220-mistake-row.good code { background:rgba(74,222,128,.1); color:#4ade80; border:1px solid rgba(74,222,128,.2); }
+.l220-mistake-tag { font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; white-space:nowrap; flex-shrink:0; margin-top:2px; }
+.bad-tag  { background:rgba(239,68,68,.15); color:#f87171; border:1px solid rgba(239,68,68,.25); }
+.good-tag { background:rgba(74,222,128,.15); color:#4ade80; border:1px solid rgba(74,222,128,.25); }
+.l220-mistake-note { color:#64748b; font-size:12px; font-style:italic; flex:1; min-width:200px; }
+.l220-mistake-note code { font-family:'Fira Code',monospace; font-size:11px; background:#0f172a; color:#38bdf8; padding:0 4px; border-radius:3px; }

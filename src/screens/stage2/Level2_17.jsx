@@ -26,8 +26,6 @@ const SUPPORT = {
   },
 };
 
-// ── Starter: findPatient method is pre-written and locked ─────────────────
-// Student writes try/catch/finally blocks around the two calls
 const INITIAL_CODE = `public class Main {
 
     // This method is already written — do NOT change it
@@ -78,6 +76,162 @@ export default function Level2_17() {
               <pre className="l217-expected-output">{EXPECTED}</pre>
             </div>
           </div>
+
+          {/* ── Anatomy ───────────────────────────────────────────── */}
+          <div className="l217-anatomy">
+
+            {/* Anatomy header */}
+            <div className="l217-anatomy-header">// try / catch / finally — complete anatomy</div>
+
+            {/* Full structure diagram */}
+            <div className="l217-structure">
+              <div className="l217-struct-block try-block">
+                <div className="l217-struct-label try-label">try</div>
+                <div className="l217-struct-body">
+                  <div className="l217-code-line">
+                    <span className="l217-tok-keyword">try </span>
+                    <span className="l217-tok-plain">{'{'}</span>
+                  </div>
+                  <div className="l217-code-line l217-indent">
+                    <span className="l217-tok-comment">// risky code goes here</span>
+                  </div>
+                  <div className="l217-code-line l217-indent">
+                    <span className="l217-tok-type">String </span>
+                    <span className="l217-tok-name">result</span>
+                    <span className="l217-tok-plain"> = findPatient(</span>
+                    <span className="l217-tok-num">42</span>
+                    <span className="l217-tok-plain">);</span>
+                  </div>
+                  <div className="l217-code-line l217-indent">
+                    <span className="l217-tok-plain">System.out.println(</span>
+                    <span className="l217-tok-name">result</span>
+                    <span className="l217-tok-plain">);</span>
+                    <span className="l217-code-inline-comment">  // runs if no exception</span>
+                  </div>
+                  <div className="l217-code-line">{'}'}</div>
+                </div>
+                <div className="l217-struct-note">Runs normally. If an exception is thrown, jumps to catch immediately — skips remaining lines.</div>
+              </div>
+
+              <div className="l217-struct-block catch-block">
+                <div className="l217-struct-label catch-label">catch</div>
+                <div className="l217-struct-body">
+                  <div className="l217-code-line">
+                    <span className="l217-tok-keyword">catch </span>
+                    <span className="l217-tok-plain">(</span>
+                    <span className="l217-tok-type">IllegalArgumentException </span>
+                    <span className="l217-tok-name">e</span>
+                    <span className="l217-tok-plain">) {'{'}</span>
+                  </div>
+                  <div className="l217-code-line l217-indent">
+                    <span className="l217-tok-comment">// handles the specific exception</span>
+                  </div>
+                  <div className="l217-code-line l217-indent">
+                    <span className="l217-tok-plain">System.out.println(</span>
+                    <span className="l217-tok-string">"Bad ID: "</span>
+                    <span className="l217-tok-plain"> + e.getMessage());</span>
+                    <span className="l217-code-inline-comment">  // ← e.getMessage() = the error text</span>
+                  </div>
+                  <div className="l217-code-line">{'}'}</div>
+                </div>
+                <div className="l217-struct-note">Only runs if the exception type matches. <code>e.getMessage()</code> returns the message passed to <code>throw new ...</code>.</div>
+              </div>
+
+              <div className="l217-struct-block finally-block">
+                <div className="l217-struct-label finally-label">finally</div>
+                <div className="l217-struct-body">
+                  <div className="l217-code-line">
+                    <span className="l217-tok-keyword">finally </span>
+                    <span className="l217-tok-plain">{'{'}</span>
+                  </div>
+                  <div className="l217-code-line l217-indent">
+                    <span className="l217-tok-comment">// ALWAYS runs — success or failure</span>
+                  </div>
+                  <div className="l217-code-line l217-indent">
+                    <span className="l217-tok-plain">System.out.println(</span>
+                    <span className="l217-tok-string">"Lookup attempt complete"</span>
+                    <span className="l217-tok-plain">);</span>
+                  </div>
+                  <div className="l217-code-line">{'}'}</div>
+                </div>
+                <div className="l217-struct-note">Runs whether try succeeded or catch caught an error. Use for cleanup: closing files, releasing connections.</div>
+              </div>
+            </div>
+
+            {/* Flow diagram: happy path vs exception path */}
+            <div className="l217-anatomy-header" style={{marginTop:'18px'}}>// Execution flow — two scenarios</div>
+            <div className="l217-flow-grid">
+              <div className="l217-flow-col">
+                <div className="l217-flow-title good-title">✓ findPatient(42) — Valid ID</div>
+                {[
+                  { step: 'try block runs', note: 'findPatient(42) returns "Patient #42: Alice Smith"' },
+                  { step: 'result printed', note: 'no exception thrown — catch is SKIPPED' },
+                  { step: 'finally runs',   note: 'prints "Lookup attempt complete"' },
+                ].map((s, i) => (
+                  <div key={i} className="l217-flow-step good-step">
+                    <span className="l217-flow-num">{i + 1}</span>
+                    <div>
+                      <div className="l217-flow-step-title">{s.step}</div>
+                      <div className="l217-flow-step-note">{s.note}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="l217-flow-col">
+                <div className="l217-flow-title bad-title">✗ findPatient(-1) — Throws</div>
+                {[
+                  { step: 'try block starts', note: 'findPatient(-1) throws IllegalArgumentException' },
+                  { step: 'jumps to catch',   note: 'rest of try is skipped — exception matched' },
+                  { step: 'catch prints error', note: 'e.getMessage() = "Invalid patient ID: -1"' },
+                  { step: 'finally runs',      note: 'always — prints "Lookup attempt complete"' },
+                ].map((s, i) => (
+                  <div key={i} className="l217-flow-step bad-step">
+                    <span className="l217-flow-num">{i + 1}</span>
+                    <div>
+                      <div className="l217-flow-step-title">{s.step}</div>
+                      <div className="l217-flow-step-note">{s.note}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Common exception types */}
+            <div className="l217-anatomy-header" style={{marginTop:'18px'}}>// Common Java exceptions you will catch in the real world</div>
+            <div className="l217-method-grid">
+              {[
+                { sig: 'IllegalArgumentException', desc: 'invalid method argument — e.g. negative ID, null where not allowed' },
+                { sig: 'NullPointerException',     desc: 'called method on a null reference — most common Java bug' },
+                { sig: 'ArrayIndexOutOfBoundsException', desc: 'accessed index beyond array length' },
+                { sig: 'NumberFormatException',    desc: 'Integer.parseInt("abc") — not a valid number' },
+                { sig: 'IOException',              desc: 'file not found, network failure — must be caught (checked exception)' },
+              ].map(m => (
+                <div key={m.sig} className="l217-method-row">
+                  <code className="l217-method-sig">{m.sig}</code>
+                  <span className="l217-method-desc">{m.desc}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Common mistake */}
+            <div className="l217-mistake">
+              <div className="l217-mistake-label">⚠ The mistake that hides bugs forever</div>
+              <div className="l217-mistake-rows">
+                <div className="l217-mistake-row bad">
+                  <span className="l217-mistake-tag bad-tag">✗ Wrong</span>
+                  <code>{'catch (Exception e) { }'}</code>
+                  <span className="l217-mistake-note">empty catch block — silently swallows ALL exceptions including bugs you didn't expect</span>
+                </div>
+                <div className="l217-mistake-row good">
+                  <span className="l217-mistake-tag good-tag">✓ Correct</span>
+                  <code>{'catch (IllegalArgumentException e) { System.out.println(e.getMessage()); }'}</code>
+                  <span className="l217-mistake-note">catch specific type, always do something with it</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
           <CodeEditor
             initialCode={INITIAL_CODE}
             expectedOutput={EXPECTED}

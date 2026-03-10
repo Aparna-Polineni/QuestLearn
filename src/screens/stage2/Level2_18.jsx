@@ -75,6 +75,132 @@ export default function Level2_18() {
               <pre className="l218-expected-output">{EXPECTED}</pre>
             </div>
           </div>
+
+          {/* ── Anatomy ───────────────────────────────────────────── */}
+          <div className="l218-anatomy">
+
+            {/* The #1 concept: immutability */}
+            <div className="l218-anatomy-header">// The golden rule — strings are IMMUTABLE</div>
+            <div className="l218-immutable-box">
+              <div className="l218-immutable-cols">
+                <div className="l218-immutable-col bad-immut">
+                  <div className="l218-immutable-title bad-title">✗ The classic mistake</div>
+                  <div className="l218-code-block">
+                    <div className="l218-code-line">
+                      <span className="l218-tok-type">String </span>
+                      <span className="l218-tok-name">name</span>
+                      <span className="l218-tok-plain"> = </span>
+                      <span className="l218-tok-string">"  alice  "</span>
+                      <span className="l218-tok-plain">;</span>
+                    </div>
+                    <div className="l218-code-line">
+                      <span className="l218-tok-name">name</span>
+                      <span className="l218-tok-plain">.trim();</span>
+                      <span className="l218-code-inline-comment">  // result thrown away!</span>
+                    </div>
+                    <div className="l218-code-line">
+                      <span className="l218-tok-plain">System.out.println(</span>
+                      <span className="l218-tok-name">name</span>
+                      <span className="l218-tok-plain">);</span>
+                      <span className="l218-code-inline-comment">  // still "  alice  "</span>
+                    </div>
+                  </div>
+                  <div className="l218-immutable-note">trim() created a new String but it was discarded. <code>name</code> is unchanged.</div>
+                </div>
+                <div className="l218-immutable-col good-immut">
+                  <div className="l218-immutable-title good-title">✓ Always assign the result</div>
+                  <div className="l218-code-block">
+                    <div className="l218-code-line">
+                      <span className="l218-tok-type">String </span>
+                      <span className="l218-tok-name">name</span>
+                      <span className="l218-tok-plain"> = </span>
+                      <span className="l218-tok-string">"  alice  "</span>
+                      <span className="l218-tok-plain">;</span>
+                    </div>
+                    <div className="l218-code-line">
+                      <span className="l218-tok-name">name</span>
+                      <span className="l218-tok-plain"> = </span>
+                      <span className="l218-tok-name">name</span>
+                      <span className="l218-tok-plain">.trim();</span>
+                      <span className="l218-code-inline-comment">  // reassign!</span>
+                    </div>
+                    <div className="l218-code-line">
+                      <span className="l218-tok-plain">System.out.println(</span>
+                      <span className="l218-tok-name">name</span>
+                      <span className="l218-tok-plain">);</span>
+                      <span className="l218-code-inline-comment">  // "alice"</span>
+                    </div>
+                  </div>
+                  <div className="l218-immutable-note">Reassign to keep the result. Or: <code>String cleaned = name.trim();</code></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Method reference */}
+            <div className="l218-anatomy-header" style={{marginTop:'18px'}}>// String methods reference — all return NEW strings</div>
+            <div className="l218-method-grid">
+              {[
+                { sig: '"  alice  ".trim()',                      ret: '"alice"',         desc: 'removes leading and trailing whitespace' },
+                { sig: '"alice".toUpperCase()',                   ret: '"ALICE"',         desc: 'all characters uppercase' },
+                { sig: '"ALICE".toLowerCase()',                   ret: '"alice"',         desc: 'all characters lowercase' },
+                { sig: '"alice".substring(0, 1)',                 ret: '"a"',             desc: 'chars from index 0 up to (not including) 1' },
+                { sig: '"alice".substring(1)',                    ret: '"lice"',          desc: 'everything from index 1 to end' },
+                { sig: '"a,b,c".split(",")',                      ret: 'String[]{"a","b","c"}', desc: 'splits on delimiter — returns array' },
+                { sig: '"pat-001".replace("pat-","PATIENT-")',    ret: '"PATIENT-001"',   desc: 'replaces all occurrences of first arg' },
+                { sig: '"pat-001".contains("001")',               ret: 'true',           desc: 'true if substring is found anywhere' },
+                { sig: '"alice".length()',                        ret: '5',              desc: 'number of characters — note: parentheses! (unlike array.length)' },
+                { sig: '"Alice".equals("alice")',                 ret: 'false',          desc: 'case-sensitive comparison — never use == for strings' },
+              ].map(m => (
+                <div key={m.sig} className="l218-method-row">
+                  <code className="l218-method-sig">{m.sig}</code>
+                  <span className="l218-method-ret">→ {m.ret}</span>
+                  <span className="l218-method-desc">{m.desc}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Task 1 walkthrough: substring title case */}
+            <div className="l218-anatomy-header" style={{marginTop:'18px'}}>// Task 1 — how substring() title-cases a string</div>
+            <div className="l218-chain-demo">
+              <div className="l218-chain-input">
+                <span className="l218-chain-label">Start:</span>
+                <code className="l218-chain-val">"  alice smith  "</code>
+              </div>
+              {[
+                { op: '.trim()',                    result: '"alice smith"',  note: 'removes spaces' },
+                { op: '.substring(0,1)',            result: '"a"',            note: 'first character' },
+                { op: '.toUpperCase()',             result: '"A"',            note: 'capitalise it' },
+                { op: '+ str.substring(1)',         result: '"A" + "lice smith"', note: 'join with rest' },
+                { op: '→ full result',              result: '"Alice smith"',  note: 'final title case' },
+              ].map((s, i) => (
+                <div key={i} className="l218-chain-step">
+                  <span className="l218-chain-op">{s.op}</span>
+                  <span className="l218-chain-arrow">→</span>
+                  <code className="l218-chain-result">{s.result}</code>
+                  <span className="l218-chain-note">{s.note}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Common mistake: == vs equals */}
+            <div className="l218-mistake">
+              <div className="l218-mistake-label">⚠ Never compare strings with ==</div>
+              <div className="l218-mistake-rows">
+                <div className="l218-mistake-row bad">
+                  <span className="l218-mistake-tag bad-tag">✗ Wrong</span>
+                  <code>if (name == "Alice")</code>
+                  <span className="l218-mistake-note">compares object references, not content — almost always false even when the text matches</span>
+                </div>
+                <div className="l218-mistake-row good">
+                  <span className="l218-mistake-tag good-tag">✓ Correct</span>
+                  <code>if (name.equals("Alice"))</code>
+                  <span className="l218-mistake-note">compares the actual characters — always use <code>.equals()</code> for string comparison</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
           <CodeEditor
             initialCode={INITIAL_CODE}
             expectedOutput={EXPECTED}

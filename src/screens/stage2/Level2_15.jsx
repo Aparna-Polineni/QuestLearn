@@ -75,6 +75,141 @@ export default function Level2_15() {
               <pre className="l215-expected-output">{EXPECTED}</pre>
             </div>
           </div>
+
+          {/* ── Anatomy ─────────────────────────────────────────────── */}
+          <div className="l215-anatomy">
+
+            {/* Side-by-side: Array vs ArrayList */}
+            <div className="l215-anatomy-header">// Array vs ArrayList — side by side</div>
+            <div className="l215-compare">
+
+              <div className="l215-compare-col array-col">
+                <div className="l215-compare-title">
+                  <span className="l215-col-badge array-badge">FIXED</span>
+                  String[] — Fixed Array
+                </div>
+                <div className="l215-code-block">
+                  <div className="l215-code-line">
+                    <span className="l215-tok-type">String</span>
+                    <span className="l215-tok-plain">[] wards = </span>
+                    <span className="l215-tok-string">{"{"}"Cardiology", "Oncology"{"}"}</span>
+                    <span className="l215-tok-plain">;</span>
+                  </div>
+                  <div className="l215-code-comment">// ← curly braces, size fixed forever</div>
+                  <div className="l215-code-line l215-indent">
+                    <span className="l215-tok-keyword">for </span>
+                    <span className="l215-tok-plain">(</span>
+                    <span className="l215-tok-type">String </span>
+                    <span className="l215-tok-plain">w : wards) {"{"}</span>
+                  </div>
+                  <div className="l215-code-comment l215-indent">// ← loop variable is 'w'</div>
+                  <div className="l215-code-line l215-indent2">
+                    <span className="l215-tok-plain">System.out.println(</span>
+                    <span className="l215-tok-name">w</span>
+                    <span className="l215-tok-plain">);</span>
+                  </div>
+                  <div className="l215-code-line l215-indent">{"}"}</div>
+                </div>
+                <div className="l215-compare-facts">
+                  <div className="l215-fact good"><span>✓</span> Syntax: <code>Type[] name = {"{ v1, v2 }"}</code></div>
+                  <div className="l215-fact good"><span>✓</span> Fast access: <code>wards[0]</code></div>
+                  <div className="l215-fact good"><span>✓</span> <code>.length</code> gives the size</div>
+                  <div className="l215-fact bad"><span>✗</span> Size locked — no <code>.add()</code> or <code>.remove()</code></div>
+                </div>
+              </div>
+
+              <div className="l215-vs-divider">VS</div>
+
+              <div className="l215-compare-col list-col">
+                <div className="l215-compare-title">
+                  <span className="l215-col-badge list-badge">DYNAMIC</span>
+                  ArrayList&lt;String&gt; — Grows &amp; Shrinks
+                </div>
+                <div className="l215-code-block">
+                  <div className="l215-code-line">
+                    <span className="l215-tok-type">ArrayList</span>
+                    <span className="l215-tok-plain">&lt;</span>
+                    <span className="l215-tok-type">String</span>
+                    <span className="l215-tok-plain">&gt; queue = </span>
+                    <span className="l215-tok-keyword">new </span>
+                    <span className="l215-tok-type">ArrayList</span>
+                    <span className="l215-tok-plain">&lt;&gt;();</span>
+                  </div>
+                  <div className="l215-code-comment">// ← empty list, grows as you add</div>
+                  <div className="l215-code-line l215-indent">
+                    <span className="l215-tok-plain">queue.add(</span>
+                    <span className="l215-tok-string">"Alice"</span>
+                    <span className="l215-tok-plain">);</span>
+                    <span className="l215-code-inline-comment">  // adds to end</span>
+                  </div>
+                  <div className="l215-code-line l215-indent">
+                    <span className="l215-tok-plain">queue.remove(</span>
+                    <span className="l215-tok-string">"Bob"</span>
+                    <span className="l215-tok-plain">);</span>
+                    <span className="l215-code-inline-comment">  // removes by value</span>
+                  </div>
+                  <div className="l215-code-line l215-indent">
+                    <span className="l215-tok-keyword">for </span>
+                    <span className="l215-tok-plain">(</span>
+                    <span className="l215-tok-type">String </span>
+                    <span className="l215-tok-name">name</span>
+                    <span className="l215-tok-plain"> : queue) {"{"}</span>
+                  </div>
+                  <div className="l215-code-line l215-indent2">
+                    <span className="l215-tok-plain">System.out.println(</span>
+                    <span className="l215-tok-name">name</span>
+                    <span className="l215-tok-plain">);</span>
+                    <span className="l215-code-inline-comment">  // ← name not queue!</span>
+                  </div>
+                  <div className="l215-code-line l215-indent">{"}"}</div>
+                </div>
+                <div className="l215-compare-facts">
+                  <div className="l215-fact good"><span>✓</span> <code>add()</code> <code>remove()</code> <code>size()</code> <code>get(i)</code></div>
+                  <div className="l215-fact good"><span>✓</span> Must import: <code>java.util.ArrayList</code></div>
+                  <div className="l215-fact good"><span>✓</span> <code>&lt;String&gt;</code> means it holds Strings only</div>
+                  <div className="l215-fact bad"><span>✗</span> <code>remove("Bob")</code> removes first match only</div>
+                </div>
+              </div>
+            </div>
+
+            {/* ArrayList method quick ref */}
+            <div className="l215-anatomy-header" style={{marginTop:'18px'}}>// ArrayList methods you need for this level</div>
+            <div className="l215-method-grid">
+              {[
+                { sig: 'queue.add("Alice")',      ret: 'void',    desc: 'appends "Alice" to the end' },
+                { sig: 'queue.remove("Bob")',     ret: 'boolean', desc: 'removes first element matching "Bob"' },
+                { sig: 'queue.size()',            ret: 'int',     desc: 'returns number of elements (2 after removing Bob)' },
+                { sig: 'queue.get(0)',            ret: 'String',  desc: 'returns element at index 0 — "Alice"' },
+                { sig: 'queue.contains("Alice")', ret: 'boolean', desc: 'true if "Alice" is in the list' },
+                { sig: 'wards.length',            ret: 'int',     desc: 'for arrays — NOT .length() — no parentheses' },
+              ].map(m => (
+                <div key={m.sig} className="l215-method-row">
+                  <code className="l215-method-sig">{m.sig}</code>
+                  <span className="l215-method-ret">→ {m.ret}</span>
+                  <span className="l215-method-desc">{m.desc}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Common mistake */}
+            <div className="l215-mistake">
+              <div className="l215-mistake-label">⚠ The #1 mistake on this level</div>
+              <div className="l215-mistake-rows">
+                <div className="l215-mistake-row bad">
+                  <span className="l215-mistake-tag bad-tag">✗ Wrong</span>
+                  <code>for (String name : queue) {'{ System.out.println(queue); }'}</code>
+                  <span className="l215-mistake-note">prints <em>[Alice, Charlie]</em> three times — you used <code>queue</code> not <code>name</code></span>
+                </div>
+                <div className="l215-mistake-row good">
+                  <span className="l215-mistake-tag good-tag">✓ Correct</span>
+                  <code>for (String name : queue) {'{ System.out.println(name); }'}</code>
+                  <span className="l215-mistake-note">prints each element one per line using the loop variable</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
           <CodeEditor
             initialCode={INITIAL_CODE}
             expectedOutput={EXPECTED}

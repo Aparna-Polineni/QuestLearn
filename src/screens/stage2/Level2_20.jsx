@@ -80,6 +80,131 @@ export default function Level2_20() {
               <pre className="l220-expected-output">{EXPECTED}</pre>
             </div>
           </div>
+
+          {/* ── Anatomy ───────────────────────────────────────────── */}
+          <div className="l220-anatomy">
+
+            {/* Lambda syntax */}
+            <div className="l220-anatomy-header">// Lambda syntax — anatomy</div>
+            <div className="l220-lambda-diagram">
+              <div className="l220-lambda-row">
+                <div className="l220-lambda-parts">
+                  <span className="l220-lam-param">name</span>
+                  <span className="l220-lam-arrow"> -&gt; </span>
+                  <span className="l220-lam-body">System.out.println("  " + name)</span>
+                </div>
+                <div className="l220-lambda-labels">
+                  <span className="l220-lam-label param-label">parameter<br/>(type inferred)</span>
+                  <span className="l220-lam-label arrow-label">lambda<br/>arrow</span>
+                  <span className="l220-lam-label body-label">body<br/>(what to do)</span>
+                </div>
+              </div>
+              <div className="l220-lambda-note">Java infers the type of <code>name</code> from the list: <code>List&lt;String&gt;</code> → <code>name</code> is a <code>String</code>. No <code>String</code> keyword needed.</div>
+            </div>
+
+            {/* Stream pipeline operations */}
+            <div className="l220-anatomy-header" style={{marginTop:'18px'}}>// Stream pipeline — each operation explained</div>
+            <div className="l220-pipeline">
+              <div className="l220-pipeline-source">
+                <span className="l220-pipe-label">Source</span>
+                <div className="l220-code-block">
+                  <div className="l220-code-line">
+                    <span className="l220-tok-name">patients</span>
+                    <span className="l220-tok-plain">.stream()</span>
+                  </div>
+                </div>
+                <span className="l220-pipe-note">opens a stream — does not copy the list</span>
+              </div>
+              <div className="l220-pipe-arrow">→</div>
+              {[
+                { op: '.distinct()',   colour: '#60a5fa', note: 'removes duplicates — one "Alice" stays' },
+                { op: '.filter(x -> x.length() > 4)', colour: '#a78bfa', note: 'keeps only names longer than 4 chars' },
+                { op: '.sorted()',     colour: '#34d399', note: 'alphabetical order A → Z' },
+                { op: '.limit(3)',     colour: '#fbbf24', note: 'takes only the first 3' },
+                { op: '.map(String::toUpperCase)', colour: '#f97316', note: 'transforms each element' },
+              ].map((op, i) => (
+                <div key={i} className="l220-pipe-stage">
+                  <span className="l220-pipe-label" style={{color: op.colour}}>Intermediate</span>
+                  <div className="l220-code-block">
+                    <div className="l220-code-line">
+                      <span style={{color: op.colour, fontFamily:'Fira Code,monospace', fontSize:'12.5px'}}>{op.op}</span>
+                    </div>
+                  </div>
+                  <span className="l220-pipe-note">{op.note}</span>
+                  {i < 4 && <div className="l220-pipe-arrow small">→</div>}
+                </div>
+              ))}
+              <div className="l220-pipe-arrow">→</div>
+              <div className="l220-pipeline-terminal">
+                <span className="l220-pipe-label terminal-label">Terminal</span>
+                <div className="l220-code-block">
+                  <div className="l220-code-line">
+                    <span className="l220-tok-plain">.forEach(...)</span>
+                  </div>
+                  <div className="l220-code-line">
+                    <span className="l220-tok-plain">.collect(Collectors.toList())</span>
+                  </div>
+                  <div className="l220-code-line">
+                    <span className="l220-tok-plain">.count()</span>
+                  </div>
+                </div>
+                <span className="l220-pipe-note">triggers execution — stream runs HERE</span>
+              </div>
+            </div>
+
+            {/* Three tasks with exact code */}
+            <div className="l220-anatomy-header" style={{marginTop:'18px'}}>// Exact patterns for each task</div>
+            <div className="l220-tasks-ref">
+              {[
+                {
+                  n: 1,
+                  title: 'forEach + lambda',
+                  code: 'patients.forEach(name -> System.out.println("  " + name));',
+                  note: 'No .stream() needed — List has its own forEach()',
+                },
+                {
+                  n: 2,
+                  title: 'sorted + distinct + limit',
+                  code: 'patients.stream()\n  .sorted().distinct().limit(3)\n  .forEach(name -> System.out.println("  " + name));',
+                  note: 'Order matters: sorted first, then distinct, then limit 3',
+                },
+                {
+                  n: 3,
+                  title: 'filter + map + collect',
+                  code: 'List<String> longNames = patients.stream()\n  .distinct()\n  .filter(name -> name.length() > 4)\n  .map(String::toUpperCase)\n  .collect(Collectors.toList());\nSystem.out.println("Long names: " + longNames);',
+                  note: 'String::toUpperCase is a method reference — shorthand for name -> name.toUpperCase()',
+                },
+              ].map(t => (
+                <div key={t.n} className="l220-task-ref">
+                  <div className="l220-task-ref-header">
+                    <span className="l220-task-num">Task {t.n}</span>
+                    <span className="l220-task-title">{t.title}</span>
+                  </div>
+                  <pre className="l220-task-code">{t.code}</pre>
+                  <div className="l220-task-note">{t.note}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Common mistake */}
+            <div className="l220-mistake">
+              <div className="l220-mistake-label">⚠ Streams are lazy — nothing runs without a terminal operation</div>
+              <div className="l220-mistake-rows">
+                <div className="l220-mistake-row bad">
+                  <span className="l220-mistake-tag bad-tag">✗ Wrong</span>
+                  <code>patients.stream().sorted().distinct();</code>
+                  <span className="l220-mistake-note">no terminal operation — nothing executes, nothing prints</span>
+                </div>
+                <div className="l220-mistake-row good">
+                  <span className="l220-mistake-tag good-tag">✓ Correct</span>
+                  <code>patients.stream().sorted().distinct().forEach(name -&gt; System.out.println(name));</code>
+                  <span className="l220-mistake-note"><code>forEach</code> is the terminal operation that triggers execution</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
           <CodeEditor
             initialCode={INITIAL_CODE}
             expectedOutput={EXPECTED}

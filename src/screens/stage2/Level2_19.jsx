@@ -78,6 +78,154 @@ export default function Level2_19() {
               <pre className="l219-expected-output">{EXPECTED}</pre>
             </div>
           </div>
+
+          {/* ── Anatomy ───────────────────────────────────────────── */}
+          <div className="l219-anatomy">
+
+            {/* CSV line anatomy */}
+            <div className="l219-anatomy-header">// What each CSV line looks like after split(",")</div>
+            <div className="l219-csv-visual">
+              <div className="l219-csv-raw">
+                <span className="l219-csv-label">Raw line:</span>
+                <code className="l219-csv-rawval">"P001,Alice Smith,Cardiology,Active"</code>
+              </div>
+              <div className="l219-csv-arrow">↓ split(",")</div>
+              <div className="l219-csv-parts">
+                {[
+                  { idx: 0, val: '"P001"',         label: 'parts[0]', name: 'ID' },
+                  { idx: 1, val: '"Alice Smith"',   label: 'parts[1]', name: 'Name' },
+                  { idx: 2, val: '"Cardiology"',    label: 'parts[2]', name: 'Ward' },
+                  { idx: 3, val: '"Active"',         label: 'parts[3]', name: 'Status — check this!' },
+                ].map(p => (
+                  <div key={p.idx} className={`l219-csv-part ${p.idx === 3 ? 'highlight-part' : ''}`}>
+                    <span className="l219-csv-part-label">{p.label}</span>
+                    <span className="l219-csv-part-val">{p.val}</span>
+                    <span className="l219-csv-part-name">{p.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Algorithm step by step */}
+            <div className="l219-anatomy-header" style={{marginTop:'18px'}}>// Algorithm for the TODO — step by step</div>
+            <div className="l219-algo-steps">
+              {[
+                {
+                  n: 1,
+                  title: 'Get the lines and declare the counter',
+                  code: 'String[] lines = simulateFileRead();\nint activeCount = 0;',
+                  note: 'Must declare activeCount BEFORE the loop so it stays in scope after the loop ends.',
+                },
+                {
+                  n: 2,
+                  title: 'Loop through each line with for-each',
+                  code: 'for (String line : lines) {',
+                  note: 'line = one CSV row on each iteration',
+                },
+                {
+                  n: 3,
+                  title: 'Split the line into parts',
+                  code: '    String[] parts = line.split(",");',
+                  note: 'parts[0]=ID  parts[1]=Name  parts[2]=Ward  parts[3]=Status',
+                },
+                {
+                  n: 4,
+                  title: 'Check if the patient is Active',
+                  code: '    if (parts[3].equals("Active")) {',
+                  note: 'Use .equals() not == for String comparison',
+                },
+                {
+                  n: 5,
+                  title: 'Print the formatted line and increment',
+                  code: '        System.out.println("[" + parts[0] + "] " + parts[1] + " - " + parts[2]);\n        activeCount++;',
+                  note: 'Only patients with Status="Active" get printed',
+                },
+                {
+                  n: 6,
+                  title: 'After the loop — print the total',
+                  code: '}\nSystem.out.println("Total active: " + activeCount);',
+                  note: 'This runs after all lines are processed',
+                },
+              ].map(s => (
+                <div key={s.n} className="l219-algo-step">
+                  <span className="l219-algo-num">{s.n}</span>
+                  <div className="l219-algo-body">
+                    <div className="l219-algo-title">{s.title}</div>
+                    <pre className="l219-algo-code">{s.code}</pre>
+                    <div className="l219-algo-note">{s.note}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Real Java vs simulated */}
+            <div className="l219-anatomy-header" style={{marginTop:'18px'}}>// Real Java file reading vs this simulation</div>
+            <div className="l219-compare-real">
+              <div className="l219-real-col sim-col">
+                <div className="l219-real-title">This Level (Simulated)</div>
+                <div className="l219-code-block">
+                  <div className="l219-code-line">
+                    <span className="l219-tok-type">String</span>
+                    <span className="l219-tok-plain">[] lines = simulateFileRead();</span>
+                  </div>
+                  <div className="l219-code-line">
+                    <span className="l219-tok-keyword">for </span>
+                    <span className="l219-tok-plain">(</span>
+                    <span className="l219-tok-type">String </span>
+                    <span className="l219-tok-name">line</span>
+                    <span className="l219-tok-plain"> : lines) {'{'}</span>
+                  </div>
+                  <div className="l219-code-line l219-indent">
+                    <span className="l219-tok-comment">// same logic</span>
+                  </div>
+                  <div className="l219-code-line">{'}'}</div>
+                </div>
+              </div>
+              <div className="l219-real-col java-col">
+                <div className="l219-real-title">Real Java (production)</div>
+                <div className="l219-code-block">
+                  <div className="l219-code-line">
+                    <span className="l219-tok-keyword">try </span>
+                    <span className="l219-tok-plain">(</span>
+                    <span className="l219-tok-type">BufferedReader </span>
+                    <span className="l219-tok-name">br</span>
+                    <span className="l219-tok-plain"> =</span>
+                  </div>
+                  <div className="l219-code-line l219-indent2">
+                    <span className="l219-tok-keyword">new </span>
+                    <span className="l219-tok-type">BufferedReader</span>
+                    <span className="l219-tok-plain">(</span>
+                    <span className="l219-tok-keyword">new </span>
+                    <span className="l219-tok-type">FileReader</span>
+                    <span className="l219-tok-plain">(</span>
+                    <span className="l219-tok-string">"patients.csv"</span>
+                    <span className="l219-tok-plain">))) {'{'}</span>
+                  </div>
+                  <div className="l219-code-line l219-indent">
+                    <span className="l219-tok-type">String </span>
+                    <span className="l219-tok-name">line</span>
+                    <span className="l219-tok-plain">;</span>
+                  </div>
+                  <div className="l219-code-line l219-indent">
+                    <span className="l219-tok-keyword">while </span>
+                    <span className="l219-tok-plain">((</span>
+                    <span className="l219-tok-name">line</span>
+                    <span className="l219-tok-plain"> = br.readLine()) != </span>
+                    <span className="l219-tok-keyword">null</span>
+                    <span className="l219-tok-plain">) {'{'}</span>
+                  </div>
+                  <div className="l219-code-line l219-indent2">
+                    <span className="l219-tok-comment">// same split/filter logic</span>
+                  </div>
+                  <div className="l219-code-line l219-indent">{'}'}</div>
+                  <div className="l219-code-line">{'}'}</div>
+                </div>
+              </div>
+            </div>
+            <div className="l219-real-note">The pattern is identical — the data source changes, the logic stays the same.</div>
+
+          </div>
+
           <CodeEditor
             initialCode={INITIAL_CODE}
             expectedOutput={EXPECTED}

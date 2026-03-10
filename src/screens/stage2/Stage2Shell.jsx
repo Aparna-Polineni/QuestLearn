@@ -28,10 +28,9 @@ const LEVELS = [
   // Part C — Working with Data
   { id: 15, title: "Hashmap & HashSet",      icon: "📋", part: "C" },
   { id: 16, title: "Exception Handling",        icon: "🗺️", part: "C" },
-  { id: 17, title: "File I/O",       icon: "🚨", part: "C" },
-  { id: 18, title: "String Manipulation",                 icon: "📁", part: "C" },
+  { id: 17, title: "String Manipulation",       icon: "🚨", part: "C" },
+  { id: 18, title: "File I/O",                 icon: "📁", part: "C" },
   { id: 19, title: "Java 8 Lambdas",      icon: "✂️", part: "C" },
-  { id: 20, title: "Java 8 Lambdas",           icon: "λ",  part: "C" },
 ];
 
 const PARTS = {
