@@ -1,0 +1,60 @@
+/* Level4_1.css */
+
+/* ── Container & Brief ──────────────────────────────────────────── */
+.l41-container { display:flex; flex-direction:column; gap:20px; }
+
+.l41-brief {
+  background:#1e293b; border-radius:14px; padding:22px 26px;
+  border:1px solid #334155; border-left:4px solid #f97316;
+}
+.l41-brief-tag {
+  font-family:'Fira Code',monospace; font-size:11px; color:#f97316;
+  font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px;
+}
+.l41-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; line-height:1.35; }
+.l41-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0; }
+.l41-brief code { background:#0f172a; color:#38bdf8; padding:1px 6px; border-radius:4px; font-family:'Fira Code',monospace; font-size:13px; }
+
+/* ── Anatomy panel ──────────────────────────────────────────────── */
+.l41-anatomy {
+  background:#0f172a; border:1px solid #1e293b; border-radius:14px;
+  padding:20px 24px; display:flex; flex-direction:column; gap:0;
+}
+.l41-anatomy-title {
+  font-family:'Fira Code',monospace; font-size:11px; color:#475569;
+  letter-spacing:1px; text-transform:uppercase;
+  padding-bottom:12px; border-bottom:1px solid #1e293b; margin-bottom:14px;
+}
+.l41-anatomy-rows { display:flex; flex-direction:column; gap:6px; }
+
+.l41-anat-row {
+  display:flex; align-items:baseline; gap:10px;
+  font-family:'Fira Code',monospace; font-size:13px;
+  padding:5px 8px; border-radius:6px; transition:background .12s;
+  flex-wrap:wrap;
+}
+.l41-anat-row:hover { background:#1e293b; }
+
+/* token colours used across levels */
+.l41-anat-annotation { color:#a78bfa; font-weight:600; }
+.l41-anat-keyword    { color:#f97316; font-weight:600; }
+.l41-anat-type       { color:#38bdf8; }
+.l41-anat-method     { color:#4ade80; }
+.l41-anat-plain      { color:#94a3b8; }
+.l41-anat-desc       { color:#475569; font-size:12px; font-style:italic; flex-shrink:0; }
+.l41-anat-arrow      { color:#475569; }
+.l41-anat-sql        { color:#fbbf24; }
+.l41-anat-url        { color:#34d399; }
+.l41-anat-layer      { color:#60a5fa; font-weight:600; }
+.l41-anat-code       { color:#86efac; }
+.l41-anat-assertion  { color:#f87171; }
+
+/* success banner (shared by build levels) */
+.l41-success {
+  background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.25);
+  border-radius:10px; padding:14px 20px;
+  color:#4ade80; font-size:14px; font-weight:600; text-align:center;
+}
+
+/* L4_1 specific — annotation reference panel hover highlight */
+.l41-anat-row:hover .l41-anat-annotation { color:#c4b5fd; }

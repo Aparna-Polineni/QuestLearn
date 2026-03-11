@@ -1,0 +1,26 @@
+/* Stage4Shell.css — Spring Boot orange theme */
+.s4-shell { display:flex; flex-direction:column; min-height:100vh; background:#0f172a; color:#e2e8f0; font-family:'Inter',sans-serif; }
+
+.s4-topbar { display:flex; align-items:center; gap:12px; padding:12px 20px; background:#1e293b; border-bottom:1px solid #334155; position:sticky; top:0; z-index:100; flex-wrap:wrap; }
+.s4-back { background:none; border:1px solid #475569; color:#94a3b8; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:13px; transition:all .15s; }
+.s4-back:hover { background:#334155; color:#e2e8f0; }
+
+.s4-breadcrumb { display:flex; align-items:center; gap:8px; flex:1; font-size:14px; flex-wrap:wrap; }
+.s4-stage  { font-weight:700; }
+.s4-sep    { color:#475569; }
+.s4-level  { color:#94a3b8; }
+.s4-title  { color:#e2e8f0; font-weight:500; }
+
+.s4-mode-badge { padding:4px 12px; border-radius:20px; font-size:11px; font-weight:800; letter-spacing:.6px; text-transform:uppercase; white-space:nowrap; }
+.mode-fill     { background:#1e3a5f; color:#60a5fa; border:1px solid #1e4a7a; }
+.mode-build    { background:#1a3a1a; color:#4ade80; border:1px solid #1e4a1e; }
+.mode-debug    { background:#3a1a1a; color:#f87171; border:1px solid #4a1e1e; }
+.mode-concepts { background:#2d1a3a; color:#c084fc; border:1px solid #3a1e4a; }
+
+.s4-content { flex:1; padding:28px 24px; max-width:1100px; width:100%; margin:0 auto; box-sizing:border-box; }
+
+.s4-footer { padding:24px 20px; text-align:center; border-top:1px solid #1e293b; background:#0f172a; }
+.s4-footer-complete { display:flex; flex-direction:column; align-items:center; gap:16px; }
+.s4-proceed-btn { padding:14px 48px; border:none; border-radius:12px; font-size:16px; font-weight:800; color:#fff; cursor:pointer; letter-spacing:.3px; box-shadow:0 4px 20px rgba(0,0,0,.3); transition:all .15s; }
+.s4-proceed-btn:hover { transform:translateY(-1px); box-shadow:0 6px 24px rgba(0,0,0,.4); }
+.s4-footer-hint { color:#475569; font-size:14px; }

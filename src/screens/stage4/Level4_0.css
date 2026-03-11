@@ -1,0 +1,34 @@
+/* Level4_0.css — Backend Concepts */
+.l40-container { display:flex; flex-direction:column; gap:24px; }
+
+/* Brief */
+.l40-brief { background:#1e293b; border-radius:14px; padding:22px 26px; border:1px solid #334155; border-left:4px solid #f97316; }
+.l40-brief-tag { font-family:'Fira Code',monospace; font-size:11px; color:#f97316; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.l40-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; line-height:1.35; }
+.l40-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0; }
+
+/* Concepts grid */
+.l40-concepts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+
+.l40-concept-card {
+  background:#1e293b; border:1px solid #334155; border-radius:14px; padding:20px;
+  cursor:pointer; transition:all .2s;
+}
+.l40-concept-card:hover { border-color:#f97316; background:#1e2d3d; transform:translateY(-2px); box-shadow:0 6px 24px rgba(249,115,22,.1); }
+.l40-concept-card.l40-seen { border-color:rgba(74,222,128,.4); background:#111f14; }
+
+.l40-concept-top { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.l40-concept-icon  { font-size:22px; flex-shrink:0; }
+.l40-concept-title { font-size:15px; font-weight:700; color:#f1f5f9; flex:1; }
+.l40-concept-check { color:#4ade80; font-size:18px; font-weight:900; }
+
+.l40-concept-body { color:#94a3b8; font-size:13.5px; line-height:1.75; margin:0 0 14px; }
+
+.l40-concept-analogy { background:#0f172a; border-radius:8px; padding:10px 14px; font-size:12.5px; color:#64748b; line-height:1.5; display:flex; flex-direction:column; gap:4px; }
+.l40-analogy-label { color:#f97316; font-weight:800; font-size:10px; letter-spacing:.8px; text-transform:uppercase; }
+
+/* Progress */
+.l40-progress { display:flex; flex-direction:column; gap:8px; align-items:center; padding:8px 0; }
+.l40-progress-bar  { width:100%; max-width:400px; height:6px; background:#1e293b; border-radius:99px; overflow:hidden; }
+.l40-progress-fill { height:100%; border-radius:99px; transition:width .4s ease; }
+.l40-progress-text { color:#64748b; font-size:13px; }

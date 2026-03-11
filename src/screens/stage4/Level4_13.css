@@ -1,0 +1,62 @@
+/* Level4_13.css — JWT Authentication (BUILD) */
+
+.l413-container { display:flex; flex-direction:column; gap:20px; }
+
+/* Brief */
+.l413-brief {
+  background:#1e293b; border-radius:14px; padding:22px 26px;
+  border:1px solid #334155; border-left:4px solid #f97316;
+}
+.l413-brief-tag {
+  font-family:'Fira Code',monospace; font-size:11px; color:#f97316;
+  font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px;
+}
+.l413-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; line-height:1.35; }
+.l413-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0; }
+
+/* JWT Flow panel */
+.l413-jwt-flow {
+  background:#0f172a; border:1px solid #1e293b; border-radius:14px;
+  padding:20px 24px;
+}
+.l413-flow-title {
+  font-family:'Fira Code',monospace; font-size:11px; color:#475569;
+  letter-spacing:1px; text-transform:uppercase;
+  padding-bottom:12px; border-bottom:1px solid #1e293b; margin-bottom:16px;
+}
+.l413-flow-steps { display:flex; flex-direction:column; gap:0; }
+
+.l413-flow-step {
+  display:grid; grid-template-columns:32px 160px 1fr;
+  align-items:center; gap:12px; padding:10px 0;
+  border-bottom:1px dashed #1e293b;
+}
+.l413-flow-step:last-child { border-bottom:none; }
+
+.l413-flow-num {
+  width:28px; height:28px; border-radius:50%;
+  background:rgba(249,115,22,.15); border:1px solid rgba(249,115,22,.35);
+  color:#f97316; font-size:12px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.l413-flow-label {
+  font-size:12.5px; font-weight:600; color:#94a3b8; white-space:nowrap;
+}
+.l413-flow-code {
+  font-family:'Fira Code',monospace; font-size:12px; color:#86efac;
+  background:#1e293b; padding:4px 10px; border-radius:6px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* success banner */
+.l413-success {
+  background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.25);
+  border-radius:10px; padding:14px 20px;
+  color:#4ade80; font-size:14px; font-weight:600; text-align:center;
+}
+
+@media(max-width:600px) {
+  .l413-flow-step { grid-template-columns:28px 1fr; }
+  .l413-flow-label { grid-column:2; }
+  .l413-flow-code  { grid-column:2; font-size:11px; }
+}
