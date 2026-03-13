@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2_5Shell from './Stage2_5Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import JsEditor from './JsEditor';
+import "./Jseditor.css";
 import './LevelJS_5.css';
 
 const SUPPORT = {

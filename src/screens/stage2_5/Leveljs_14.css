@@ -1,0 +1,56 @@
+/* LevelJS_14.css */
+.ljs14-container { display:flex; flex-direction:column; gap:20px; }
+
+/* Brief */
+.ljs14-brief { background:#1e293b; border-radius:14px; padding:22px 26px; border:1px solid #334155; border-left:4px solid #f59e0b; }
+.ljs14-brief-tag { font-family:'Fira Code',monospace; font-size:11px; color:#f59e0b; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.ljs14-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; line-height:1.35; }
+.ljs14-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0 0 12px; }
+.ljs14-brief code { background:#0f172a; color:#38bdf8; padding:1px 6px; border-radius:4px; font-family:'Fira Code',monospace; font-size:13px; }
+.ljs14-expected-box { background:#0f172a; border:1px solid #1e3a5f; border-radius:10px; padding:14px 18px; display:inline-block; }
+.ljs14-expected-label { font-family:'Fira Code',monospace; font-size:10px; color:#475569; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.ljs14-expected-output { font-family:'Fira Code',monospace; font-size:13px; color:#4ade80; margin:0; line-height:1.8; white-space:pre; }
+
+/* Anatomy panel */
+.ljs14-anatomy { background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:20px 24px; display:flex; flex-direction:column; gap:0; }
+.ljs14-anat-header { font-family:'Fira Code',monospace; font-size:11px; color:#475569; letter-spacing:1px; text-transform:uppercase; padding-bottom:12px; border-bottom:1px solid #1e293b; margin-bottom:16px; }
+
+/* Method grid */
+.ljs14-method-grid { display:flex; flex-direction:column; gap:0; border:1px solid #1e293b; border-radius:10px; overflow:hidden; margin-bottom:4px; }
+.ljs14-method-row  { display:grid; grid-template-columns:260px 1fr; gap:12px; padding:9px 16px; border-bottom:1px solid #1e293b; font-size:12.5px; align-items:start; transition:background .12s; }
+.ljs14-method-row:last-child { border-bottom:none; }
+.ljs14-method-row:nth-child(even) { background:#0a0f1e; }
+.ljs14-method-row:hover { background:#1e293b; }
+.ljs14-msig { font-family:'Fira Code',monospace; color:#f59e0b; font-size:12px; }
+.ljs14-mret { font-family:'Fira Code',monospace; color:#38bdf8; font-size:11px; }
+.ljs14-mnote { color:#64748b; font-size:12px; line-height:1.4; }
+
+/* Compare cols */
+.ljs14-compare { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:4px; }
+@media(max-width:640px){.ljs14-compare{grid-template-columns:1fr;}}
+.ljs14-col { background:#1e293b; border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:10px; }
+.ljs14-col-title { font-size:12px; font-weight:700; color:#94a3b8; }
+.ljs14-col-note  { font-size:11.5px; color:#64748b; font-style:italic; line-height:1.4; }
+.ljs14-code-block { font-family:'Fira Code',monospace; font-size:12px; color:#e2e8f0; background:#0f172a; border-radius:7px; padding:10px 14px; margin:0; white-space:pre; overflow-x:auto; line-height:1.65; }
+
+/* Tokens */
+.ljs14-tok-kw      { color:#c084fc; font-weight:600; }
+.ljs14-tok-name    { color:#f59e0b; }
+.ljs14-tok-key     { color:#f59e0b; }
+.ljs14-tok-val     { color:#86efac; }
+.ljs14-tok-string  { color:#86efac; }
+.ljs14-tok-param   { color:#38bdf8; }
+.ljs14-tok-plain   { color:#e2e8f0; }
+.ljs14-tok-comment { color:#475569; font-style:italic; font-family:'Fira Code',monospace; font-size:11px; }
+
+/* Mistake callout */
+.ljs14-mistake { background:#1e293b; border:1px solid #334155; border-left:3px solid #f97316; border-radius:10px; padding:14px 18px; display:flex; flex-direction:column; gap:10px; }
+.ljs14-mistake-label { font-size:11px; font-weight:800; color:#f97316; letter-spacing:.5px; text-transform:uppercase; }
+.ljs14-mrows { display:flex; flex-direction:column; gap:8px; }
+.ljs14-mrow { display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap; font-size:12.5px; line-height:1.5; }
+.ljs14-mrow code { font-family:'Fira Code',monospace; font-size:12px; padding:2px 8px; border-radius:5px; flex:1; min-width:180px; }
+.ljs14-mrow.bad  code { background:rgba(239,68,68,.1); color:#f87171; border:1px solid rgba(239,68,68,.2); }
+.ljs14-mrow.good code { background:rgba(74,222,128,.1); color:#4ade80; border:1px solid rgba(74,222,128,.2); }
+.ljs14-mtag { font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; white-space:nowrap; flex-shrink:0; margin-top:2px; }
+.bad-tag  { background:rgba(239,68,68,.15); color:#f87171; border:1px solid rgba(239,68,68,.25); }
+.good-tag { background:rgba(74,222,128,.15); color:#4ade80; border:1px solid rgba(74,222,128,.25); }

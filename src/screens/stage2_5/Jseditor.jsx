@@ -1,9 +1,9 @@
 // src/screens/stage2_5/JSEditor.jsx
 // Runs user's JavaScript in the browser via Function() — safe sandbox for exercises
 import { useState, useRef } from 'react';
-import './JSEditor.css';
+import './Jseditor.css';
 
-export default function JSEditor({ initialCode, expectedOutput, onOutputChange, height = 320, writableMarker = '// TODO' }) {
+export default function Jseditor({ initialCode, expectedOutput, onOutputChange, height = 320, writableMarker = '// TODO' }) {
   const [code, setCode]     = useState(initialCode);
   const [output, setOutput] = useState('');
   const [correct, setCorrect] = useState(false);

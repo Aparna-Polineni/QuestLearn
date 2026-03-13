@@ -1,33 +1,41 @@
 // src/screens/Roadmap.jsx
-// Full page roadmap — shows all stages, all levels, current position, XP
-// Accessible from home dashboard via /roadmap
-
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import { useAuth } from '../context/AuthContext';
 import './Roadmap.css';
 
-// Stage-to-route mapping for Java Full Stack
+// ── Stage route map — keyed by STRING id ─────────────────────────────────────
 const STAGE_ROUTES = {
-  1: { base: '/stage/1/level/', levels: 8  },
-  2: { base: '/stage/2/level/', levels: 20 },
-  3: { base: '/stage/3/level/', levels: 15 },
-  4: { base: '/stage/4/level/', levels: 18 },
-  5: { base: '/stage/5/level/', levels: 22 },
-  6: { base: '/stage/6/level/', levels: 14 },
-  7: { base: '/stage/7/level/', levels: 12 },
-  8: { base: '/stage/8/level/', levels: 10 },
+  '1':   { base: '/stage/1/level/',   levels: 8  },
+  '2':   { base: '/stage/2/level/',   levels: 20 },
+  '2.5': { base: '/stage/2.5/level/', levels: 20 },   // ← JS Fundamentals
+  '3':   { base: '/stage/3/level/',   levels: 16 },
+  '4':   { base: '/stage/4/level/',   levels: 16 },
+  '5':   { base: '/stage/5/level/',   levels: 22 },
+  '6':   { base: '/stage/6/level/',   levels: 14 },
+  '7':   { base: '/stage/7/level/',   levels: 12 },
+  '8':   { base: '/stage/8/level/',   levels: 10 },
 };
 
+// Explicit stage order — no arithmetic, handles '2.5' cleanly
+const STAGE_ORDER = ['1', '2', '2.5', '3', '4', '5', '6', '7', '8'];
+
+function getPrevStageId(stageId) {
+  const idx = STAGE_ORDER.indexOf(String(stageId));
+  return idx > 0 ? STAGE_ORDER[idx - 1] : null;
+}
+
+// ── Level dot ────────────────────────────────────────────────────────────────
 function LevelDot({ stageId, levelNum, isComplete, isCurrent, isLocked, onClick }) {
   return (
     <button
-      className={`level-dot
-        ${isComplete ? 'dot-complete' : ''}
-        ${isCurrent  ? 'dot-current'  : ''}
-        ${isLocked   ? 'dot-locked'   : ''}
-        ${!isLocked && !isComplete && !isCurrent ? 'dot-available' : ''}
-      `}
+      className={[
+        'level-dot',
+        isComplete ? 'dot-complete' : '',
+        isCurrent  ? 'dot-current'  : '',
+        isLocked   ? 'dot-locked'   : '',
+        !isLocked && !isComplete && !isCurrent ? 'dot-available' : '',
+      ].join(' ')}
       onClick={!isLocked ? onClick : undefined}
       disabled={isLocked}
       title={`Level ${stageId}.${levelNum}`}
@@ -37,47 +45,69 @@ function LevelDot({ stageId, levelNum, isComplete, isCurrent, isLocked, onClick 
   );
 }
 
-function StageCard({ stage, stageRoute, completedLevels, isLevelComplete, navigate, currentStage, currentLevel }) {
-  const totalLevels    = stageRoute?.levels || stage.levels;
+// ── Stage card ───────────────────────────────────────────────────────────────
+function StageCard({ stage, stageRoute, isLevelComplete, navigate, currentStageId, currentLevel }) {
+  const sid         = String(stage.id);
+  const totalLevels = stageRoute?.levels || stage.levels || 8;
+
+  // Count completed levels (0-indexed keys: "2.5-0" through "2.5-19")
   const completedCount = Array.from({ length: totalLevels }, (_, i) =>
-    isLevelComplete(`${stage.id}-${i + 1}`)
+    isLevelComplete(`${sid}-${i}`)
   ).filter(Boolean).length;
 
-  const progressPct = Math.round((completedCount / totalLevels) * 100);
-  const isStageComplete = completedCount === totalLevels;
-  const isStageStarted  = completedCount > 0;
-  const isFirstStage    = stage.id === 1;
+  const progressPct     = Math.round((completedCount / totalLevels) * 100);
+  const isComplete      = completedCount === totalLevels;
+  const isStarted       = completedCount > 0;
 
-  // Stage is locked if previous stage isn't at least 50% done
-  const prevComplete = stage.id === 1 ? totalLevels : Array.from(
-    { length: STAGE_ROUTES[stage.id - 1]?.levels || 0 }, (_, i) =>
-    isLevelComplete(`${stage.id - 1}-${i + 1}`)
-  ).filter(Boolean).length;
-  const isStageLocked = stage.id > 1 && prevComplete < Math.ceil((STAGE_ROUTES[stage.id - 1]?.levels || 1) * 0.5);
+  // Lock logic: first stage never locked; others need prev stage 50% done
+  const prevId = getPrevStageId(sid);
+  let isStageLocked = false;
+  if (prevId) {
+    const prevRoute  = STAGE_ROUTES[prevId];
+    const prevLevels = prevRoute?.levels || 8;
+    const prevDone   = Array.from({ length: prevLevels }, (_, i) =>
+      isLevelComplete(`${prevId}-${i}`)
+    ).filter(Boolean).length;
+
+    // Retroactive unlock for Stage 2.5 and Stage 3:
+    // If user already has progress in this stage, never lock it (no regression)
+    if (isStarted || isComplete) {
+      isStageLocked = false;
+    } else {
+      isStageLocked = prevDone < Math.ceil(prevLevels * 0.5);
+    }
+  }
+
+  const isCurrent = String(currentStageId) === sid;
 
   return (
     <div
-      className={`stage-card
-        ${isStageComplete ? 'stage-complete' : ''}
-        ${isStageStarted  ? 'stage-started'  : ''}
-        ${isStageLocked   ? 'stage-locked'   : ''}
-        ${currentStage === stage.id ? 'stage-current' : ''}
-      `}
+      className={[
+        'stage-card',
+        isComplete  ? 'stage-complete' : '',
+        isStarted   ? 'stage-started'  : '',
+        isStageLocked ? 'stage-locked' : '',
+        isCurrent   ? 'stage-current'  : '',
+        sid === '2.5' ? 'stage-js'    : '',
+      ].join(' ')}
       style={{ '--stage-color': stage.color }}
     >
-      {/* Stage header */}
+      {/* Header */}
       <div className="stage-card-header">
         <div className="stage-card-left">
           <span className="stage-card-emoji">{stage.emoji}</span>
           <div>
-            <div className="stage-card-num">Stage {stage.id}</div>
+            <div className="stage-card-num">
+              Stage {sid}
+              {sid === '2.5' && <span className="stage-new-badge">NEW</span>}
+            </div>
             <div className="stage-card-title">{stage.title}</div>
           </div>
         </div>
         <div className="stage-card-right">
-          {isStageComplete && <span className="stage-complete-badge">✓ Done</span>}
-          {isStageLocked    && <span className="stage-locked-badge">🔒</span>}
-          {!isStageLocked && !isStageComplete && (
+          {isComplete   && <span className="stage-complete-badge">✓ Done</span>}
+          {isStageLocked && <span className="stage-locked-badge">🔒</span>}
+          {!isStageLocked && !isComplete && (
             <span className="stage-progress-pct">{progressPct}%</span>
           )}
         </div>
@@ -85,10 +115,7 @@ function StageCard({ stage, stageRoute, completedLevels, isLevelComplete, naviga
 
       {/* Progress bar */}
       <div className="stage-progress-bar">
-        <div
-          className="stage-progress-fill"
-          style={{ width: `${progressPct}%`, background: stage.color }}
-        />
+        <div className="stage-progress-fill" style={{ width: `${progressPct}%`, background: stage.color }} />
       </div>
 
       <div className="stage-desc">{stage.description}</div>
@@ -97,21 +124,18 @@ function StageCard({ stage, stageRoute, completedLevels, isLevelComplete, naviga
       {!isStageLocked && (
         <div className="stage-level-dots">
           {Array.from({ length: totalLevels }, (_, i) => {
-            const lvl        = i + 1;
-            const isComplete = isLevelComplete(`${stage.id}-${lvl}`);
-            const isCurrent  = currentStage === stage.id && currentLevel === lvl;
-            // Locked if previous level not done (except level 1 of each stage)
-            const isLocked   = lvl > 1 && !isLevelComplete(`${stage.id}-${lvl - 1}`) && !isComplete;
-
+            const isLvlComplete = isLevelComplete(`${sid}-${i}`);
+            const isLvlCurrent  = isCurrent && currentLevel === i;
+            const isLvlLocked   = i > 0 && !isLevelComplete(`${sid}-${i - 1}`) && !isLvlComplete;
             return (
               <LevelDot
-                key={lvl}
-                stageId={stage.id}
-                levelNum={lvl}
-                isComplete={isComplete}
-                isCurrent={isCurrent}
-                isLocked={isLocked}
-                onClick={() => stageRoute && navigate(`${stageRoute.base}${lvl}`)}
+                key={i}
+                stageId={sid}
+                levelNum={i}
+                isComplete={isLvlComplete}
+                isCurrent={isLvlCurrent}
+                isLocked={isLvlLocked}
+                onClick={() => stageRoute && navigate(`${stageRoute.base}${i}`)}
               />
             );
           })}
@@ -120,40 +144,135 @@ function StageCard({ stage, stageRoute, completedLevels, isLevelComplete, naviga
 
       {isStageLocked && (
         <div className="stage-locked-msg">
-          Complete 50% of Stage {stage.id - 1} to unlock
+          Complete 50% of Stage {prevId} to unlock
         </div>
       )}
 
-      <div className="stage-count">
-        {completedCount}/{totalLevels} levels complete
-      </div>
+      {/* Start / Continue button when unlocked */}
+      {!isStageLocked && (
+        <button
+          className="stage-go-btn"
+          style={{ background: stage.color }}
+          onClick={() => navigate(`${stageRoute.base}${completedCount < totalLevels ? completedCount : 0}`)}
+        >
+          {isComplete ? '↺ Review' : isStarted ? `Continue → Level ${completedCount}` : 'Start →'}
+        </button>
+      )}
+
+      <div className="stage-count">{completedCount}/{totalLevels} levels complete</div>
     </div>
   );
 }
 
+// ── Roadmap banner for existing users who skipped 2.5 ────────────────────────
+function Stage25Banner({ navigate, isLevelComplete }) {
+  const route      = STAGE_ROUTES['2.5'];
+  const totalLevels = route.levels;
+  const done = Array.from({ length: totalLevels }, (_, i) =>
+    isLevelComplete(`2.5-${i}`)
+  ).filter(Boolean).length;
+
+  const hasStage3Progress = Array.from({ length: 16 }, (_, i) =>
+    isLevelComplete(`3-${i}`)
+  ).some(Boolean);
+
+  const isComplete = done === totalLevels;
+
+  // Only show if user has stage 3 progress but hasn't finished 2.5
+  if (isComplete || !hasStage3Progress) return null;
+
+  const pct = Math.round((done / totalLevels) * 100);
+
+  return (
+    <div className="s25-banner">
+      <div className="s25-banner-icon">⚡</div>
+      <div className="s25-banner-body">
+        <div className="s25-banner-title">
+          New stage added: <span className="s25-banner-hl">Stage 2.5 — JavaScript Fundamentals</span>
+        </div>
+        <div className="s25-banner-sub">
+          {done === 0
+            ? "We added this between Stage 2 and Stage 3. It covers the JS that React is built on — arrow functions, array methods, async/await, closures. 20 levels, your pace."
+            : `You're ${pct}% through — ${totalLevels - done} levels left.`
+          }
+        </div>
+        {done > 0 && (
+          <div className="s25-banner-progress">
+            <div className="s25-banner-bar">
+              <div className="s25-banner-fill" style={{ width: `${pct}%` }} />
+            </div>
+            <span className="s25-banner-pct">{pct}%</span>
+          </div>
+        )}
+      </div>
+      <button className="s25-banner-btn" onClick={() => navigate(`/stage/2.5/level/${done}`)}>
+        {done === 0 ? 'Start JS Stage →' : 'Continue →'}
+      </button>
+    </div>
+  );
+}
+
+// ── Main Roadmap ──────────────────────────────────────────────────────────────
 export default function Roadmap() {
   const navigate = useNavigate();
   const { selectedCareerPath, selectedDomain, completedLevels, xp, streak, isLevelComplete } = useGame();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
 
   const path   = selectedCareerPath;
-  const stages = path?.stages || [];
 
-  // Determine current stage/level
-  const totalCompleted = Object.keys(completedLevels).length;
-  let currentStage = 1;
-  let currentLevel = 1;
-  for (const key of Object.keys(completedLevels).sort()) {
-    const [s, l] = key.split('-').map(Number);
-    if (s > currentStage || (s === currentStage && l >= currentLevel)) {
-      currentStage = s;
-      currentLevel = l + 1;
-      if (currentLevel > (STAGE_ROUTES[s]?.levels || 8)) {
-        currentStage = s + 1;
-        currentLevel = 1;
+  // Build stages list — inject 2.5 between 2 and 3 if not already present
+  const rawStages = path?.stages || [];
+  const stages = [];
+  let inserted = false;
+  for (const s of rawStages) {
+    stages.push(s);
+    if (String(s.id) === '2' && !inserted) {
+      // Check if 2.5 is already in the list
+      const already = rawStages.some(x => String(x.id) === '2.5');
+      if (!already) {
+        stages.push({
+          id: '2.5',
+          title: 'JavaScript Fundamentals',
+          description: 'Arrow functions, destructuring, async/await, closures, DOM, modules — the JS that powers React.',
+          emoji: '⚡',
+          color: '#f59e0b',
+          levels: 20,
+        });
       }
+      inserted = true;
     }
   }
+  // If path has no stages at all, use a default set
+  const displayStages = stages.length > 0 ? stages : STAGE_ORDER.map(sid => ({
+    id: sid,
+    title: STAGE_ROUTES[sid] ? `Stage ${sid}` : `Stage ${sid}`,
+    description: '',
+    emoji: sid === '2.5' ? '⚡' : '📚',
+    color: sid === '2.5' ? '#f59e0b' : '#6366f1',
+    levels: STAGE_ROUTES[sid]?.levels || 8,
+  }));
+
+  // Determine current position — iterate STAGE_ORDER so 2.5 is included
+  const totalCompleted = Object.keys(completedLevels).length;
+  let currentStageId = '1';
+  let currentLevel   = 0;
+
+  for (const sid of STAGE_ORDER) {
+    const max = STAGE_ROUTES[sid]?.levels || 8;
+    let stageFullyDone = true;
+    for (let l = 0; l < max; l++) {
+      if (!isLevelComplete(`${sid}-${l}`)) {
+        currentStageId = sid;
+        currentLevel   = l;
+        stageFullyDone = false;
+        break;
+      }
+    }
+    if (!stageFullyDone) break;
+  }
+
+  const totalLevels = Object.values(STAGE_ROUTES).reduce((s, r) => s + r.levels, 0);
+  const overallPct  = Math.round((totalCompleted / totalLevels) * 100);
 
   return (
     <div className="roadmap-screen">
@@ -187,14 +306,13 @@ export default function Roadmap() {
           )}
           <h1 className="roadmap-title">Your Roadmap</h1>
 
-          {/* Stats */}
           <div className="roadmap-stats">
             <div className="roadmap-stat">
               <span className="stat-num" style={{ color: '#f97316' }}>{totalCompleted}</span>
               <span className="stat-label">levels done</span>
             </div>
             <div className="roadmap-stat">
-              <span className="stat-num" style={{ color: '#38bdf8' }}>{path?.totalLevels || 119}</span>
+              <span className="stat-num" style={{ color: '#38bdf8' }}>{totalLevels}</span>
               <span className="stat-label">total levels</span>
             </div>
             <div className="roadmap-stat">
@@ -207,47 +325,39 @@ export default function Roadmap() {
             </div>
           </div>
 
-          {/* Overall progress bar */}
           <div className="roadmap-overall-bar">
-            <div className="roadmap-overall-label">
-              Overall Progress — {Math.round((totalCompleted / (path?.totalLevels || 119)) * 100)}%
-            </div>
+            <div className="roadmap-overall-label">Overall Progress — {overallPct}%</div>
             <div className="roadmap-bar-track">
-              <div
-                className="roadmap-bar-fill"
-                style={{ width: `${(totalCompleted / (path?.totalLevels || 119)) * 100}%` }}
-              />
+              <div className="roadmap-bar-fill" style={{ width: `${overallPct}%` }} />
             </div>
           </div>
         </div>
 
+        {/* Banner for existing users who skipped 2.5 */}
+        <Stage25Banner navigate={navigate} isLevelComplete={isLevelComplete} />
+
         {/* Stage cards */}
         <div className="roadmap-stages">
-          {stages.map(stage => (
+          {displayStages.map(stage => (
             <StageCard
               key={stage.id}
               stage={stage}
-              stageRoute={STAGE_ROUTES[stage.id]}
-              completedLevels={completedLevels}
+              stageRoute={STAGE_ROUTES[String(stage.id)]}
               isLevelComplete={isLevelComplete}
               navigate={navigate}
-              currentStage={currentStage}
+              currentStageId={currentStageId}
               currentLevel={currentLevel}
             />
           ))}
         </div>
 
-        {/* CTA */}
+        {/* Continue CTA */}
         <div className="roadmap-cta">
           <button
             className="roadmap-continue-btn"
-            onClick={() => {
-              const route = STAGE_ROUTES[currentStage];
-              if (route) navigate(`${route.base}${currentLevel}`);
-              else navigate('/stage/1/level/1');
-            }}
+            onClick={() => navigate(`/stage/${currentStageId}/level/${currentLevel}`)}
           >
-            Continue Learning → Stage {currentStage}, Level {currentLevel}
+            Continue Learning → Stage {currentStageId}, Level {currentLevel}
           </button>
         </div>
 

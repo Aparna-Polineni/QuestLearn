@@ -20,7 +20,7 @@ import Level1_7 from './screens/stage1/Level1_7';
 import Level1_8 from './screens/stage1/Level1_8';
 
 // Stage 2 — all 20 levels
-import Level2_0 from './screens/stage2/Level2_0';
+import Level2_0  from './screens/stage2/Level2_0';
 import Level2_1  from './screens/stage2/Level2_1';
 import Level2_2  from './screens/stage2/Level2_2';
 import Level2_3  from './screens/stage2/Level2_3';
@@ -42,8 +42,29 @@ import Level2_18 from './screens/stage2/Level2_18';
 import Level2_19 from './screens/stage2/Level2_19';
 import Level2_20 from './screens/stage2/Level2_20';
 
-// Stage 3 — all 16 levels
+// Stage 2.5 — JavaScript Fundamentals (20 levels, JS.0–JS.19)
+import Leveljs_0  from './screens/stage2_5/Leveljs_0';
+import Leveljs_1  from './screens/stage2_5/Leveljs_1';
+import Leveljs_2  from './screens/stage2_5/Leveljs_2';
+import Leveljs_3  from './screens/stage2_5/Leveljs_3';
+import Leveljs_4  from './screens/stage2_5/Leveljs_4';
+import Leveljs_5  from './screens/stage2_5/Leveljs_5';
+import Leveljs_6  from './screens/stage2_5/Leveljs_6';
+import Leveljs_7  from './screens/stage2_5/Leveljs_7';
+import Leveljs_8  from './screens/stage2_5/Leveljs_8';
+import Leveljs_9  from './screens/stage2_5/Leveljs_9';
+import Leveljs_10 from './screens/stage2_5/Leveljs_10';
+import Leveljs_11 from './screens/stage2_5/Leveljs_11';
+import Leveljs_12 from './screens/stage2_5/Leveljs_12';
+import Leveljs_13 from './screens/stage2_5/Leveljs_13';
+import Leveljs_14 from './screens/stage2_5/Leveljs_14';
+import Leveljs_15 from './screens/stage2_5/Leveljs_15';
+import Leveljs_16 from './screens/stage2_5/Leveljs_16';
+import Leveljs_17 from './screens/stage2_5/Leveljs_17';
+import Leveljs_18 from './screens/stage2_5/Leveljs_18';
+import Leveljs_19 from './screens/stage2_5/Leveljs_19';
 
+// Stage 3 — all 16 levels
 import Level3_0  from './screens/stage3/Level3_0';
 import Level3_1  from './screens/stage3/Level3_1';
 import Level3_2  from './screens/stage3/Level3_2';
@@ -61,8 +82,7 @@ import Level3_13 from './screens/stage3/Level3_13';
 import Level3_14 from './screens/stage3/Level3_14';
 import Level3_15 from './screens/stage3/Level3_15';
 
-//stage 4 - all 15 levels
-
+// Stage 4 — all 16 levels
 import Level4_0  from './screens/stage4/Level4_0';
 import Level4_1  from './screens/stage4/Level4_1';
 import Level4_2  from './screens/stage4/Level4_2';
@@ -146,7 +166,29 @@ function AppRoutes() {
       <Route path="/stage/2/level/19" element={<R><Level2_19 /></R>} />
       <Route path="/stage/2/level/20" element={<R><Level2_20 /></R>} />
 
-      {/* Stages 3– all 16 levels*/}
+      {/* Stage 2.5 — JavaScript Fundamentals (level 0–19) */}
+      <Route path="/stage/2.5/level/0"  element={<R><Leveljs_0  /></R>} />
+      <Route path="/stage/2.5/level/1"  element={<R><Leveljs_1  /></R>} />
+      <Route path="/stage/2.5/level/2"  element={<R><Leveljs_2  /></R>} />
+      <Route path="/stage/2.5/level/3"  element={<R><Leveljs_3  /></R>} />
+      <Route path="/stage/2.5/level/4"  element={<R><Leveljs_4  /></R>} />
+      <Route path="/stage/2.5/level/5"  element={<R><Leveljs_5  /></R>} />
+      <Route path="/stage/2.5/level/6"  element={<R><Leveljs_6  /></R>} />
+      <Route path="/stage/2.5/level/7"  element={<R><Leveljs_7  /></R>} />
+      <Route path="/stage/2.5/level/8"  element={<R><Leveljs_8  /></R>} />
+      <Route path="/stage/2.5/level/9"  element={<R><Leveljs_9  /></R>} />
+      <Route path="/stage/2.5/level/10" element={<R><Leveljs_10 /></R>} />
+      <Route path="/stage/2.5/level/11" element={<R><Leveljs_11 /></R>} />
+      <Route path="/stage/2.5/level/12" element={<R><Leveljs_12 /></R>} />
+      <Route path="/stage/2.5/level/13" element={<R><Leveljs_13 /></R>} />
+      <Route path="/stage/2.5/level/14" element={<R><Leveljs_14 /></R>} />
+      <Route path="/stage/2.5/level/15" element={<R><Leveljs_15 /></R>} />
+      <Route path="/stage/2.5/level/16" element={<R><Leveljs_16 /></R>} />
+      <Route path="/stage/2.5/level/17" element={<R><Leveljs_17 /></R>} />
+      <Route path="/stage/2.5/level/18" element={<R><Leveljs_18 /></R>} />
+      <Route path="/stage/2.5/level/19" element={<R><Leveljs_19 /></R>} />
+
+      {/* Stage 3 — all 16 levels */}
       <Route path="/stage/3/level/0"  element={<R><Level3_0  /></R>} />
       <Route path="/stage/3/level/1"  element={<R><Level3_1  /></R>} />
       <Route path="/stage/3/level/2"  element={<R><Level3_2  /></R>} />
@@ -165,7 +207,6 @@ function AppRoutes() {
       <Route path="/stage/3/level/15" element={<R><Level3_15 /></R>} />
 
       {/* Stage 4 — all 16 (level 0 = concepts) */}
-
       <Route path="/stage/4/level/0"  element={<R><Level4_0  /></R>} />
       <Route path="/stage/4/level/1"  element={<R><Level4_1  /></R>} />
       <Route path="/stage/4/level/2"  element={<R><Level4_2  /></R>} />
