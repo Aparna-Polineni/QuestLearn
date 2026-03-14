@@ -1,45 +1,167 @@
-/* ── Add these to your existing Roadmap.css ── */
+/* ── Roadmap.css ─────────────────────────────────────────────────────────── */
 
-/* Stage 2.5 card — amber accent */
-.stage-js {
-  border-left: 3px solid #f59e0b;
-}
-.stage-js .stage-card-num {
-  color: #f59e0b;
-}
-
-/* NEW badge on stage 2.5 */
-.stage-new-badge {
-  display: inline-block;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: .8px;
-  background: rgba(245,158,11,.15);
-  color: #f59e0b;
-  border: 1px solid rgba(245,158,11,.35);
-  padding: 1px 6px;
-  border-radius: 4px;
-  margin-left: 8px;
-  vertical-align: middle;
-  text-transform: uppercase;
+/* Screen */
+.roadmap-screen {
+  min-height: 100vh;
+  background: #080a0f;
+  color: #f1f5f9;
+  font-family: 'DM Sans', 'Inter', sans-serif;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Start/Continue button on each card */
-.stage-go-btn {
-  margin-top: 12px;
-  padding: 9px 18px;
-  border: none;
+/* Background orbs */
+.roadmap-bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: .18;
+  pointer-events: none;
+  z-index: 0;
+}
+.orb-a {
+  width: 600px; height: 600px;
+  background: #6366f1;
+  top: -200px; left: -200px;
+}
+.orb-b {
+  width: 500px; height: 500px;
+  background: #0ea5e9;
+  bottom: -150px; right: -150px;
+}
+
+/* Nav */
+.roadmap-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: rgba(8,10,15,.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #1e293b;
+}
+.roadmap-back {
+  background: none;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  padding: 7px 14px;
   border-radius: 8px;
-  color: #0a0f1e;
   font-size: 13px;
-  font-weight: 800;
   cursor: pointer;
-  transition: opacity .15s;
-  width: 100%;
+  transition: all .15s;
 }
-.stage-go-btn:hover { opacity: .88; }
+.roadmap-back:hover { border-color: #6366f1; color: #f1f5f9; }
+.roadmap-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: .5px;
+}
+.roadmap-nav-right { display: flex; align-items: center; gap: 12px; }
+.roadmap-user {
+  font-size: 13px;
+  color: #64748b;
+  font-family: 'DM Mono', monospace;
+}
 
-/* ── Stage 2.5 Banner ──────────────────────────────────────── */
+/* Content */
+.roadmap-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* Hero */
+.roadmap-hero {
+  margin-bottom: 48px;
+}
+.roadmap-path-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6366f1;
+  background: rgba(99,102,241,.1);
+  border: 1px solid rgba(99,102,241,.25);
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+  letter-spacing: .3px;
+}
+.roadmap-domain-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #38bdf8;
+  background: rgba(56,189,248,.08);
+  border: 1px solid rgba(56,189,248,.2);
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+  margin-left: 8px;
+}
+.roadmap-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  color: #f1f5f9;
+  margin: 0 0 28px;
+  line-height: 1.15;
+}
+
+/* Stats row */
+.roadmap-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.roadmap-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 11px;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  font-weight: 600;
+}
+
+/* Overall progress bar */
+.roadmap-overall-bar { max-width: 500px; }
+.roadmap-overall-label {
+  font-size: 12px;
+  color: #64748b;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 8px;
+}
+.roadmap-bar-track {
+  height: 6px;
+  background: #1e293b;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.roadmap-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #38bdf8);
+  border-radius: 99px;
+  transition: width .6s ease;
+}
+
+/* Stage 2.5 Banner */
 .s25-banner {
   display: flex;
   align-items: center;
@@ -75,3 +197,255 @@
   flex-shrink: 0;
 }
 .s25-banner-btn:hover { opacity: .88; }
+
+/* Stage cards grid */
+.roadmap-stages {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Stage card */
+.stage-card {
+  background: #0f1520;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 22px 24px;
+  transition: border-color .2s;
+  position: relative;
+  overflow: hidden;
+}
+.stage-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--stage-color, #6366f1);
+  opacity: .6;
+  border-radius: 16px 16px 0 0;
+}
+.stage-card:hover { border-color: #334155; }
+.stage-card.stage-current { border-color: var(--stage-color, #6366f1); }
+.stage-card.stage-current::before { opacity: 1; }
+.stage-card.stage-complete { border-color: #1e3a2a; }
+.stage-card.stage-complete::before { opacity: 1; }
+.stage-card.stage-locked {
+  opacity: .55;
+  filter: grayscale(.4);
+}
+.stage-card.stage-js { border-left: 3px solid #f59e0b; }
+
+/* Card header */
+.stage-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.stage-card-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.stage-card-emoji {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.stage-card-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stage-js .stage-card-num { color: #f59e0b; }
+.stage-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #f1f5f9;
+  line-height: 1.2;
+}
+.stage-card-right { display: flex; align-items: center; gap: 8px; }
+
+/* Badges */
+.stage-complete-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #4ade80;
+  background: rgba(74,222,128,.1);
+  border: 1px solid rgba(74,222,128,.25);
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+.stage-locked-badge {
+  font-size: 16px;
+  opacity: .6;
+}
+.stage-progress-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--stage-color, #6366f1);
+}
+.stage-new-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  background: rgba(245,158,11,.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245,158,11,.35);
+  padding: 1px 6px;
+  border-radius: 4px;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+/* Progress bar on card */
+.stage-progress-bar {
+  height: 4px;
+  background: #1e293b;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.stage-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width .5s ease;
+}
+
+/* Description */
+.stage-desc {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* Level dots */
+.stage-level-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.level-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: #0a0f1e;
+  color: #475569;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.level-dot:hover:not(:disabled) {
+  border-color: var(--stage-color, #6366f1);
+  color: #f1f5f9;
+  background: #1e293b;
+}
+.dot-complete {
+  background: rgba(74,222,128,.12);
+  border-color: rgba(74,222,128,.35);
+  color: #4ade80;
+}
+.dot-current {
+  background: var(--stage-color, #6366f1);
+  border-color: var(--stage-color, #6366f1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(99,102,241,.4);
+}
+.dot-locked {
+  opacity: .3;
+  cursor: not-allowed;
+}
+.dot-available {
+  border-color: #334155;
+  color: #64748b;
+}
+
+/* Stage locked message */
+.stage-locked-msg {
+  font-size: 12px;
+  color: #475569;
+  font-style: italic;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: #0a0f1e;
+  border-radius: 8px;
+  border: 1px dashed #1e293b;
+}
+
+/* Go button */
+.stage-go-btn {
+  margin-top: 4px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 9px;
+  color: #0a0f1e;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: opacity .15s;
+  width: 100%;
+}
+.stage-go-btn:hover { opacity: .88; }
+
+/* Level count */
+.stage-count {
+  font-size: 11px;
+  color: #334155;
+  font-family: 'DM Mono', monospace;
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* CTA */
+.roadmap-cta {
+  margin-top: 48px;
+  text-align: center;
+}
+.roadmap-continue-btn {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff;
+  border: none;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: opacity .15s, transform .15s;
+  letter-spacing: .3px;
+}
+.roadmap-continue-btn:hover {
+  opacity: .9;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .roadmap-nav { padding: 14px 16px; }
+  .roadmap-content { padding: 32px 16px 60px; }
+  .roadmap-title { font-size: 28px; }
+  .roadmap-stats { gap: 20px; }
+  .stat-num { font-size: 22px; }
+  .stage-card { padding: 18px 16px; }
+  .level-dot { width: 26px; height: 26px; font-size: 9px; }
+  .s25-banner { flex-direction: column; align-items: flex-start; }
+  .s25-banner-btn { width: 100%; text-align: center; }
+}

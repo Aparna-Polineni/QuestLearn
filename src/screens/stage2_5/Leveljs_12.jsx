@@ -12,6 +12,16 @@ const SUPPORT = {
   reveal:{concept:'Promises & .then() Chaining',whatYouLearned:"new Promise((resolve, reject)) — resolve for success, reject for failure. .then(val => ...) runs on success. .catch(err => ...) runs on failure. .finally(() => ...) always runs. Promise.all([...]) waits for all. Promise.race([...]) takes the first. Chaining: each .then() return value is passed to the next.",realWorldUse:"fetch('/api/patients') returns a Promise. fetch().then(r => r.json()) — .json() also returns a Promise. In React with async/await this becomes: const data = await fetch(url).then(r => r.json()). Understanding chaining explains why .then().then() works.",developerSays:"Once you understand Promises, async/await feels obvious — it is just Promises with cleaner syntax. Every time you see await, mentally replace it with .then() and it makes sense."},
 };
 
+const LOCKED = `function fetchPatient(id) {
+  return new Promise((resolve, reject) => {
+    if (id === "P999") {
+      reject(new Error("Patient not found: " + id));
+    } else {
+      resolve({ id: id, name: "Alice Smith", ward: "Cardiology" });
+    }
+  });
+}`;
+
 const INITIAL = `// Promises run asynchronously in browsers, but in this
 // environment we simulate them synchronously for output testing.
 
@@ -113,7 +123,8 @@ export default function LevelJS_12() {
             </div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={290} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={290} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

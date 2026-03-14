@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import Stage2_5Shell from './Stage2_5Shell';
 import LevelSupportWrapper from '../../components/LevelSupport';
-import JSEditor from './Jseditor';
+import JsEditor from './JsEditor';
 import './LevelJS_1.css';
 
 const SUPPORT = {
@@ -111,7 +111,7 @@ export default function LevelJS_1() {
             </div>
           </div>
 
-          <JSEditor initialCode={INITIAL_CODE} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={240} />
+          <JsEditor initialCode={INITIAL_CODE} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={240} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

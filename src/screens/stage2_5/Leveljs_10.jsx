@@ -13,6 +13,20 @@ const SUPPORT = {
 };
 
 // DOM simulation — since we run in a fake JS sandbox, we simulate the DOM
+const LOCKED = `// NOTE: This runs in a simulated DOM environment.
+// The DOM API works the same way in a real browser.
+
+// We simulate document.querySelector with a simple store:
+const elements = {};
+const document = {
+  querySelector: (sel) => elements[sel] || null,
+  createElement: (tag) => ({ tag, textContent:'', innerHTML:'', classList:{classes:new Set(), add(c){this.classes.add(c)}, remove(c){this.classes.delete(c)}, toggle(c){this.classes.has(c)?this.classes.delete(c):this.classes.add(c)}, contains(c){return this.classes.has(c)}}, getAttribute(){}, setAttribute(){} })
+};
+elements['#nameDisplay']    = document.createElement('span');
+elements['#wardDisplay']    = document.createElement('span');
+elements['#statusBadge']    = document.createElement('div');
+elements['#patientCard']    = document.createElement('div');`;
+
 const INITIAL = `// NOTE: This runs in a simulated DOM environment.
 // The DOM API works the same way in a real browser.
 
@@ -114,7 +128,8 @@ return <button onClick={() => setCount(c=>c+1)}>
             </div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={370} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={370} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

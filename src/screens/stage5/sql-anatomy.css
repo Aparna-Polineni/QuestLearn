@@ -1,0 +1,79 @@
+/* Shared SQL anatomy styles for Stage 5 */
+.s5-container { display:flex; flex-direction:column; gap:20px; }
+
+/* Brief */
+.s5-brief { background:#1e293b; border-radius:14px; padding:22px 26px; border:1px solid #334155; border-left:4px solid #818cf8; }
+.s5-brief-tag { font-family:'Fira Code',monospace; font-size:11px; color:#818cf8; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.s5-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; line-height:1.35; }
+.s5-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0 0 10px; }
+.s5-brief code { background:#0f172a; color:#818cf8; padding:1px 6px; border-radius:4px; font-family:'Fira Code',monospace; font-size:13px; }
+
+/* Anatomy panel */
+.s5-anatomy { background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:20px 24px; display:flex; flex-direction:column; gap:16px; }
+.s5-anat-header { font-family:'Fira Code',monospace; font-size:11px; color:#475569; letter-spacing:1px; text-transform:uppercase; padding-bottom:12px; border-bottom:1px solid #1e293b; }
+
+/* SQL code block */
+.s5-sql-block { font-family:'Fira Code',monospace; font-size:13px; color:#e2e8f0; background:#0a0f1e; border-radius:10px; padding:16px 20px; white-space:pre; overflow-x:auto; line-height:1.8; border:1px solid #1e293b; }
+
+/* SQL syntax tokens */
+.s5-tok-kw     { color:#c084fc; font-weight:700; }   /* SQL keywords */
+.s5-tok-tbl    { color:#f59e0b; font-weight:600; }   /* table names */
+.s5-tok-col    { color:#38bdf8; }                     /* column names */
+.s5-tok-type   { color:#4ade80; }                     /* data types */
+.s5-tok-val    { color:#86efac; }                     /* values */
+.s5-tok-str    { color:#86efac; }                     /* string values */
+.s5-tok-num    { color:#fb923c; }                     /* numbers */
+.s5-tok-op     { color:#94a3b8; }                     /* operators */
+.s5-tok-comment{ color:#475569; font-style:italic; }  /* comments */
+.s5-tok-blank  { background:#1e3a5f; color:#60a5fa; border-bottom:2px solid #3b82f6; padding:0 4px; border-radius:3px; min-width:60px; display:inline-block; text-align:center; } /* fill blanks */
+
+/* Concept compare grid */
+.s5-compare { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:640px){ .s5-compare { grid-template-columns:1fr; } }
+.s5-col { background:#1e293b; border-radius:10px; padding:14px 16px; }
+.s5-col-title { font-size:12px; font-weight:700; color:#818cf8; margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+
+/* Table preview */
+.s5-table-preview { border-radius:10px; overflow:hidden; border:1px solid #1e293b; }
+.s5-table-preview table { width:100%; border-collapse:collapse; font-family:'Fira Code',monospace; font-size:12px; }
+.s5-table-preview th { background:#1e293b; color:#818cf8; padding:8px 14px; text-align:left; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+.s5-table-preview td { background:#0a0f1e; color:#94a3b8; padding:8px 14px; border-top:1px solid #1e293b; }
+.s5-table-preview tr:hover td { background:#1e293b; }
+
+/* Reference rows */
+.s5-ref-grid { display:flex; flex-direction:column; gap:0; border:1px solid #1e293b; border-radius:10px; overflow:hidden; }
+.s5-ref-row  { display:grid; grid-template-columns:220px 1fr; gap:12px; padding:9px 16px; border-bottom:1px solid #1e293b; font-size:12.5px; align-items:start; }
+.s5-ref-row:last-child { border-bottom:none; }
+.s5-ref-row:nth-child(even) { background:#0a0f1e; }
+.s5-ref-row:hover { background:#1e293b; }
+.s5-rsig  { font-family:'Fira Code',monospace; color:#818cf8; font-size:12px; }
+.s5-rnote { color:#64748b; font-size:12px; line-height:1.5; }
+
+/* Mistake callout */
+.s5-mistake { background:#1e293b; border:1px solid #334155; border-left:3px solid #f87171; border-radius:10px; padding:14px 18px; }
+.s5-mistake-label { font-size:11px; font-weight:800; color:#f87171; letter-spacing:.5px; text-transform:uppercase; margin-bottom:10px; }
+.s5-mrows { display:flex; flex-direction:column; gap:8px; }
+.s5-mrow  { display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap; font-size:12.5px; }
+.s5-mrow code { font-family:'Fira Code',monospace; font-size:12px; padding:4px 10px; border-radius:6px; flex:1; min-width:200px; white-space:pre; overflow-x:auto; }
+.s5-mrow.bad  code { background:rgba(239,68,68,.1); color:#f87171; border:1px solid rgba(239,68,68,.2); }
+.s5-mrow.good code { background:rgba(74,222,128,.1); color:#4ade80; border:1px solid rgba(74,222,128,.2); }
+.s5-mtag { font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; white-space:nowrap; flex-shrink:0; margin-top:4px; }
+.bad-tag  { background:rgba(239,68,68,.15); color:#f87171; border:1px solid rgba(239,68,68,.25); }
+.good-tag { background:rgba(74,222,128,.15); color:#4ade80; border:1px solid rgba(74,222,128,.25); }
+
+/* FillEditor wrapper */
+.s5-fill-wrapper { background:#0f172a; border:1px solid #1e293b; border-radius:14px; overflow:hidden; }
+.s5-fill-header  { padding:10px 16px; background:#1e293b; border-bottom:1px solid #334155; display:flex; align-items:center; gap:10px; }
+.s5-fill-lang    { font-family:'Fira Code',monospace; font-size:10px; font-weight:800; color:#818cf8; text-transform:uppercase; letter-spacing:.8px; }
+
+/* Info box */
+.s5-info { background:rgba(129,140,248,.08); border:1px solid rgba(129,140,248,.2); border-radius:10px; padding:12px 16px; font-size:13px; color:#94a3b8; line-height:1.6; }
+.s5-info strong { color:#818cf8; }
+
+/* Link between SQL and JPA */
+.s5-bridge { background:linear-gradient(135deg, rgba(129,140,248,.08), rgba(74,222,128,.05)); border:1px solid rgba(129,140,248,.2); border-radius:12px; padding:16px 20px; display:flex; gap:16px; align-items:flex-start; }
+.s5-bridge-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
+.s5-bridge-body { display:flex; flex-direction:column; gap:4px; }
+.s5-bridge-title { font-size:13px; font-weight:700; color:#818cf8; }
+.s5-bridge-text  { font-size:12.5px; color:#64748b; line-height:1.6; }
+.s5-bridge code  { font-family:'Fira Code',monospace; color:#4ade80; background:rgba(74,222,128,.08); padding:1px 6px; border-radius:3px; font-size:12px; }

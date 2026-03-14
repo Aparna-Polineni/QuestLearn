@@ -12,6 +12,9 @@ const SUPPORT = {
   reveal:{concept:'Destructuring, Spread & Rest',whatYouLearned:"Object destructuring: const { a, b } = obj. Array destructuring: const [x, y] = arr. Default values: const { name = 'Unknown' } = obj. Rest: const { a, ...rest } = obj — rest gets everything except a. Spread: { ...obj } copies, { ...obj, key: val } copies and overrides.",realWorldUse:"Every React component: function Card({ name, ward, age }) { return ... }. Every state update: setForm(prev => ({ ...prev, email: newEmail })). Every API response merge. Destructuring and spread are the #1 ES6 features used in React.",developerSays:"The spread pattern for state updates is critical — never mutate state directly. setPatient({ ...patient, age: 35 }) creates a brand-new object, which React detects as a change. patient.age = 35 mutates in place — React won't re-render."},
 };
 
+const LOCKED = `const patient = { name: "Alice Smith", ward: "Cardiology", age: 34, id: "P001" };
+const topWards = ["Cardiology", "Oncology", "Neurology", "Paediatrics"];`;
+
 const INITIAL = `// ── TASK 1: Object destructuring ────────────────────────────
 // Given this patient object:
 const patient = { name: "Alice Smith", ward: "Cardiology", age: 34, id: "P001" };
@@ -119,7 +122,8 @@ const [top, ...others] = wards;
             </div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={310} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={310} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

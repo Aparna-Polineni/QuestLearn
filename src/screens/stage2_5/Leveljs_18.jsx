@@ -26,6 +26,19 @@ const SUPPORT = {
   },
 };
 
+const LOCKED = `const patientIds = ["P001", "P002", "P001", "P003", "P002", "P004"];
+
+const patients = [
+  { name: "Alice",  ward: "Cardiology" },
+  { name: "Bob",    ward: "Oncology"   },
+  { name: "Carol",  ward: "Cardiology" },
+  { name: "David",  ward: "Neurology"  },
+  { name: "Eve",    ward: "Cardiology" },
+];
+
+const setA = new Set(["P001", "P002", "P003"]);
+const setB = new Set(["P002", "P003", "P004"]);`;
+
 const INITIAL = `// ── TASK 1: Set for deduplication ───────────────────────────
 // Given this array with duplicate IDs:
 const patientIds = ["P001", "P002", "P001", "P003", "P002", "P004"];
@@ -160,7 +173,8 @@ export default function LevelJS_18() {
             </div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={handleOutput} height={300} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={handleOutput} height={300} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

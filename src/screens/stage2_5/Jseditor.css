@@ -26,3 +26,15 @@
 .jse-expected { padding:0 14px 14px; display:flex; flex-direction:column; gap:4px; border-top:1px dashed #334155; margin:0 14px; }
 .jse-expected-label { font-size:10px; color:#475569; letter-spacing:.5px; text-transform:uppercase; padding-top:10px; }
 .jse-expected-text  { font-family:'Fira Code',monospace; font-size:12px; color:#475569; margin:0; white-space:pre-wrap; }
+
+/* Locked code section */
+.jse-locked-header   { padding:5px 14px 0; background:#0a0f1e; }
+.jse-locked-badge    { font-family:'Fira Code',monospace; font-size:9px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; color:#475569; background:#1e293b; border:1px solid #334155; padding:2px 8px; border-radius:4px; }
+.jse-locked {
+  font-family:'Fira Code',monospace; font-size:12.5px; line-height:1.7;
+  background:#0a0a14; color:#475569; margin:0; padding:10px 18px;
+  border-bottom:1px dashed #1e293b; white-space:pre; overflow-x:auto;
+  cursor:not-allowed; user-select:none;
+}
+.jse-editable-header { padding:5px 14px 0; background:#0a0f1e; }
+.jse-editable-badge  { font-family:'Fira Code',monospace; font-size:9px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; color:#4ade80; background:rgba(74,222,128,.08); border:1px solid rgba(74,222,128,.2); padding:2px 8px; border-radius:4px; }

@@ -1,0 +1,21 @@
+.l519-container { display:flex; flex-direction:column; gap:18px; }
+.l519-brief { background:#1e293b; border-radius:14px; padding:22px 26px; border:1px solid #334155; border-left:4px solid #f87171; }
+.l519-brief-tag { font-size:11px; color:#f87171; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.l519-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; }
+.l519-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0; }
+.l519-bug { background:#1e293b; border:1px solid #334155; border-radius:14px; padding:18px 22px; display:flex; flex-direction:column; gap:12px; transition:border-color .2s; }
+.l519-bug--done { border-color:#4ade80; background:rgba(74,222,128,.03); }
+.l519-label { font-size:14px; font-weight:700; color:#e2e8f0; }
+.l519-pair  { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:680px){ .l519-pair { grid-template-columns:1fr; } }
+.l519-code { border-radius:10px; padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
+.l519-bad  { background:rgba(239,68,68,.07); border:1px solid rgba(239,68,68,.2); }
+.l519-good { background:rgba(74,222,128,.06); border:1px solid rgba(74,222,128,.2); }
+.l519-code pre { margin:0; } .l519-code code { font-family:'Fira Code',monospace; font-size:11.5px; color:#e2e8f0; white-space:pre-wrap; word-break:break-word; }
+.l519-tag { font-size:10px; font-weight:800; padding:2px 8px; border-radius:4px; align-self:flex-start; }
+.bad-tag  { background:rgba(239,68,68,.15); color:#f87171; }
+.good-tag { background:rgba(74,222,128,.15); color:#4ade80; }
+.l519-explain { font-size:13px; color:#94a3b8; line-height:1.6; background:#0f172a; padding:10px 14px; border-radius:8px; border-left:2px solid #818cf8; }
+.l519-btn { align-self:flex-start; padding:7px 18px; background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.25); color:#818cf8; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; }
+.l519-btn--done { background:rgba(74,222,128,.1); border-color:rgba(74,222,128,.3); color:#4ade80; }
+.l519-prompt { text-align:center; color:#475569; font-size:13px; }

@@ -12,6 +12,11 @@ const SUPPORT = {
   reveal:{concept:'try/catch/finally & Custom Errors',whatYouLearned:"try wraps risky code. catch(err) handles errors — err.message, err.name, err.stack. finally always runs — use for cleanup. throw new Error('msg') creates and throws an error. Error subclasses: TypeError, SyntaxError, RangeError, ReferenceError. instanceof to check type.",realWorldUse:"Every async API call: try { const data = await fetch(url).then(r=>r.json()); } catch(err) { setError(err.message); } finally { setLoading(false); }. This pattern is in every React data-fetching component. The finally block always clears the loading spinner.",developerSays:"Always put setLoading(false) in finally, not just after the await. If the fetch throws, the line after await never runs — your spinner stays forever. Finally is the guarantee."},
 };
 
+const LOCKED = `function parsePatient(data) {
+  if (data === null) throw new Error("Patient data is null");
+  return "Patient: " + data.name;
+}`;
+
 const INITIAL = `// ── TASK 1: Basic try/catch/finally ─────────────────────────
 // The function parsePatient throws if data is null
 // Wrap the call in try/catch/finally
@@ -113,7 +118,8 @@ export default function LevelJS_11() {
             </div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={handleOutputChange} height={290} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={handleOutputChange} height={290} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

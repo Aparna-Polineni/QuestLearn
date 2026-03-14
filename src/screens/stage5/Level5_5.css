@@ -1,0 +1,26 @@
+.l55-container { display:flex; flex-direction:column; gap:20px; }
+.l55-brief { background:#1e293b; border-radius:14px; padding:22px 26px; border:1px solid #334155; border-left:4px solid #818cf8; }
+.l55-brief-tag { font-size:11px; color:#818cf8; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.l55-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; }
+.l55-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0; }
+.l55-brief code { background:#0f172a; color:#818cf8; padding:1px 6px; border-radius:4px; font-family:'Fira Code',monospace; font-size:13px; }
+.l55-anatomy { background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:20px 24px; }
+.l55-anat-header { font-size:11px; color:#475569; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; }
+.l55-sql-demo { font-family:'Fira Code',monospace; font-size:13px; white-space:pre; overflow-x:auto; line-height:1.9; color:#e2e8f0; }
+.kw { color:#c084fc; font-weight:700; } .tbl { color:#f59e0b; font-weight:600; }
+.col { color:#38bdf8; } .typ { color:#4ade80; } .op { color:#94a3b8; }
+.cm { color:#475569; font-style:italic; }
+.l55-task { background:#1e293b; border:1px solid #334155; border-radius:14px; padding:18px 22px; display:flex; flex-direction:column; gap:10px; }
+.l55-task-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+.l55-task-title  { font-size:14px; font-weight:700; color:#e2e8f0; }
+.l55-task-badge  { font-size:11px; font-weight:800; padding:3px 10px; border-radius:20px; }
+.l55-ok  { background:rgba(74,222,128,.12); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
+.l55-err { background:rgba(239,68,68,.12); color:#f87171; border:1px solid rgba(239,68,68,.3); }
+.l55-task-hint { font-size:12.5px; color:#64748b; background:#0f172a; padding:8px 12px; border-radius:8px; border-left:2px solid #475569; }
+.l55-editor { width:100%; background:#0f172a; border:1px solid #334155; border-radius:10px; color:#e2e8f0; font-family:'Fira Code',monospace; font-size:13px; padding:14px 16px; resize:vertical; outline:none; line-height:1.7; box-sizing:border-box; }
+.l55-editor:focus { border-color:#818cf8; }
+.l55-solution-toggle { display:flex; flex-direction:column; gap:8px; }
+.l55-show-btn { align-self:flex-start; padding:6px 14px; background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.25); color:#818cf8; border-radius:6px; font-size:12px; cursor:pointer; }
+.l55-solution { background:#0a0f1e; border:1px solid #1e293b; border-radius:8px; padding:14px 18px; font-family:'Fira Code',monospace; font-size:12.5px; color:#4ade80; white-space:pre; overflow-x:auto; margin:0; }
+.l55-check-btn { padding:12px 36px; background:#818cf8; color:#fff; border:none; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer; align-self:center; }
+.l55-check-btn:hover { background:#6366f1; }

@@ -12,6 +12,17 @@ const SUPPORT = {
   reveal:{concept:'Object.keys, entries, assign & Nesting',whatYouLearned:"Object.keys(obj): array of key strings. Object.values(obj): array of values. Object.entries(obj): array of [key,val] pairs. Object.assign(target, src): mutates target. Spread is preferred for immutable merge. Nested objects: chain dots or bracket notation. hasOwnProperty vs 'in' operator.",realWorldUse:"Building a generic detail panel: Object.entries(record).map(([key, val]) => <Row key={key} label={key} value={val} />). Merging form state: setForm(prev => Object.assign({}, prev, { email })) or setForm(prev => ({ ...prev, email })).",developerSays:"I reach for Object.entries() whenever I have dynamic data from an API and I want to render every field without knowing the keys in advance. It is the escape hatch when you cannot destructure because the shape is unknown."},
 };
 
+const LOCKED = `const patient = {
+  id: "P001",
+  name: "Alice Smith",
+  age: 34,
+  ward: "Cardiology",
+  address: {
+    city: "London",
+    postcode: "EC1A 1BB"
+  }
+};`;
+
 const INITIAL = `const patient = {
   id: "P001",
   name: "Alice Smith",
@@ -115,7 +126,8 @@ for (const [key, value] of Object.entries(patient)) {
             </div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={320} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={320} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

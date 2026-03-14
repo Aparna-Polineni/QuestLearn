@@ -1,32 +1,40 @@
-// src/screens/stage2_5/JSEditor.jsx
+// src/screens/stage2_5/JsEditor.jsx
 // Runs user's JavaScript in the browser via Function() — safe sandbox for exercises
-import { useState, useRef } from 'react';
-import './Jseditor.css';
+// Supports optional lockedCode prop — shown as read-only above the editable textarea
+import { useState } from 'react';
+import './JsEditor.css';
 
-export default function Jseditor({ initialCode, expectedOutput, onOutputChange, height = 320, writableMarker = '// TODO' }) {
-  const [code, setCode]     = useState(initialCode);
-  const [output, setOutput] = useState('');
+export default function JsEditor({
+  initialCode,
+  expectedOutput,
+  onOutputChange,
+  height = 320,
+  lockedCode = '',          // read-only code shown above the editor (e.g. given data)
+}) {
+  const [code, setCode]       = useState(initialCode);
+  const [output, setOutput]   = useState('');
   const [correct, setCorrect] = useState(false);
-  const [ran, setRan]       = useState(false);
-  const [err, setErr]       = useState('');
+  const [ran, setRan]         = useState(false);
+  const [err, setErr]         = useState('');
 
   function runCode() {
     setErr('');
     const lines = [];
     try {
-      // Override console.log to capture output
-      const origLog = console.log;
       const capturedLog = (...args) => {
-        lines.push(args.map(a => {
-          if (Array.isArray(a)) return JSON.stringify(a).replace(/"/g,'').replace('[','[').replace(']',']');
-          if (a === null) return 'null';
-          if (a === undefined) return 'undefined';
-          return String(a);
-        }).join(' '));
-        origLog(...args);
+        lines.push(
+          args.map(a => {
+            if (Array.isArray(a)) return '[' + a.join(', ') + ']';
+            if (a === null) return 'null';
+            if (a === undefined) return 'undefined';
+            return String(a);
+          }).join(' ')
+        );
       };
+      // Combine locked code + user code so locked data is available at runtime
+      const fullCode = (lockedCode ? lockedCode + '\n' : '') + code;
       // eslint-disable-next-line no-new-func
-      const fn = new Function('console', code);
+      const fn = new Function('console', fullCode);
       fn({ log: capturedLog, error: capturedLog, warn: capturedLog });
       const result = lines.join('\n');
       setOutput(result);
@@ -34,7 +42,7 @@ export default function Jseditor({ initialCode, expectedOutput, onOutputChange, 
       setCorrect(isCorrect);
       setRan(true);
       onOutputChange && onOutputChange(result, isCorrect);
-    } catch(e) {
+    } catch (e) {
       setErr(e.message);
       setOutput('');
       setCorrect(false);
@@ -52,9 +60,6 @@ export default function Jseditor({ initialCode, expectedOutput, onOutputChange, 
     onOutputChange && onOutputChange('', false);
   }
 
-  // Highlight writableMarker lines
-  const lines = code.split('\n');
-
   return (
     <div className="jse-container">
       <div className="jse-header">
@@ -64,6 +69,23 @@ export default function Jseditor({ initialCode, expectedOutput, onOutputChange, 
           <button className="jse-run-btn" onClick={runCode}>▶ Run</button>
         </div>
       </div>
+
+      {/* Locked read-only section */}
+      {lockedCode && (
+        <div className="jse-locked-header">
+          <span className="jse-locked-badge">🔒 given — read only</span>
+        </div>
+      )}
+      {lockedCode && (
+        <pre className="jse-locked">{lockedCode}</pre>
+      )}
+
+      {/* Editable section */}
+      {lockedCode && (
+        <div className="jse-editable-header">
+          <span className="jse-editable-badge">✏️ your code</span>
+        </div>
+      )}
       <textarea
         className="jse-editor"
         style={{ height }}
@@ -74,10 +96,14 @@ export default function Jseditor({ initialCode, expectedOutput, onOutputChange, 
         autoCorrect="off"
         autoCapitalize="off"
       />
+
+      {/* Output panel */}
       {ran && (
         <div className={`jse-output ${correct ? 'jse-correct' : 'jse-wrong'}`}>
           <div className="jse-output-header">
-            <span className="jse-output-label">{correct ? '✓ Output — Correct!' : err ? '✗ Error' : '✗ Output — Not quite'}</span>
+            <span className="jse-output-label">
+              {correct ? '✓ Output — Correct!' : err ? '✗ Error' : '✗ Output — Not quite'}
+            </span>
           </div>
           <pre className="jse-output-text">{err || output || '(no output)'}</pre>
           {!correct && !err && (

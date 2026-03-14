@@ -26,6 +26,16 @@ const SUPPORT = {
   },
 };
 
+const LOCKED = `const wardGroups = [
+  ["Alice", "Bob"],
+  ["Carol"],
+  ["David", "Eve", "Frank"]
+];
+
+const queue = ["Alice", "Bob", "Carol", "David", "Eve"];
+const ids = [1, 42, 500, 3001];
+const rawCode = "pat-001-cardiology-2024";`;
+
 const INITIAL = `// ── TASK 1: .flat() and .flatMap() ──────────────────────────
 const wardGroups = [
   ["Alice", "Bob"],
@@ -134,7 +144,8 @@ const tagged = wardGroups
             </div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_, c) => setOk(c)} height={350} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_, c) => setOk(c)} height={350} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

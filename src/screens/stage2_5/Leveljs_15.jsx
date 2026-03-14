@@ -12,6 +12,21 @@ const SUPPORT = {
   reveal:{concept:'Full Async Pipeline — the React foundation',whatYouLearned:"You just built the JS equivalent of a React data-fetching component: async fetch → setState → filter/map → render. Every React component with useEffect + fetch is this exact pattern, wrapped in React's state management and JSX rendering.",realWorldUse:"In React this becomes: useEffect(() => { loadDashboard(); }, []). The filter becomes: const activePatients = patients.filter(p => p.isActive). The map becomes: activePatients.map(p => <PatientRow key={p.id} {...p} />). You now know what React is abstracting.",developerSays:"After teaching hundreds of developers, the ones who understand this vanilla JS pipeline learn React in days. The ones who skip straight to React take weeks to understand why things work. You just did it the right way."},
 };
 
+const LOCKED = `// Mock fetch — simulates a real API call
+function mockFetch(url) {
+  return new Promise(resolve => {
+    resolve({
+      json: () => Promise.resolve([
+        { id:"P001", name:"Alice Smith",  ward:"Cardiology", age:34, isActive:true  },
+        { id:"P002", name:"Bob Jones",    ward:"Oncology",   age:52, isActive:false },
+        { id:"P003", name:"Carol White",  ward:"Neurology",  age:41, isActive:true  },
+        { id:"P004", name:"David Brown",  ward:"Cardiology", age:67, isActive:true  },
+        { id:"P005", name:"Eve Davis",    ward:"Oncology",   age:29, isActive:false },
+      ])
+    });
+  });
+}`;
+
 const INITIAL = `// Mock fetch — simulates a real API call
 function mockFetch(url) {
   return new Promise(resolve => {
@@ -112,7 +127,8 @@ export default function LevelJS_15() {
             <div className="ljs15-bridge-note">Same logic. React just wraps state, re-rendering, and DOM patching around it. You are ready for Stage 3.</div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={320} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={320} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

@@ -12,6 +12,23 @@ const SUPPORT = {
   reveal:{concept:'async/await — Promises with clean syntax',whatYouLearned:"async function always returns a Promise. await pauses the function until the Promise resolves — other code keeps running. try/catch replaces .catch(). Top-level await works in ES modules. await Promise.all([a, b]) awaits multiple in parallel.",realWorldUse:"React useEffect: useEffect(() => { const load = async () => { try { const data = await fetch('/api/patients').then(r=>r.json()); setPatients(data); } catch(err) { setError(err.message); } finally { setLoading(false); } }; load(); }, []); This exact pattern is in every React data-fetching component.",developerSays:"The inner async function inside useEffect is a gotcha — you cannot make useEffect's callback async directly. Always create an inner async function and call it. Forgetting this is one of the most common React beginner mistakes."},
 };
 
+const LOCKED = `// Simulate fetch (returns a Promise, like real fetch)
+function mockFetch(url) {
+  return new Promise((resolve, reject) => {
+    if (url.includes("bad")) {
+      reject(new Error("Network error: bad URL"));
+    } else {
+      resolve({
+        json: () => Promise.resolve([
+          { id: "P001", name: "Alice Smith",  ward: "Cardiology", isActive: true  },
+          { id: "P002", name: "Bob Jones",    ward: "Oncology",   isActive: false },
+          { id: "P003", name: "Carol White",  ward: "Neurology",  isActive: true  },
+        ])
+      });
+    }
+  });
+}`;
+
 const INITIAL = `// Simulate fetch (returns a Promise, like real fetch)
 function mockFetch(url) {
   return new Promise((resolve, reject) => {
@@ -128,7 +145,8 @@ const b = await fetchB(); // waits 1s after A
             </div>
           </div>
 
-          <JsEditor initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={370} />
+          <JsEditor lockedCode={LOCKED}
+            initialCode={INITIAL} expectedOutput={EXPECTED} onOutputChange={(_,c)=>setOk(c)} height={370} />
         </div>
       </LevelSupportWrapper>
     </Stage2_5Shell>

@@ -1,0 +1,17 @@
+.jpa-container { display:flex; flex-direction:column; gap:20px; }
+.jpa-brief { background:#1e293b; border-radius:14px; padding:22px 26px; border:1px solid #334155; border-left:4px solid #818cf8; }
+.jpa-brief-tag { font-size:11px; color:#818cf8; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.jpa-brief h2  { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; }
+.jpa-brief p   { color:#94a3b8; font-size:14px; line-height:1.7; margin:0; }
+.jpa-brief code { background:#0f172a; color:#818cf8; padding:1px 6px; border-radius:4px; font-family:'Fira Code',monospace; font-size:13px; }
+.jpa-ref { background:#0f172a; border:1px solid #1e293b; border-radius:14px; padding:18px 22px; }
+.jpa-ref-label { font-size:11px; color:#475569; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:12px; }
+.jpa-ref-grid  { display:flex; flex-direction:column; border:1px solid #1e293b; border-radius:10px; overflow:hidden; }
+.jpa-ref-row   { display:grid; grid-template-columns:240px 1fr; gap:12px; padding:8px 14px; border-top:1px solid #1e293b; font-size:12.5px; align-items:start; }
+.jpa-ref-row:first-child { border-top:none; }
+.jpa-ref-row:nth-child(even) { background:#0a0f1e; }
+.jpa-sig  { font-family:'Fira Code',monospace; color:#818cf8; font-size:12px; }
+.jpa-note { color:#64748b; line-height:1.5; }
+.jpa-bridge { background:rgba(129,140,248,.06); border:1px solid rgba(129,140,248,.18); border-radius:12px; padding:14px 18px; font-size:12.5px; color:#64748b; line-height:1.6; }
+.jpa-bridge strong { color:#818cf8; }
+.jpa-bridge code { font-family:'Fira Code',monospace; color:#4ade80; background:rgba(74,222,128,.08); padding:1px 6px; border-radius:3px; font-size:12px; }

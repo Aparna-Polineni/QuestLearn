@@ -11,6 +11,7 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
+import careerPaths from '../data/careerPaths';
 
 const GameContext = createContext(null);
 const STORAGE_KEY = 'ql_game_v2';
@@ -59,8 +60,11 @@ export function GameProvider({ children }) {
   // ── On mount: restore localStorage, then sync backend ────────────────────
   useEffect(() => {
     const saved = load();
-    if (saved.activePath) setActivePath(saved.activePath);
-    if (saved.allPaths)   setAllPaths(saved.allPaths);
+    if (saved.activePath) {
+      const livePath = careerPaths.find(p => p.id === saved.activePath.id);
+      setActivePath(livePath || saved.activePath);
+    }
+    if (saved.allPaths) setAllPaths(saved.allPaths);
 
     if (api.isLoggedIn()) {
       api.getProgress()

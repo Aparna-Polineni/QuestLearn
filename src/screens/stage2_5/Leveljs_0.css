@@ -1,0 +1,21 @@
+/* LevelJS_0.css */
+.ljs0-container { display:flex; flex-direction:column; gap:24px; }
+.ljs0-brief { background:#1e293b; border-radius:14px; padding:22px 26px; border:1px solid #334155; border-left:4px solid #f59e0b; }
+.ljs0-brief-tag { font-family:'Fira Code',monospace; font-size:11px; color:#f59e0b; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.ljs0-brief h2 { font-size:20px; font-weight:700; color:#f1f5f9; margin:0 0 10px; line-height:1.35; }
+.ljs0-brief p  { color:#94a3b8; font-size:14px; line-height:1.7; margin:0; }
+.ljs0-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:16px; }
+.ljs0-card { background:#1e293b; border:1px solid #334155; border-radius:14px; padding:20px; cursor:pointer; transition:all .2s; }
+.ljs0-card:hover { border-color:#f59e0b; transform:translateY(-2px); box-shadow:0 6px 24px rgba(245,158,11,.12); }
+.ljs0-seen { border-color:rgba(74,222,128,.4) !important; background:#0f1f14; }
+.ljs0-card-top { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.ljs0-icon { font-size:22px; }
+.ljs0-title { font-size:15px; font-weight:700; color:#f1f5f9; flex:1; }
+.ljs0-check { color:#4ade80; font-size:18px; font-weight:900; }
+.ljs0-body { color:#94a3b8; font-size:13.5px; line-height:1.75; margin:0 0 14px; }
+.ljs0-analogy { background:#0f172a; border-radius:8px; padding:10px 14px; font-size:12.5px; color:#64748b; line-height:1.5; display:flex; flex-direction:column; gap:4px; }
+.ljs0-analogy-label { color:#f59e0b; font-weight:800; font-size:10px; letter-spacing:.8px; text-transform:uppercase; }
+.ljs0-progress { display:flex; flex-direction:column; gap:8px; align-items:center; }
+.ljs0-progress-bar  { width:100%; max-width:400px; height:6px; background:#1e293b; border-radius:99px; overflow:hidden; }
+.ljs0-progress-fill { height:100%; border-radius:99px; transition:width .4s ease; }
+.ljs0-progress-text { color:#64748b; font-size:13px; }

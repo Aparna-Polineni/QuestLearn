@@ -43,26 +43,26 @@ import Level2_19 from './screens/stage2/Level2_19';
 import Level2_20 from './screens/stage2/Level2_20';
 
 // Stage 2.5 — JavaScript Fundamentals (20 levels, JS.0–JS.19)
-import Leveljs_0  from './screens/stage2_5/Leveljs_0';
-import Leveljs_1  from './screens/stage2_5/Leveljs_1';
-import Leveljs_2  from './screens/stage2_5/Leveljs_2';
-import Leveljs_3  from './screens/stage2_5/Leveljs_3';
-import Leveljs_4  from './screens/stage2_5/Leveljs_4';
-import Leveljs_5  from './screens/stage2_5/Leveljs_5';
-import Leveljs_6  from './screens/stage2_5/Leveljs_6';
-import Leveljs_7  from './screens/stage2_5/Leveljs_7';
-import Leveljs_8  from './screens/stage2_5/Leveljs_8';
-import Leveljs_9  from './screens/stage2_5/Leveljs_9';
-import Leveljs_10 from './screens/stage2_5/Leveljs_10';
-import Leveljs_11 from './screens/stage2_5/Leveljs_11';
-import Leveljs_12 from './screens/stage2_5/Leveljs_12';
-import Leveljs_13 from './screens/stage2_5/Leveljs_13';
-import Leveljs_14 from './screens/stage2_5/Leveljs_14';
-import Leveljs_15 from './screens/stage2_5/Leveljs_15';
-import Leveljs_16 from './screens/stage2_5/Leveljs_16';
-import Leveljs_17 from './screens/stage2_5/Leveljs_17';
-import Leveljs_18 from './screens/stage2_5/Leveljs_18';
-import Leveljs_19 from './screens/stage2_5/Leveljs_19';
+import LevelJS_0 from './screens/stage2_5/LevelJS_0';
+import LevelJS_1 from './screens/stage2_5/LevelJS_1';
+import LevelJS_2 from './screens/stage2_5/LevelJS_2';
+import LevelJS_3 from './screens/stage2_5/LevelJS_3';
+import LevelJS_4 from './screens/stage2_5/LevelJS_4';
+import LevelJS_5 from './screens/stage2_5/LevelJS_5';
+import LevelJS_6 from './screens/stage2_5/LevelJS_6';
+import LevelJS_7 from './screens/stage2_5/LevelJS_7';
+import LevelJS_8 from './screens/stage2_5/LevelJS_8';
+import LevelJS_9 from './screens/stage2_5/LevelJS_9';
+import LevelJS_10 from './screens/stage2_5/LevelJS_10';
+import LevelJS_11 from './screens/stage2_5/LevelJS_11';
+import LevelJS_12 from './screens/stage2_5/LevelJS_12';
+import LevelJS_13 from './screens/stage2_5/LevelJS_13';
+import LevelJS_14 from './screens/stage2_5/LevelJS_14';
+import LevelJS_15 from './screens/stage2_5/LevelJS_15';
+import LevelJS_16 from './screens/stage2_5/LevelJS_16';
+import LevelJS_17 from './screens/stage2_5/LevelJS_17';
+import LevelJS_18 from './screens/stage2_5/LevelJS_18';
+import LevelJS_19 from './screens/stage2_5/LevelJS_19';
 
 // Stage 3 — all 16 levels
 import Level3_0  from './screens/stage3/Level3_0';
@@ -99,6 +99,28 @@ import Level4_12 from './screens/stage4/Level4_12';
 import Level4_13 from './screens/stage4/Level4_13';
 import Level4_14 from './screens/stage4/Level4_14';
 import Level4_15 from './screens/stage4/Level4_15';
+import Level5_0  from './screens/stage5/Level5_0';
+import Level5_1  from './screens/stage5/Level5_1';
+import Level5_2  from './screens/stage5/Level5_2';
+import Level5_3  from './screens/stage5/Level5_3';
+import Level5_4  from './screens/stage5/Level5_4';
+import Level5_5  from './screens/stage5/Level5_5';
+import Level5_6  from './screens/stage5/Level5_6';
+import Level5_7  from './screens/stage5/Level5_7';
+import Level5_8  from './screens/stage5/Level5_8';
+import Level5_9  from './screens/stage5/Level5_9';
+import Level5_10 from './screens/stage5/Level5_10';
+import Level5_11 from './screens/stage5/Level5_11';
+import Level5_12 from './screens/stage5/Level5_12';
+import Level5_13 from './screens/stage5/Level5_13';
+import Level5_14 from './screens/stage5/Level5_14';
+import Level5_15 from './screens/stage5/Level5_15';
+import Level5_16 from './screens/stage5/Level5_16';
+import Level5_17 from './screens/stage5/Level5_17';
+import Level5_18 from './screens/stage5/Level5_18';
+import Level5_19 from './screens/stage5/Level5_19';
+import Level5_20 from './screens/stage5/Level5_20';
+import Level5_21 from './screens/stage5/Level5_21';
 
 function ComingSoon({ label }) {
   return (
@@ -167,26 +189,26 @@ function AppRoutes() {
       <Route path="/stage/2/level/20" element={<R><Level2_20 /></R>} />
 
       {/* Stage 2.5 — JavaScript Fundamentals (level 0–19) */}
-      <Route path="/stage/2.5/level/0"  element={<R><Leveljs_0  /></R>} />
-      <Route path="/stage/2.5/level/1"  element={<R><Leveljs_1  /></R>} />
-      <Route path="/stage/2.5/level/2"  element={<R><Leveljs_2  /></R>} />
-      <Route path="/stage/2.5/level/3"  element={<R><Leveljs_3  /></R>} />
-      <Route path="/stage/2.5/level/4"  element={<R><Leveljs_4  /></R>} />
-      <Route path="/stage/2.5/level/5"  element={<R><Leveljs_5  /></R>} />
-      <Route path="/stage/2.5/level/6"  element={<R><Leveljs_6  /></R>} />
-      <Route path="/stage/2.5/level/7"  element={<R><Leveljs_7  /></R>} />
-      <Route path="/stage/2.5/level/8"  element={<R><Leveljs_8  /></R>} />
-      <Route path="/stage/2.5/level/9"  element={<R><Leveljs_9  /></R>} />
-      <Route path="/stage/2.5/level/10" element={<R><Leveljs_10 /></R>} />
-      <Route path="/stage/2.5/level/11" element={<R><Leveljs_11 /></R>} />
-      <Route path="/stage/2.5/level/12" element={<R><Leveljs_12 /></R>} />
-      <Route path="/stage/2.5/level/13" element={<R><Leveljs_13 /></R>} />
-      <Route path="/stage/2.5/level/14" element={<R><Leveljs_14 /></R>} />
-      <Route path="/stage/2.5/level/15" element={<R><Leveljs_15 /></R>} />
-      <Route path="/stage/2.5/level/16" element={<R><Leveljs_16 /></R>} />
-      <Route path="/stage/2.5/level/17" element={<R><Leveljs_17 /></R>} />
-      <Route path="/stage/2.5/level/18" element={<R><Leveljs_18 /></R>} />
-      <Route path="/stage/2.5/level/19" element={<R><Leveljs_19 /></R>} />
+      <Route path="/stage/2.5/level/0"  element={<R><LevelJS_0  /></R>} />
+      <Route path="/stage/2.5/level/1"  element={<R><LevelJS_1  /></R>} />
+      <Route path="/stage/2.5/level/2"  element={<R><LevelJS_2  /></R>} />
+      <Route path="/stage/2.5/level/3"  element={<R><LevelJS_3  /></R>} />
+      <Route path="/stage/2.5/level/4"  element={<R><LevelJS_4  /></R>} />
+      <Route path="/stage/2.5/level/5"  element={<R><LevelJS_5  /></R>} />
+      <Route path="/stage/2.5/level/6"  element={<R><LevelJS_6  /></R>} />
+      <Route path="/stage/2.5/level/7"  element={<R><LevelJS_7  /></R>} />
+      <Route path="/stage/2.5/level/8"  element={<R><LevelJS_8  /></R>} />
+      <Route path="/stage/2.5/level/9"  element={<R><LevelJS_9  /></R>} />
+      <Route path="/stage/2.5/level/10" element={<R><LevelJS_10 /></R>} />
+      <Route path="/stage/2.5/level/11" element={<R><LevelJS_11 /></R>} />
+      <Route path="/stage/2.5/level/12" element={<R><LevelJS_12 /></R>} />
+      <Route path="/stage/2.5/level/13" element={<R><LevelJS_13 /></R>} />
+      <Route path="/stage/2.5/level/14" element={<R><LevelJS_14 /></R>} />
+      <Route path="/stage/2.5/level/15" element={<R><LevelJS_15 /></R>} />
+      <Route path="/stage/2.5/level/16" element={<R><LevelJS_16 /></R>} />
+      <Route path="/stage/2.5/level/17" element={<R><LevelJS_17 /></R>} />
+      <Route path="/stage/2.5/level/18" element={<R><LevelJS_18 /></R>} />
+      <Route path="/stage/2.5/level/19" element={<R><LevelJS_19 /></R>} />
 
       {/* Stage 3 — all 16 levels */}
       <Route path="/stage/3/level/0"  element={<R><Level3_0  /></R>} />
@@ -223,6 +245,29 @@ function AppRoutes() {
       <Route path="/stage/4/level/13" element={<R><Level4_13 /></R>} />
       <Route path="/stage/4/level/14" element={<R><Level4_14 /></R>} />
       <Route path="/stage/4/level/15" element={<R><Level4_15 /></R>} />
+
+      <Route path="/stage/5/level/0"  element={<R><Level5_0  /></R>} />
+      <Route path="/stage/5/level/1"  element={<R><Level5_1  /></R>} />
+      <Route path="/stage/5/level/2"  element={<R><Level5_2  /></R>} />
+      <Route path="/stage/5/level/3"  element={<R><Level5_3  /></R>} />
+      <Route path="/stage/5/level/4"  element={<R><Level5_4  /></R>} />
+      <Route path="/stage/5/level/5"  element={<R><Level5_5  /></R>} />
+      <Route path="/stage/5/level/6"  element={<R><Level5_6  /></R>} />
+      <Route path="/stage/5/level/7"  element={<R><Level5_7  /></R>} />
+      <Route path="/stage/5/level/8"  element={<R><Level5_8  /></R>} />
+      <Route path="/stage/5/level/9"  element={<R><Level5_9  /></R>} />
+      <Route path="/stage/5/level/10" element={<R><Level5_10 /></R>} />
+      <Route path="/stage/5/level/11" element={<R><Level5_11 /></R>} />
+      <Route path="/stage/5/level/12" element={<R><Level5_12 /></R>} />
+      <Route path="/stage/5/level/13" element={<R><Level5_13 /></R>} />
+      <Route path="/stage/5/level/14" element={<R><Level5_14 /></R>} />
+      <Route path="/stage/5/level/15" element={<R><Level5_15 /></R>} />
+      <Route path="/stage/5/level/16" element={<R><Level5_16 /></R>} />
+      <Route path="/stage/5/level/17" element={<R><Level5_17 /></R>} />
+      <Route path="/stage/5/level/18" element={<R><Level5_18 /></R>} />
+      <Route path="/stage/5/level/19" element={<R><Level5_19 /></R>} />
+      <Route path="/stage/5/level/20" element={<R><Level5_20 /></R>} />
+      <Route path="/stage/5/level/21" element={<R><Level5_21 /></R>} />
 
       <Route path="*" element={<Navigate to="/auth" replace />} />
     </Routes>

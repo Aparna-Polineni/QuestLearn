@@ -30,7 +30,7 @@ const TOTAL = 20;
 
 export default function Stage2_5Shell({ levelId, canProceed, conceptReveal, children }) {
   const navigate = useNavigate();
-  const { completeLevel, selectedDomain } = useGame();
+  const { completeLevel } = useGame();
 
   const color     = '#f59e0b';
   const mode      = LEVEL_MODES[levelId] || 'BUILD';
