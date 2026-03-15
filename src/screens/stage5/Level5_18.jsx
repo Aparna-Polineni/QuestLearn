@@ -1,73 +1,99 @@
-// src/screens/stage5/Level5_18.jsx — @ManyToMany (FILL)
+// src/screens/stage5/Level5_18.jsx — @Transactional (FILL, Java)
 import { useState } from 'react';
 import Stage5Shell from './Stage5Shell';
-import FillEditor from '../../components/FillEditor';
-import './Level5_18.css';
+import FillEditor from '../stage2/FillEditor';
 
-const SUPPORT = {
-  reveal: {
-    concept: '@ManyToMany',
-    whatYouLearned: 'ManyToMany creates a join table — a third table with two FK columns linking both sides. Doctors can have many specialties, specialties belong to many doctors. Neither FK lives on the main tables.',
-    realWorldUse: 'Doctor–Specialty, Patient–Treatment, Appointment–Resource — all many-to-many. JPA creates the join table automatically with @ManyToMany @JoinTable.',
-    developerSays: 'If the join table needs extra columns (like "assigned date"), model it as an entity with two @ManyToOne relationships instead of using @ManyToMany. @ManyToMany works only for pure link tables.',
-  },
-};
+const BLANKS = [
+  { id: 'TXN1',    answer: '@Transactional',                                         placeholder: 'wrap method in a transaction', hint: 'Spring opens BEGIN before the method and COMMIT after.' },
+  { id: 'ROLL',    answer: '@Transactional(rollbackOn = Exception.class)',            placeholder: '@Transactional that rolls back on any exception', hint: 'By default only RuntimeException triggers rollback. This rolls back on checked exceptions too.' },
+  { id: 'READONLY',answer: '@Transactional(readOnly = true)',                        placeholder: '@Transactional for read-only methods', hint: 'Tells Hibernate this is a read — enables optimisations, no dirty checking.' },
+  { id: 'PROP',    answer: 'Propagation.REQUIRES_NEW',                               placeholder: 'start a NEW transaction', hint: 'Suspend the current transaction and start a brand new one.' },
+  { id: 'ISO',     answer: 'Isolation.READ_COMMITTED',                               placeholder: 'isolation level', hint: 'Only see data that has been committed — prevents dirty reads.' },
+];
 
-const CODE_TEMPLATE = `@Entity
-public class Doctor {
+const TEMPLATE = `import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Service
+public class PatientService {
 
-    // Generates: doctor_specialties(doctor_id, specialty_id) join table
-    @[[ManyToMany]]
-    @JoinTable(
-        name = [[\"doctor_specialties\"]],
-        joinColumns = @JoinColumn(name = [[\"doctor_id\"]]),
-        inverseJoinColumns = @JoinColumn(name = "specialty_id")
-    )
-    private Set<Specialty> specialties;
-}
+    // Basic — wraps the method: BEGIN → method → COMMIT (or ROLLBACK on RuntimeException)
+    [TXN1]
+    public Patient transferPatient(Long patientId, Long newWardId) {
+        Patient p = patientRepository.findById(patientId).orElseThrow();
+        wardRepository.decrementCapacity(p.getWard().getId());
+        wardRepository.incrementCapacity(newWardId);
+        p.setWard(wardRepository.getReferenceById(newWardId));
+        return patientRepository.save(p);
+        // If ANY line above throws → ROLLBACK, no partial state saved
+    }
 
-@Entity
-public class Specialty {
+    // Rolls back on checked exceptions too
+    [ROLL]
+    public void bookAppointment(Long patientId, Long doctorId) throws SchedulingException {
+        // Checked exception also triggers rollback
+    }
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // Read-only — no dirty checking, faster queries
+    [READONLY]
+    public List<Patient> getPatientsByWard(Long wardId) {
+        return patientRepository.findByWardId(wardId);
+    }
 
-    @ManyToMany(mappedBy = [[\"specialties\"]])
-    private Set<Doctor> doctors;
+    // REQUIRES_NEW — audit log must save even if outer transaction rolls back
+    @Transactional(propagation = [PROP])
+    public void saveAuditLog(String action) {
+        auditRepository.save(new AuditLog(action));
+    }
+
+    // Custom isolation level — prevents dirty reads
+    @Transactional(isolation = [ISO])
+    public BigDecimal calculateTotalFees(Long wardId) {
+        return appointmentRepository.sumFeesByWardId(wardId);
+    }
 }`;
-
-const ANSWERS = ['ManyToMany', '"doctor_specialties"', '"doctor_id"', '"specialties"'];
 
 export default function Level5_18() {
   const [isCorrect, setIsCorrect] = useState(false);
+
   return (
-    <Stage5Shell levelId={18} canProceed={isCorrect} conceptReveal={SUPPORT.reveal}>
-      <div className="jpa-container">
-        <div className="jpa-brief">
-          <div className="jpa-brief-tag">🐘 Stage 5 · Level 5.18 · FILL</div>
-          <h2>@ManyToMany — Join Tables in JPA</h2>
-          <p>Many doctors can have many specialties. Many specialties can belong to many doctors. Neither table holds the FK — a third join table holds both.</p>
-        </div>
-
-        <div className="jpa-ref">
-          <div className="jpa-ref-label">The join table JPA generates</div>
-          <div className="jpa-ref-grid">
-            {[
-              ['doctor_specialties','Auto-created join table'],
-              ['doctor_id BIGINT FK','References doctors(id)'],
-              ['specialty_id BIGINT FK','References specialties(id)'],
-              ['PRIMARY KEY (doctor_id, specialty_id)','Composite PK prevents duplicate links'],
-            ].map(([sig,note])=>(
-              <div key={sig} className="jpa-ref-row"><code className="jpa-sig">{sig}</code><span className="jpa-note">{note}</span></div>
-            ))}
-          </div>
-        </div>
-
-        <FillEditor template={CODE_TEMPLATE} answers={ANSWERS} language="java" onCorrect={() => setIsCorrect(true)} />
+    <Stage5Shell levelId={18} canProceed={isCorrect}
+      conceptReveal={[
+        { label: 'Default Rollback Behaviour', detail: '@Transactional only rolls back on RuntimeException (and its subclasses) by default. Checked exceptions (IOException, SchedulingException) do NOT trigger rollback unless you specify rollbackOn=Exception.class. This catches many developers by surprise.' },
+        { label: 'readOnly = true', detail: 'Marks the transaction as read-only. Hibernate skips dirty checking (tracking entity changes), which reduces memory and CPU overhead. Use on all read-only service methods — it\'s a free optimisation.' },
+        { label: 'Propagation.REQUIRES_NEW', detail: 'The current transaction is suspended. A new transaction begins, commits or rolls back independently, then the original continues. Use for audit logs, notifications — things that must save even if the main operation fails.' },
+      ]}
+    >
+      <div className="s5-intro">
+        <h1>@Transactional</h1>
+        <p className="s5-tagline">🔒 Spring\'s wrapper around SQL BEGIN / COMMIT / ROLLBACK.</p>
+        <p className="s5-why">
+          In Stage 4 you put @Transactional on repository methods. Here you understand
+          the full API — rollbackOn, readOnly, propagation, isolation — and when each matters.
+        </p>
       </div>
+
+      <table className="s5-table">
+        <thead><tr><th>Attribute</th><th>Default</th><th>Change When</th></tr></thead>
+        <tbody>
+          {[
+            ['rollbackOn','RuntimeException','Checked exceptions should also roll back'],
+            ['readOnly','false','Method only reads — enable for all findBy methods'],
+            ['propagation','REQUIRED (join existing)','Need a fresh independent transaction (audit)'],
+            ['isolation','DEFAULT (DB default)','Need to prevent dirty/phantom reads'],
+            ['timeout','-1 (none)','Query should fail after N seconds'],
+          ].map(([a,d,w],i)=>(
+            <tr key={i}>
+              <td style={{color:'#818cf8'}}><code>{a}</code></td>
+              <td style={{color:'#94a3b8',fontSize:13}}>{d}</td>
+              <td style={{color:'#64748b',fontSize:13}}>{w}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <FillEditor template={TEMPLATE} blanks={BLANKS} onAllCorrect={() => setIsCorrect(true)} />
     </Stage5Shell>
   );
 }

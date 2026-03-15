@@ -1,80 +1,74 @@
-// src/screens/stage5/Level5_13.jsx — @Column, @Id, @GeneratedValue (FILL)
+// src/screens/stage5/Level5_13.jsx — @ManyToOne & @OneToMany (FILL, Java)
 import { useState } from 'react';
 import Stage5Shell from './Stage5Shell';
-import FillEditor from '../../components/FillEditor';
-import './Level5_13.css';
+import FillEditor from '../stage2/FillEditor';
 
-const SUPPORT = {
-  reveal: {
-    concept: '@Column Mapping',
-    whatYouLearned: '@Column gives you fine-grained control over how a field maps to a database column — name, nullability, length, uniqueness. Without @Column, JPA uses the field name as the column name.',
-    realWorldUse: 'When your DB column name differs from your Java field name, @Column(name=) bridges the gap. @Column(unique=true) creates a UNIQUE INDEX. @Column(length=) sets VARCHAR length.',
-    developerSays: 'Always set nullable=false on required fields. It enforces NOT NULL at the DB level — a second line of defence after your @NotNull Bean Validation.',
-  },
-};
+const BLANKS = [
+  { id: 'MTO',      answer: '@ManyToOne',                               placeholder: 'many patients → one ward', hint: 'Puts the foreign key column on this side (patient table).' },
+  { id: 'FETCH',    answer: 'FetchType.LAZY',                           placeholder: 'load ward only when accessed', hint: 'Don\'t load the Ward until patient.getWard() is called.' },
+  { id: 'JCOL',     answer: '@JoinColumn(name = "ward_id")',            placeholder: '@JoinColumn', hint: 'Names the foreign key column ward_id in the patient table.' },
+  { id: 'OTM',      answer: '@OneToMany(mappedBy = "ward")',            placeholder: 'one ward → many patients', hint: 'mappedBy must match the field name in Patient that owns the FK.' },
+  { id: 'LIST',     answer: 'List<Patient>',                            placeholder: 'collection type', hint: 'The ward has many patients — store them in a List.' },
+  { id: 'CASCADE',  answer: 'CascadeType.ALL',                          placeholder: 'cascade operations', hint: 'Saving/deleting a Ward also saves/deletes its Patients.' },
+];
 
-const CODE_TEMPLATE = `@Entity
-@Table(name = "doctors")
-public class Doctor {
+const TEMPLATE = `import jakarta.persistence.*;
+import java.util.List;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+// The PATIENT side — owns the foreign key
+@Entity
+@Table(name = "patients")
+public class Patient {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // Column name differs from field name
-    @Column(name = "full_name", nullable = [[false]], length = [[100]])
     private String name;
 
-    // Must be unique across all rows
-    @Column(name = "license_number", unique = [[true]], nullable = false)
-    private String licenseNumber;
+    // Many patients → one ward (FK lives here: ward_id column)
+    [MTO](fetch = [FETCH])
+    [JCOL]
+    private Ward ward;
+}
 
-    // Optional — column can be null
-    @Column(name = "department", [[nullable = true]])
-    private String department;
+// The WARD side — inverse side, no extra column
+@Entity
+@Table(name = "wards")
+public class Ward {
 
-    // Maps to INT DEFAULT 0
-    @Column(name = "patient_count",
-            columnDefinition = [[\"INT DEFAULT 0\"]])
-    private int patientCount;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    // One ward → many patients
+    [OTM](cascade = [CASCADE])
+    private [LIST] patients;
 }`;
-
-const ANSWERS = ['false', '100', 'true', 'nullable = true', '"INT DEFAULT 0"'];
 
 export default function Level5_13() {
   const [isCorrect, setIsCorrect] = useState(false);
 
   return (
-    <Stage5Shell levelId={13} canProceed={isCorrect} conceptReveal={SUPPORT.reveal}>
-      <div className="jpa-container">
-        <div className="jpa-brief">
-          <div className="jpa-brief-tag">🐘 Stage 5 · Level 5.13 · FILL</div>
-          <h2>@Column — Fine-Grained Column Control</h2>
-          <p>Without <code>@Column</code>, JPA uses the field name directly. With <code>@Column</code>, you control the name, nullability, length, and uniqueness — matching your SQL schema exactly.</p>
-        </div>
-
-        <div className="jpa-ref">
-          <div className="jpa-ref-label">@Column attributes</div>
-          <div className="jpa-ref-grid">
-            {[
-              ['name = "col_name"',          'Override the column name'],
-              ['nullable = false',            'Generates NOT NULL constraint'],
-              ['unique = true',              'Generates UNIQUE INDEX'],
-              ['length = 100',              'Sets VARCHAR(100) — default 255'],
-              ['columnDefinition = "..."',   'Raw SQL for the column type'],
-              ['insertable / updatable',     'Control whether JPA includes in INSERT/UPDATE'],
-            ].map(([sig,note])=>(
-              <div key={sig} className="jpa-ref-row"><code className="jpa-sig">{sig}</code><span className="jpa-note">{note}</span></div>
-            ))}
-          </div>
-        </div>
-
-        <FillEditor template={CODE_TEMPLATE} answers={ANSWERS} language="java" onCorrect={() => setIsCorrect(true)} />
-
-        <div className="jpa-bridge">
-          <strong>Rule of thumb:</strong> if a field MUST have a value in your domain, add <code>nullable = false</code>. This creates NOT NULL in SQL and pairs with <code>@NotNull</code> in your DTO validation for a double layer of protection.
-        </div>
+    <Stage5Shell levelId={13} canProceed={isCorrect}
+      conceptReveal={[
+        { label: 'Who Owns the FK?', detail: '@ManyToOne always goes on the side that has the foreign key column in its table. Patient has ward_id → Patient owns the relationship. Ward has mappedBy="ward" → Ward is the inverse side, no extra column.' },
+        { label: 'FetchType.LAZY vs EAGER', detail: 'LAZY: load the related entity only when accessed — default for @OneToMany. EAGER: load immediately with a JOIN — default for @ManyToOne. Always prefer LAZY for @OneToMany to avoid loading thousands of patients when you just need a ward name.' },
+        { label: 'CascadeType.ALL', detail: 'ALL means: save/delete/persist/merge/refresh all cascade to the children. Useful when patients are owned by a ward and should be deleted with it. Avoid on @ManyToOne — you don\'t want deleting a patient to delete the ward.' },
+      ]}
+    >
+      <div className="s5-intro">
+        <h1>@ManyToOne & @OneToMany</h1>
+        <p className="s5-tagline">🔗 The most common JPA relationship. Patient → Ward.</p>
+        <p className="s5-why">Every foreign key in your schema becomes a @ManyToOne in Java. Understanding which side owns the FK prevents duplicate columns and N+1 bugs.</p>
       </div>
+
+      <div className="s5-info">
+        <p>
+          <strong style={{color:'#818cf8'}}>Rule:</strong> The table with the foreign key column gets @ManyToOne.
+          The other side gets @OneToMany(mappedBy). Only ONE side can own the relationship.
+        </p>
+      </div>
+
+      <FillEditor template={TEMPLATE} blanks={BLANKS} onAllCorrect={() => setIsCorrect(true)} />
     </Stage5Shell>
   );
 }

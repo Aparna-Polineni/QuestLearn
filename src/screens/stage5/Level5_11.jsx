@@ -1,103 +1,69 @@
-// src/screens/stage5/Level5_11.jsx — Indexes (FILL)
+// src/screens/stage5/Level5_11.jsx — @Entity Deep Dive (FILL, Java)
 import { useState } from 'react';
 import Stage5Shell from './Stage5Shell';
-import './Level5_11.css';
+import FillEditor from '../stage2/FillEditor';
 
-const SUPPORT = {
-  reveal: {
-    concept: 'Database Indexes',
-    whatYouLearned: 'An index is a sorted data structure that lets MySQL find rows without scanning the whole table. Like a book index — go straight to the page instead of reading every page. The trade-off: indexes speed up reads but slow down writes.',
-    realWorldUse: 'findByWard() on a patients table with 1 million rows is instant with an index, 2 seconds without. Spring Data @Column(index=true) or @Index on @Table creates these automatically.',
-    developerSays: 'Index columns you filter or join on frequently. Don\'t index everything — each index costs write performance. Primary keys are indexed automatically. Foreign keys should almost always have an index.',
-  },
-};
+const BLANKS = [
+  { id: 'ENTITY',      answer: '@Entity',                          placeholder: 'marks class as DB table', hint: 'Tells JPA this class maps to a database table.' },
+  { id: 'TABLE',       answer: '@Table(name="patients")',          placeholder: '@Table annotation',        hint: 'Specifies the exact table name. Without it, JPA uses the class name.' },
+  { id: 'ID',          answer: '@Id',                              placeholder: 'primary key annotation',   hint: 'Marks the field as the primary key column.' },
+  { id: 'GENVAL',      answer: '@GeneratedValue(strategy = GenerationType.IDENTITY)', placeholder: '@GeneratedValue', hint: 'Database auto-increments the ID. Use IDENTITY for MySQL.' },
+  { id: 'COLNAME',     answer: '@Column(name = "full_name", nullable = false, length = 100)', placeholder: '@Column', hint: 'Maps field to column "full_name", NOT NULL, VARCHAR(100).' },
+  { id: 'COLDATE',     answer: '@Column(name = "admitted_at")',    placeholder: '@Column for date',         hint: 'Maps the field to the admitted_at column.' },
+];
 
-const BLANKS = {
-  b1: { answer: 'CREATE INDEX',  hint: 'Two words to create an index' },
-  b2: { answer: 'idx_ward',      hint: 'Index name convention: idx_columnname' },
-  b3: { answer: 'ON',            hint: 'Tells MySQL which table+column to index' },
-  b4: { answer: 'patients',      hint: 'The table being indexed' },
-  b5: { answer: 'ward',          hint: 'The column being indexed' },
-  b6: { answer: 'CREATE UNIQUE INDEX', hint: 'Three words — like CREATE INDEX but enforces no duplicates' },
-};
+const TEMPLATE = `import jakarta.persistence.*;
+import java.time.LocalDate;
+
+[ENTITY]
+[TABLE]
+public class Patient {
+
+    [ID]
+    [GENVAL]
+    private Long id;
+
+    [COLNAME]
+    private String name;
+
+    [COLDATE]
+    private LocalDate admittedAt;
+
+    private boolean confirmed;  // maps to confirmed column automatically
+
+    // Getters & setters omitted for brevity
+}`;
 
 export default function Level5_11() {
-  const [vals, setVals] = useState(Object.fromEntries(Object.keys(BLANKS).map(k=>[k,''])));
-  const [checked, setChecked] = useState(false);
-  const [results, setResults] = useState({});
-
-  function check() {
-    const r = {};
-    Object.keys(BLANKS).forEach(k => { r[k] = vals[k].trim().toUpperCase() === BLANKS[k].answer.toUpperCase(); });
-    setResults(r); setChecked(true);
-  }
-  const allCorrect = checked && Object.keys(BLANKS).every(k=>results[k]);
-  const B = (key,w=140) => {
-    const cls = !checked ? 'blank' : results[key] ? 'blank blank--ok' : 'blank blank--err';
-    return <input style={{minWidth:w}} className={cls} value={vals[key]} placeholder="____" onChange={e=>setVals(p=>({...p,[key]:e.target.value}))} spellCheck={false}/>;
-  };
+  const [isCorrect, setIsCorrect] = useState(false);
 
   return (
-    <Stage5Shell levelId={11} canProceed={allCorrect} conceptReveal={SUPPORT.reveal}>
-      <div className="l511-container">
-        <div className="l511-brief">
-          <div className="l511-brief-tag">🐘 Stage 5 · Level 5.11 · FILL</div>
-          <h2>Indexes — Making Queries Fast</h2>
-          <p>Without an index, MySQL reads every row to find matches. With an index on the right column, it jumps directly to the result. This is the difference between milliseconds and seconds at scale.</p>
-        </div>
-
-        <div className="l511-compare">
-          <div className="l511-ccard l511-slow">
-            <div className="l511-clabel">⚡ No index — 1M rows</div>
-            <code>Full table scan — reads every row</code>
-            <div className="l511-ctime">~2,000ms</div>
-          </div>
-          <div className="l511-ccard l511-fast">
-            <div className="l511-clabel">⚡ With index on ward</div>
-            <code>B-tree lookup — jumps to matches</code>
-            <div className="l511-ctime">~1ms</div>
-          </div>
-        </div>
-
-        <div className="l511-exercise">
-          <div className="l511-ex-header"><span className="l511-ex-label">✏️ Fill in the blanks</span></div>
-          <div className="l511-sql-block">
-            <span className="cm">{'-- 1) Index the ward column — common filter\n'}</span>
-            {B('b1',150)}<span className="op"> </span>{B('b2',110)}<span className="op">{'\n  '}</span>
-            {B('b3',50)}<span className="op"> </span>{B('b4',90)}<span className="op"> {'('}</span>{B('b5',80)}<span className="op">{');\n\n'}</span>
-
-            <span className="cm">{'-- 2) Unique index — no duplicate emails\n'}</span>
-            {B('b6',200)}<span className="op"> idx_email</span><span className="op">{'\n  ON patients (email);\n\n'}</span>
-
-            <span className="cm">{'-- 3) Composite index — common combined filter\n'}</span>
-            <span className="kw">CREATE INDEX </span><span className="op">idx_ward_priority</span>
-            <span className="op">{'\n  ON patients (ward, priority);\n'}</span>
-          </div>
-          {checked && !allCorrect && (
-            <div className="l511-hints">
-              {Object.keys(BLANKS).filter(k=>!results[k]).map(k=>(
-                <div key={k} className="l511-hint">💡 {BLANKS[k].hint}</div>
-              ))}
-            </div>
-          )}
-          <button className="l511-check-btn" onClick={check}>{checked?'Check Again':'Check My Answer'}</button>
-        </div>
-
-        <div className="l511-rules">
-          <div className="l511-rules-title">When to add an index</div>
-          {[
-            ['✓ Add index', 'Columns in WHERE, JOIN ON, or ORDER BY clauses'],
-            ['✓ Add index', 'Foreign key columns (ward_id, doctor_id)'],
-            ['✗ Skip index', 'Columns rarely used in queries'],
-            ['✗ Skip index', 'Boolean or low-cardinality columns (active: true/false)'],
-          ].map(([tag,note],i)=>(
-            <div key={i} className="l511-rule">
-              <span className={`l511-rtag ${tag.startsWith('✓')?'ok':'skip'}`}>{tag}</span>
-              <span className="l511-rnote">{note}</span>
-            </div>
-          ))}
-        </div>
+    <Stage5Shell levelId={11} canProceed={isCorrect}
+      conceptReveal={[
+        { label: '@Entity vs @Table', detail: '@Entity marks the class as a JPA entity. @Table(name=...) overrides the table name. Without @Table, JPA uses the class name lowercased — Patient → patient. Explicit is always better.' },
+        { label: '@Column options', detail: 'name: override column name. nullable=false: adds NOT NULL. length=100: VARCHAR(100). unique=true: UNIQUE INDEX. insertable=false: read-only column. precision/scale for DECIMAL.' },
+        { label: '@GeneratedValue strategies', detail: 'IDENTITY: database auto-increments (MySQL, PostgreSQL). SEQUENCE: uses a DB sequence object (PostgreSQL preferred). AUTO: JPA picks — avoid this, be explicit. TABLE: uses a separate table — slow, avoid.' },
+      ]}
+    >
+      <div className="s5-intro">
+        <h1>@Entity Deep Dive</h1>
+        <p className="s5-tagline">🗃️ The full mapping from Java class to database table.</p>
+        <p className="s5-why">In Stage 4 you used @Entity quickly. Here you learn every annotation and option — so you can control exactly what Hibernate generates.</p>
       </div>
+
+      <table className="s5-table">
+        <thead><tr><th>Annotation</th><th>SQL Equivalent</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>@Entity</code></td><td><code>CREATE TABLE patient</code></td><td style={{color:'#94a3b8'}}>Maps class to table</td></tr>
+          <tr><td><code>@Table(name="patients")</code></td><td><code>CREATE TABLE patients</code></td><td style={{color:'#94a3b8'}}>Custom table name</td></tr>
+          <tr><td><code>@Id</code></td><td><code>PRIMARY KEY</code></td><td style={{color:'#94a3b8'}}>Primary key column</td></tr>
+          <tr><td><code>@GeneratedValue(IDENTITY)</code></td><td><code>AUTO_INCREMENT</code></td><td style={{color:'#94a3b8'}}>DB assigns the id</td></tr>
+          <tr><td><code>@Column(nullable=false)</code></td><td><code>NOT NULL</code></td><td style={{color:'#94a3b8'}}>Required field</td></tr>
+          <tr><td><code>@Column(length=100)</code></td><td><code>VARCHAR(100)</code></td><td style={{color:'#94a3b8'}}>Max string length</td></tr>
+        </tbody>
+      </table>
+
+      <FillEditor template={TEMPLATE} blanks={BLANKS} onAllCorrect={() => setIsCorrect(true)} />
     </Stage5Shell>
   );
 }
