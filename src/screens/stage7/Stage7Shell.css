@@ -1,0 +1,91 @@
+/* src/screens/stage7/Stage7Shell.css */
+.s7-shell { display: flex; flex-direction: column; min-height: 100vh; background: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+
+.s7-topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: #1e293b; border-bottom: 1px solid #334155; flex-shrink: 0; }
+.s7-back { background: none; border: 1px solid #475569; color: #94a3b8; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all .2s; }
+.s7-back:hover { border-color: #ef4444; color: #ef4444; }
+.s7-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.s7-stage  { font-weight: 700; font-size: 15px; }
+.s7-sep    { color: #475569; }
+.s7-level  { color: #94a3b8; }
+.s7-title  { color: #e2e8f0; font-weight: 500; }
+
+.s7-mode-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: .5px; }
+.mode-concepts { background: #1e3a5f; color: #60a5fa; }
+.mode-fill     { background: #14532d; color: #4ade80; }
+.mode-build    { background: #3b0764; color: #c084fc; }
+.mode-debug    { background: #450a0a; color: #f87171; }
+
+.s7-content { flex: 1; padding: 32px 24px; max-width: 900px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+.s7-footer { padding: 16px 24px; background: #1e293b; border-top: 1px solid #334155; display: flex; justify-content: flex-end; }
+.s7-proceed-btn { padding: 12px 32px; border: none; border-radius: 8px; color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s; }
+.s7-proceed-btn:disabled { opacity: .5; cursor: not-allowed; }
+.s7-proceed-btn:not(:disabled):hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+/* Shared panels */
+.s7-panel { background: #1e293b; border: 1px solid #334155; border-radius: 10px; margin: 20px 0; overflow: hidden; }
+.s7-panel-header { background: #0f172a; padding: 10px 16px; font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 1px; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 8px; }
+.s7-panel-body { padding: 16px; font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.8; }
+
+/* Blank inputs */
+.s7-blank { display: inline-block; background: #0f172a; border: 1.5px dashed #ef4444; border-radius: 4px; min-width: 90px; padding: 1px 6px; margin: 0 2px; font-family: 'Fira Code', monospace; color: #e2e8f0; font-size: 13px; outline: none; transition: border-color .2s; vertical-align: middle; }
+.s7-blank:focus { border-color: #fca5a5; border-style: solid; }
+.s7-blank.correct   { border-color: #4ade80; border-style: solid; color: #4ade80; }
+.s7-blank.incorrect { border-color: #f87171; border-style: solid; }
+
+/* Syntax */
+.dk  { color: #ef4444; font-weight: 700; }   /* docker keywords */
+.dy  { color: #fbbf24; }                     /* yaml keys */
+.dv  { color: #86efac; }                     /* values/strings */
+.dcm { color: #475569; font-style: italic; } /* comments */
+.dfl { color: #38bdf8; }                     /* flags */
+
+/* Level intro */
+.s7-intro { margin-bottom: 24px; }
+.s7-intro h1 { font-size: 22px; font-weight: 700; color: #e2e8f0; margin: 0 0 8px; }
+.s7-intro .s7-tagline { color: #ef4444; font-size: 14px; font-weight: 600; margin: 0 0 10px; }
+.s7-intro .s7-why { color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0; }
+
+.s7-info { background: #ef444410; border: 1px solid #ef444440; border-radius: 8px; padding: 14px 18px; margin: 16px 0; }
+.s7-info p { color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0; }
+
+.s7-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+.s7-table th { background: #0f172a; color: #ef4444; padding: 8px 12px; text-align: left; border-bottom: 2px solid #334155; }
+.s7-table td { padding: 8px 12px; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
+.s7-table tr:last-child td { border-bottom: none; }
+.s7-table tr:hover td { background: #ffffff06; }
+
+.s7-feedback { padding: 12px 16px; border-radius: 8px; margin: 16px 0; font-size: 14px; font-weight: 500; }
+.s7-feedback.success { background: #14532d40; border: 1px solid #4ade8060; color: #4ade80; }
+.s7-feedback.error   { background: #450a0a40; border: 1px solid #f8717160; color: #f87171; }
+
+.s7-btn { background: #ef4444; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 12px; transition: all .2s; }
+.s7-btn:hover { background: #f87171; }
+.s7-btn.secondary { background: #334155; color: #94a3b8; }
+.s7-btn.secondary:hover { background: #475569; color: #e2e8f0; }
+
+.s7-cards { display: grid; gap: 14px; margin: 20px 0; }
+.s7-card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 18px 20px; border-left: 3px solid #334155; cursor: pointer; transition: all .2s; }
+.s7-card:hover { border-left-color: #ef4444; }
+.s7-card.seen { border-left-color: #ef4444; }
+.s7-card-top { display: flex; justify-content: space-between; align-items: center; }
+.s7-card-title { font-size: 15px; font-weight: 600; color: #e2e8f0; }
+.s7-chevron { color: #ef4444; font-size: 11px; }
+.s7-card-body { color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 12px 0 0; }
+
+.s7-req { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #1e293b; }
+.s7-req:last-child { border-bottom: none; }
+.s7-req-icon { font-size: 14px; width: 18px; flex-shrink: 0; }
+.s7-req-text { color: #cbd5e1; font-size: 13px; }
+
+.s7-editor { width: 100%; min-height: 280px; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 8px; padding: 16px; font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.7; resize: vertical; outline: none; box-sizing: border-box; }
+.s7-editor:focus { border-color: #ef4444; }
+
+.s7-pipeline { display: flex; align-items: center; gap: 0; justify-content: center; flex-wrap: wrap; margin: 24px 0; }
+.s7-pipe-box { background: #1e293b; border: 2px solid #334155; border-radius: 8px; padding: 10px 16px; text-align: center; min-width: 100px; }
+.s7-pipe-box.active { border-color: #ef4444; }
+.s7-pipe-label { font-size: 11px; color: #64748b; margin-bottom: 3px; }
+.s7-pipe-name { font-size: 13px; font-weight: 700; color: #e2e8f0; }
+.s7-pipe-box.active .s7-pipe-name { color: #ef4444; }
+.s7-pipe-arrow { color: #475569; font-size: 18px; padding: 0 6px; }

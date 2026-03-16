@@ -1,9 +1,8 @@
 // src/data/careerPaths.js
-// All career paths with their full curriculum structure
-// Each path has stages, each stage has levels
-// status: 'available' | 'coming-soon'
-
 const careerPaths = [
+
+  // ── AVAILABLE PATHS ────────────────────────────────────────────────────────
+
   {
     id: 'java-fullstack',
     emoji: '☕',
@@ -25,8 +24,8 @@ const careerPaths = [
       { id: '3',   title: 'React Fundamentals',        emoji: '⚛️', levels: 16, color: '#818cf8', description: 'Components, props, hooks, routing, API integration, state management' },
       { id: '4',   title: 'Spring Boot Backend',       emoji: '🍃', levels: 16, color: '#4ade80', description: 'REST API, JPA, relationships, Spring Security, JWT, testing' },
       { id: '5',   title: 'Database & SQL',             emoji: '🐘', levels: 22, color: '#f472b6', description: 'Schema design, queries, Hibernate, migrations' },
-      { id: '6',   title: 'Full Stack Integration',    emoji: '🔗', levels: 14, color: '#fbbf24', description: 'CORS, error handling, file upload, WebSockets' },
-      { id: '7',   title: 'Deployment & DevOps',       emoji: '🚀', levels: 12, color: '#ef4444', description: 'Docker, CI/CD, AWS, monitoring' },
+      { id: '6',   title: 'Full Stack Integration',    emoji: '🔗', levels: 14, color: '#fbbf24', description: 'CORS, error handling, file upload, WebSockets, auth flow' },
+      { id: '7',   title: 'Deployment & DevOps',       emoji: '🚀', levels: 12, color: '#ef4444', description: 'Docker, CI/CD, AWS EC2/RDS, monitoring' },
     ],
   },
 
@@ -53,6 +52,135 @@ const careerPaths = [
       { id: '6', title: 'Next.js & Deployment', emoji: '▲',  levels: 14, color: '#f1f5f9', description: 'SSR, SSG, API routes, Vercel deployment' },
     ],
   },
+
+  {
+    id: 'math-student',
+    emoji: '🔢',
+    title: 'Math for Students',
+    subtitle: 'Finally understand the why behind every equation',
+    color: '#a78bfa',
+    gradient: 'linear-gradient(135deg, #a78bfa, #8b5cf6)',
+    level: 'Ages 13–19',
+    duration: 'Your own pace',
+    status: 'available',
+    badge: '🎒 For School',
+    skills: ['Algebra', 'Geometry', 'Trigonometry', 'Calculus', 'Statistics'],
+    outcome: 'Confidence in every math topic — from GCSE to A-Level',
+    totalLevels: 84,
+    stages: [
+      { id: '1', title: 'Number Sense',             emoji: '🔢', levels: 10, color: '#a78bfa', description: 'Fractions, decimals, percentages, ratios' },
+      { id: '2', title: 'Algebra Foundations',      emoji: '🔤', levels: 16, color: '#f97316', description: 'Variables, equations, inequalities, functions' },
+      { id: '3', title: 'Geometry',                 emoji: '📐', levels: 14, color: '#38bdf8', description: 'Shapes, angles, area, volume, Pythagoras' },
+      { id: '4', title: 'Trigonometry',             emoji: '📈', levels: 12, color: '#4ade80', description: 'Sin, cos, tan, unit circle, identities' },
+      { id: '5', title: 'Statistics & Probability', emoji: '🎲', levels: 14, color: '#fbbf24', description: 'Data, distributions, probability, hypothesis' },
+      { id: '6', title: 'Calculus Intro',           emoji: '∫',  levels: 18, color: '#f472b6', description: 'Limits, derivatives, integration, applications' },
+    ],
+  },
+
+  // ── SET A: NEW PATHS ───────────────────────────────────────────────────────
+
+  {
+    id: 'data-engineer',
+    emoji: '🛢️',
+    title: 'Data Engineer',
+    subtitle: 'Build the pipelines that power data-driven companies',
+    color: '#06b6d4',
+    gradient: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+    level: 'Beginner → Job Ready',
+    duration: '6–8 months',
+    status: 'available',
+    badge: '📊 High Demand',
+    skills: ['SQL', 'Python', 'Pandas', 'Airflow', 'Spark', 'AWS'],
+    outcome: 'Junior Data Engineer — avg. $80k starting salary',
+    totalLevels: 84,
+    stages: [
+      { id: '1', title: 'The Data Problem',       emoji: '🔍', levels: 8,  color: '#06b6d4', description: 'Why data engineering exists, pipelines, schemas, data quality' },
+      { id: '2', title: 'SQL & Databases',         emoji: '🗄️', levels: 14, color: '#818cf8', description: 'Querying messy datasets, joins, window functions, optimisation' },
+      { id: '3', title: 'Python for Data',         emoji: '🐍', levels: 14, color: '#fbbf24', description: 'Pandas, data cleaning, transformation, file formats' },
+      { id: '4', title: 'Data Pipelines',          emoji: '🔧', levels: 12, color: '#4ade80', description: 'Airflow DAGs, scheduling, error handling, monitoring' },
+      { id: '5', title: 'Scale with Spark',        emoji: '⚡', levels: 12, color: '#f97316', description: 'When Pandas breaks — distributed processing with PySpark' },
+      { id: '6', title: 'Streaming Data',          emoji: '📡', levels: 12, color: '#f472b6', description: 'Kafka, real-time ingestion, stream processing' },
+      { id: '7', title: 'Cloud & Deploy',          emoji: '☁️', levels: 12, color: '#ef4444', description: 'AWS S3/Glue/Redshift — deploy a production pipeline' },
+    ],
+  },
+
+  {
+    id: 'ml-ai-engineer',
+    emoji: '🤖',
+    title: 'ML/AI Engineer',
+    subtitle: 'Build intelligent systems that learn from data',
+    color: '#8b5cf6',
+    gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+    level: 'Intermediate',
+    duration: '8–10 months',
+    status: 'available',
+    badge: '🔮 Future-Proof',
+    skills: ['Python', 'scikit-learn', 'PyTorch', 'MLflow', 'FastAPI', 'AWS'],
+    outcome: 'Junior ML Engineer — avg. $95k starting salary',
+    totalLevels: 112,
+    stages: [
+      { id: '1', title: 'AI Problem Framing',    emoji: '🧠', levels: 8,  color: '#8b5cf6', description: 'When to use ML, data requirements, problem types, success metrics' },
+      { id: '2', title: 'Python & Math for ML',  emoji: '🐍', levels: 14, color: '#fbbf24', description: 'NumPy, Pandas, linear algebra, statistics, visualisation' },
+      { id: '3', title: 'Classical ML',          emoji: '📐', levels: 16, color: '#4ade80', description: 'Regression, classification, clustering, evaluation metrics' },
+      { id: '4', title: 'Neural Networks',       emoji: '🕸️', levels: 16, color: '#f472b6', description: 'Perceptrons, backprop, PyTorch from scratch' },
+      { id: '5', title: 'Deep Learning',         emoji: '🔬', levels: 18, color: '#38bdf8', description: 'CNNs, RNNs, transformers, transfer learning' },
+      { id: '6', title: 'NLP & Vision',          emoji: '👁️', levels: 16, color: '#f97316', description: 'Text embeddings, image classification, BERT, CLIP' },
+      { id: '7', title: 'MLOps',                 emoji: '⚙️', levels: 12, color: '#06b6d4', description: 'MLflow, model serving, FastAPI, monitoring, retraining' },
+      { id: '8', title: 'AI Product Capstone',   emoji: '🏆', levels: 12, color: '#ef4444', description: '3 end-to-end projects: recommender, classifier, LLM app' },
+    ],
+  },
+
+  {
+    id: 'cyber-security',
+    emoji: '🔐',
+    title: 'Cyber Security Analyst',
+    subtitle: 'Defend systems, hunt threats, protect data',
+    color: '#10b981',
+    gradient: 'linear-gradient(135deg, #10b981, #059669)',
+    level: 'Beginner → Job Ready',
+    duration: '6–8 months',
+    status: 'available',
+    badge: '🛡️ Critical Skills',
+    skills: ['Linux', 'Networking', 'Wireshark', 'Metasploit', 'SIEM', 'Python'],
+    outcome: 'Junior Security Analyst — avg. $72k starting salary',
+    totalLevels: 84,
+    stages: [
+      { id: '1', title: 'Security Mindset',       emoji: '🧠', levels: 8,  color: '#10b981', description: 'CIA triad, threat modelling, attack surfaces, attacker mindset' },
+      { id: '2', title: 'Linux & Networking',     emoji: '🐧', levels: 14, color: '#06b6d4', description: 'Shell commands, file permissions, TCP/IP, DNS, ports' },
+      { id: '3', title: 'Threat Analysis',        emoji: '🔎', levels: 12, color: '#fbbf24', description: 'MITRE ATT&CK, malware types, social engineering, CVEs' },
+      { id: '4', title: 'Ethical Hacking',        emoji: '💻', levels: 14, color: '#f97316', description: 'Recon, scanning, exploitation basics, Metasploit, CTF skills' },
+      { id: '5', title: 'SIEM & Monitoring',      emoji: '📊', levels: 12, color: '#818cf8', description: 'Log analysis, Splunk, alert rules, incident detection' },
+      { id: '6', title: 'Incident Response',      emoji: '🚨', levels: 12, color: '#ef4444', description: 'IR lifecycle, forensics, containment, reporting' },
+      { id: '7', title: 'Security Audit',         emoji: '✅', levels: 12, color: '#4ade80', description: 'Compliance, pen test report, risk assessment, portfolio' },
+    ],
+  },
+
+  {
+    id: 'ux-ui-designer',
+    emoji: '🎨',
+    title: 'UX/UI Designer',
+    subtitle: 'Design products people love to use',
+    color: '#ec4899',
+    gradient: 'linear-gradient(135deg, #ec4899, #db2777)',
+    level: 'Beginner → Job Ready',
+    duration: '5–7 months',
+    status: 'available',
+    badge: '✨ Creative Tech',
+    skills: ['Figma', 'User Research', 'Wireframing', 'Prototyping', 'Design Systems'],
+    outcome: 'Junior UX/UI Designer — avg. $65k starting salary',
+    totalLevels: 70,
+    stages: [
+      { id: '1', title: 'Design Thinking',        emoji: '💡', levels: 8,  color: '#ec4899', description: 'Empathy, problem definition, ideation, testing, iteration' },
+      { id: '2', title: 'Figma Foundations',      emoji: '🖼️', levels: 10, color: '#f97316', description: 'Frames, auto-layout, components, styles, prototyping basics' },
+      { id: '3', title: 'User Research',          emoji: '🔍', levels: 10, color: '#fbbf24', description: 'Interviews, surveys, usability testing, affinity mapping' },
+      { id: '4', title: 'Wireframing',            emoji: '📐', levels: 10, color: '#06b6d4', description: 'Information architecture, flows, low/high fidelity wireframes' },
+      { id: '5', title: 'Visual Design',          emoji: '🎨', levels: 10, color: '#818cf8', description: 'Typography, colour theory, spacing, accessibility, brand' },
+      { id: '6', title: 'Design Systems',         emoji: '🧩', levels: 10, color: '#4ade80', description: 'Component libraries, tokens, documentation, Storybook' },
+      { id: '7', title: 'Portfolio Capstone',     emoji: '🏆', levels: 12, color: '#ef4444', description: '3 case studies: mobile app, web platform, redesign challenge' },
+    ],
+  },
+
+  // ── SET B: EXISTING COMING-SOON PATHS (updated) ────────────────────────────
 
   {
     id: 'data-analytics',
@@ -181,29 +309,6 @@ const careerPaths = [
     ],
   },
 
-  {
-    id: 'math-student',
-    emoji: '🔢',
-    title: 'Math for Students',
-    subtitle: 'Finally understand the why behind every equation',
-    color: '#a78bfa',
-    gradient: 'linear-gradient(135deg, #a78bfa, #8b5cf6)',
-    level: 'Ages 13–19',
-    duration: 'Your own pace',
-    status: 'available',
-    badge: '🎒 For School',
-    skills: ['Algebra', 'Geometry', 'Trigonometry', 'Calculus', 'Statistics'],
-    outcome: 'Confidence in every math topic — from GCSE to A-Level',
-    totalLevels: 84,
-    stages: [
-      { id: '1', title: 'Number Sense',             emoji: '🔢', levels: 10, color: '#a78bfa', description: 'Fractions, decimals, percentages, ratios' },
-      { id: '2', title: 'Algebra Foundations',      emoji: '🔤', levels: 16, color: '#f97316', description: 'Variables, equations, inequalities, functions' },
-      { id: '3', title: 'Geometry',                 emoji: '📐', levels: 14, color: '#38bdf8', description: 'Shapes, angles, area, volume, Pythagoras' },
-      { id: '4', title: 'Trigonometry',             emoji: '📈', levels: 12, color: '#4ade80', description: 'Sin, cos, tan, unit circle, identities' },
-      { id: '5', title: 'Statistics & Probability', emoji: '🎲', levels: 14, color: '#fbbf24', description: 'Data, distributions, probability, hypothesis' },
-      { id: '6', title: 'Calculus Intro',           emoji: '∫',  levels: 18, color: '#f472b6', description: 'Limits, derivatives, integration, applications' },
-    ],
-  },
 ];
 
 export default careerPaths;

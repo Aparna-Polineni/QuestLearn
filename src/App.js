@@ -121,6 +121,72 @@ import Level5_18 from './screens/stage5/Level5_18';
 import Level5_19 from './screens/stage5/Level5_19';
 import Level5_20 from './screens/stage5/Level5_20';
 import Level5_21 from './screens/stage5/Level5_21';
+import Level6_0  from './screens/stage6/Level6_0';
+import Level6_1  from './screens/stage6/Level6_1';
+import Level6_2  from './screens/stage6/Level6_2';
+import Level6_3  from './screens/stage6/Level6_3';
+import Level6_4  from './screens/stage6/Level6_4';
+import Level6_5  from './screens/stage6/Level6_5';
+import Level6_6  from './screens/stage6/Level6_6';
+import Level6_7  from './screens/stage6/Level6_7';
+import Level6_8  from './screens/stage6/Level6_8';
+import Level6_9  from './screens/stage6/Level6_9';
+import Level6_10 from './screens/stage6/Level6_10';
+import Level6_11 from './screens/stage6/Level6_11';
+import Level6_12 from './screens/stage6/Level6_12';
+import Level6_13 from './screens/stage6/Level6_13';
+import Level7_0  from './screens/stage7/Level7_0';
+import Level7_1  from './screens/stage7/Level7_1';
+import Level7_2  from './screens/stage7/Level7_2';
+import Level7_3  from './screens/stage7/Level7_3';
+import Level7_4  from './screens/stage7/Level7_4';
+import Level7_5  from './screens/stage7/Level7_5';
+import Level7_6  from './screens/stage7/Level7_6';
+import Level7_7  from './screens/stage7/Level7_7';
+import Level7_8  from './screens/stage7/Level7_8';
+import Level7_9  from './screens/stage7/Level7_9';
+import Level7_10 from './screens/stage7/Level7_10';
+import Level7_11 from './screens/stage7/Level7_11';
+
+// ── Data Engineer Path ─────────────────────────────────────────────────────
+import DE1_Level0 from './screens/data-engineer/stage1/DE1_Level0';
+import DE1_Level1 from './screens/data-engineer/stage1/DE1_Level1';
+import DE1_Level2 from './screens/data-engineer/stage1/DE1_Level2';
+import DE1_Level3 from './screens/data-engineer/stage1/DE1_Level3';
+import DE1_Level4 from './screens/data-engineer/stage1/DE1_Level4';
+import DE1_Level5 from './screens/data-engineer/stage1/DE1_Level5';
+import DE1_Level6 from './screens/data-engineer/stage1/DE1_Level6';
+import DE1_Level7 from './screens/data-engineer/stage1/DE1_Level7';
+
+// ── ML/AI Engineer Path ────────────────────────────────────────────────────
+import ML1_Level0 from './screens/ml-ai-engineer/stage1/ML1_Level0';
+import ML1_Level1 from './screens/ml-ai-engineer/stage1/ML1_Level1';
+import ML1_Level2 from './screens/ml-ai-engineer/stage1/ML1_Level2';
+import ML1_Level3 from './screens/ml-ai-engineer/stage1/ML1_Level3';
+import ML1_Level4 from './screens/ml-ai-engineer/stage1/ML1_Level4';
+import ML1_Level5 from './screens/ml-ai-engineer/stage1/ML1_Level5';
+import ML1_Level6 from './screens/ml-ai-engineer/stage1/ML1_Level6';
+import ML1_Level7 from './screens/ml-ai-engineer/stage1/ML1_Level7';
+
+// ── Cyber Security Path ────────────────────────────────────────────────────
+import CY1_Level0 from './screens/cyber-security/stage1/CY1_Level0';
+import CY1_Level1 from './screens/cyber-security/stage1/CY1_Level1';
+import CY1_Level2 from './screens/cyber-security/stage1/CY1_Level2';
+import CY1_Level3 from './screens/cyber-security/stage1/CY1_Level3';
+import CY1_Level4 from './screens/cyber-security/stage1/CY1_Level4';
+import CY1_Level5 from './screens/cyber-security/stage1/CY1_Level5';
+import CY1_Level6 from './screens/cyber-security/stage1/CY1_Level6';
+import CY1_Level7 from './screens/cyber-security/stage1/CY1_Level7';
+
+// ── UX/UI Designer Path ────────────────────────────────────────────────────
+import UX1_Level0 from './screens/ux-ui-designer/stage1/UX1_Level0';
+import UX1_Level1 from './screens/ux-ui-designer/stage1/UX1_Level1';
+import UX1_Level2 from './screens/ux-ui-designer/stage1/UX1_Level2';
+import UX1_Level3 from './screens/ux-ui-designer/stage1/UX1_Level3';
+import UX1_Level4 from './screens/ux-ui-designer/stage1/UX1_Level4';
+import UX1_Level5 from './screens/ux-ui-designer/stage1/UX1_Level5';
+import UX1_Level6 from './screens/ux-ui-designer/stage1/UX1_Level6';
+import UX1_Level7 from './screens/ux-ui-designer/stage1/UX1_Level7';
 
 function ComingSoon({ label }) {
   return (
@@ -268,6 +334,74 @@ function AppRoutes() {
       <Route path="/stage/5/level/19" element={<R><Level5_19 /></R>} />
       <Route path="/stage/5/level/20" element={<R><Level5_20 /></R>} />
       <Route path="/stage/5/level/21" element={<R><Level5_21 /></R>} />
+
+      <Route path="/stage/6/level/0"  element={<R><Level6_0  /></R>} />
+      <Route path="/stage/6/level/1"  element={<R><Level6_1  /></R>} />
+      <Route path="/stage/6/level/2"  element={<R><Level6_2  /></R>} />
+      <Route path="/stage/6/level/3"  element={<R><Level6_3  /></R>} />
+      <Route path="/stage/6/level/4"  element={<R><Level6_4  /></R>} />
+      <Route path="/stage/6/level/5"  element={<R><Level6_5  /></R>} />
+      <Route path="/stage/6/level/6"  element={<R><Level6_6  /></R>} />
+      <Route path="/stage/6/level/7"  element={<R><Level6_7  /></R>} />
+      <Route path="/stage/6/level/8"  element={<R><Level6_8  /></R>} />
+      <Route path="/stage/6/level/9"  element={<R><Level6_9  /></R>} />
+      <Route path="/stage/6/level/10" element={<R><Level6_10 /></R>} />
+      <Route path="/stage/6/level/11" element={<R><Level6_11 /></R>} />
+      <Route path="/stage/6/level/12" element={<R><Level6_12 /></R>} />
+      <Route path="/stage/6/level/13" element={<R><Level6_13 /></R>} />
+
+      <Route path="/stage/7/level/0"  element={<R><Level7_0  /></R>} />
+      <Route path="/stage/7/level/1"  element={<R><Level7_1  /></R>} />
+      <Route path="/stage/7/level/2"  element={<R><Level7_2  /></R>} />
+      <Route path="/stage/7/level/3"  element={<R><Level7_3  /></R>} />
+      <Route path="/stage/7/level/4"  element={<R><Level7_4  /></R>} />
+      <Route path="/stage/7/level/5"  element={<R><Level7_5  /></R>} />
+      <Route path="/stage/7/level/6"  element={<R><Level7_6  /></R>} />
+      <Route path="/stage/7/level/7"  element={<R><Level7_7  /></R>} />
+      <Route path="/stage/7/level/8"  element={<R><Level7_8  /></R>} />
+      <Route path="/stage/7/level/9"  element={<R><Level7_9  /></R>} />
+      <Route path="/stage/7/level/10" element={<R><Level7_10 /></R>} />
+      <Route path="/stage/7/level/11" element={<R><Level7_11 /></R>} />
+
+      {/* ── Data Engineer ── */}
+      <Route path="/path/data-engineer/stage/1/level/0" element={<R><DE1_Level0 /></R>} />
+      <Route path="/path/data-engineer/stage/1/level/1" element={<R><DE1_Level1 /></R>} />
+      <Route path="/path/data-engineer/stage/1/level/2" element={<R><DE1_Level2 /></R>} />
+      <Route path="/path/data-engineer/stage/1/level/3" element={<R><DE1_Level3 /></R>} />
+      <Route path="/path/data-engineer/stage/1/level/4" element={<R><DE1_Level4 /></R>} />
+      <Route path="/path/data-engineer/stage/1/level/5" element={<R><DE1_Level5 /></R>} />
+      <Route path="/path/data-engineer/stage/1/level/6" element={<R><DE1_Level6 /></R>} />
+      <Route path="/path/data-engineer/stage/1/level/7" element={<R><DE1_Level7 /></R>} />
+
+      {/* ── ML/AI Engineer ── */}
+      <Route path="/path/ml-ai-engineer/stage/1/level/0" element={<R><ML1_Level0 /></R>} />
+      <Route path="/path/ml-ai-engineer/stage/1/level/1" element={<R><ML1_Level1 /></R>} />
+      <Route path="/path/ml-ai-engineer/stage/1/level/2" element={<R><ML1_Level2 /></R>} />
+      <Route path="/path/ml-ai-engineer/stage/1/level/3" element={<R><ML1_Level3 /></R>} />
+      <Route path="/path/ml-ai-engineer/stage/1/level/4" element={<R><ML1_Level4 /></R>} />
+      <Route path="/path/ml-ai-engineer/stage/1/level/5" element={<R><ML1_Level5 /></R>} />
+      <Route path="/path/ml-ai-engineer/stage/1/level/6" element={<R><ML1_Level6 /></R>} />
+      <Route path="/path/ml-ai-engineer/stage/1/level/7" element={<R><ML1_Level7 /></R>} />
+
+      {/* ── Cyber Security ── */}
+      <Route path="/path/cyber-security/stage/1/level/0" element={<R><CY1_Level0 /></R>} />
+      <Route path="/path/cyber-security/stage/1/level/1" element={<R><CY1_Level1 /></R>} />
+      <Route path="/path/cyber-security/stage/1/level/2" element={<R><CY1_Level2 /></R>} />
+      <Route path="/path/cyber-security/stage/1/level/3" element={<R><CY1_Level3 /></R>} />
+      <Route path="/path/cyber-security/stage/1/level/4" element={<R><CY1_Level4 /></R>} />
+      <Route path="/path/cyber-security/stage/1/level/5" element={<R><CY1_Level5 /></R>} />
+      <Route path="/path/cyber-security/stage/1/level/6" element={<R><CY1_Level6 /></R>} />
+      <Route path="/path/cyber-security/stage/1/level/7" element={<R><CY1_Level7 /></R>} />
+
+      {/* ── UX/UI Designer ── */}
+      <Route path="/path/ux-ui-designer/stage/1/level/0" element={<R><UX1_Level0 /></R>} />
+      <Route path="/path/ux-ui-designer/stage/1/level/1" element={<R><UX1_Level1 /></R>} />
+      <Route path="/path/ux-ui-designer/stage/1/level/2" element={<R><UX1_Level2 /></R>} />
+      <Route path="/path/ux-ui-designer/stage/1/level/3" element={<R><UX1_Level3 /></R>} />
+      <Route path="/path/ux-ui-designer/stage/1/level/4" element={<R><UX1_Level4 /></R>} />
+      <Route path="/path/ux-ui-designer/stage/1/level/5" element={<R><UX1_Level5 /></R>} />
+      <Route path="/path/ux-ui-designer/stage/1/level/6" element={<R><UX1_Level6 /></R>} />
+      <Route path="/path/ux-ui-designer/stage/1/level/7" element={<R><UX1_Level7 /></R>} />
 
       <Route path="*" element={<Navigate to="/auth" replace />} />
     </Routes>

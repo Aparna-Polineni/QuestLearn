@@ -5,25 +5,43 @@ import { useAuth } from '../context/AuthContext';
 import './Roadmap.css';
 
 // ── Stage route map — keyed by STRING id ─────────────────────────────────────
-const STAGE_ROUTES = {
-  '1':   { base: '/stage/1/level/',   levels: 8  },
-  '2':   { base: '/stage/2/level/',   levels: 20 },
-  '2.5': { base: '/stage/2.5/level/', levels: 20 },   // ← JS Fundamentals
-  '3':   { base: '/stage/3/level/',   levels: 16 },
-  '4':   { base: '/stage/4/level/',   levels: 16 },
-  '5':   { base: '/stage/5/level/',   levels: 22 },
-  '6':   { base: '/stage/6/level/',   levels: 14 },
-  '7':   { base: '/stage/7/level/',   levels: 12 },
-  '8':   { base: '/stage/8/level/',   levels: 10 },
-};
+// Paths that use the old /stage/{n}/level/ URL pattern
+const LEGACY_PATH_IDS = new Set(['java-fullstack', 'frontend-react', 'math-student']);
+
+// Build stage routes dynamically based on the active career path
+function buildStageRoutes(path) {
+  if (!path) return {};
+  const routes = {};
+  const isLegacy = LEGACY_PATH_IDS.has(path.id);
+  (path.stages || []).forEach(s => {
+    const sid = String(s.id);
+    const base = isLegacy
+      ? `/stage/${sid}/level/`
+      : `/path/${path.id}/stage/${sid}/level/`;
+    routes[sid] = { base, levels: s.levels || 8 };
+  });
+  // Always include 2.5 for java-fullstack legacy path
+  if (isLegacy && !routes['2.5']) {
+    routes['2.5'] = { base: '/stage/2.5/level/', levels: 20 };
+  }
+  return routes;
+}
+
+// Level key prefix per path — new paths use prefixed keys (e.g. 'de-1-0')
+function getLevelKey(pathId, stageId, levelIdx) {
+  const prefixMap = {
+    'data-engineer':  'de',
+    'ml-ai-engineer': 'ml',
+    'cyber-security': 'cy',
+    'ux-ui-designer': 'ux',
+  };
+  const prefix = prefixMap[pathId];
+  if (prefix) return `${prefix}-${stageId}-${levelIdx}`;
+  return `${stageId}-${levelIdx}`; // legacy format
+}
 
 // Explicit stage order — no arithmetic, handles '2.5' cleanly
 const STAGE_ORDER = ['1', '2', '2.5', '3', '4', '5', '6', '7', '8'];
-
-function getPrevStageId(stageId) {
-  const idx = STAGE_ORDER.indexOf(String(stageId));
-  return idx > 0 ? STAGE_ORDER[idx - 1] : null;
-}
 
 // ── Level dot ────────────────────────────────────────────────────────────────
 function LevelDot({ stageId, levelNum, isComplete, isCurrent, isLocked, onClick }) {
@@ -46,37 +64,21 @@ function LevelDot({ stageId, levelNum, isComplete, isCurrent, isLocked, onClick 
 }
 
 // ── Stage card ───────────────────────────────────────────────────────────────
-function StageCard({ stage, stageRoute, isLevelComplete, navigate, currentStageId, currentLevel }) {
+function StageCard({ stage, stageRoute, isLevelComplete, isStageUnlocked, navigate, currentStageId, currentLevel, levelKey }) {
   const sid         = String(stage.id);
   const totalLevels = stageRoute?.levels || stage.levels || 8;
 
   // Count completed levels (0-indexed keys: "2.5-0" through "2.5-19")
   const completedCount = Array.from({ length: totalLevels }, (_, i) =>
-    isLevelComplete(`${sid}-${i}`)
+    isLevelComplete(levelKey(sid, i))
   ).filter(Boolean).length;
 
   const progressPct     = Math.round((completedCount / totalLevels) * 100);
   const isComplete      = completedCount === totalLevels;
   const isStarted       = completedCount > 0;
 
-  // Lock logic: first stage never locked; others need prev stage 50% done
-  const prevId = getPrevStageId(sid);
-  let isStageLocked = false;
-  if (prevId) {
-    const prevRoute  = STAGE_ROUTES[prevId];
-    const prevLevels = prevRoute?.levels || 8;
-    const prevDone   = Array.from({ length: prevLevels }, (_, i) =>
-      isLevelComplete(`${prevId}-${i}`)
-    ).filter(Boolean).length;
-
-    // Retroactive unlock for Stage 2.5 and Stage 3:
-    // If user already has progress in this stage, never lock it (no regression)
-    if (isStarted || isComplete) {
-      isStageLocked = false;
-    } else {
-      isStageLocked = prevDone < Math.ceil(prevLevels * 0.5);
-    }
-  }
+  // Use GameContext's single source of truth for unlock state
+  const isStageLocked = !isStageUnlocked(sid);
 
   const isCurrent = String(currentStageId) === sid;
 
@@ -124,9 +126,9 @@ function StageCard({ stage, stageRoute, isLevelComplete, navigate, currentStageI
       {!isStageLocked && (
         <div className="stage-level-dots">
           {Array.from({ length: totalLevels }, (_, i) => {
-            const isLvlComplete = isLevelComplete(`${sid}-${i}`);
+            const isLvlComplete = isLevelComplete(levelKey(sid, i));
             const isLvlCurrent  = isCurrent && currentLevel === i;
-            const isLvlLocked   = i > 0 && !isLevelComplete(`${sid}-${i - 1}`) && !isLvlComplete;
+            const isLvlLocked   = i > 0 && !isLevelComplete(levelKey(sid, i - 1)) && !isLvlComplete;
             return (
               <LevelDot
                 key={i}
@@ -144,7 +146,7 @@ function StageCard({ stage, stageRoute, isLevelComplete, navigate, currentStageI
 
       {isStageLocked && (
         <div className="stage-locked-msg">
-          Complete 50% of Stage {prevId} to unlock
+          Complete the previous stage to unlock
         </div>
       )}
 
@@ -165,8 +167,8 @@ function StageCard({ stage, stageRoute, isLevelComplete, navigate, currentStageI
 }
 
 // ── Roadmap banner for existing users who skipped 2.5 ────────────────────────
-function Stage25Banner({ navigate, isLevelComplete }) {
-  const route      = STAGE_ROUTES['2.5'];
+function Stage25Banner({ navigate, isLevelComplete, stage25Route }) {
+  const route       = stage25Route || { base: '/stage/2.5/level/', levels: 20 };
   const totalLevels = route.levels;
   const done = Array.from({ length: totalLevels }, (_, i) =>
     isLevelComplete(`2.5-${i}`)
@@ -215,10 +217,17 @@ function Stage25Banner({ navigate, isLevelComplete }) {
 // ── Main Roadmap ──────────────────────────────────────────────────────────────
 export default function Roadmap() {
   const navigate = useNavigate();
-  const { selectedCareerPath, selectedDomain, completedLevels, xp, streak, isLevelComplete } = useGame();
+  const { selectedCareerPath, selectedDomain, completedLevels, xp, streak, isLevelComplete, isStageUnlocked } = useGame();
   const { user } = useAuth();
 
   const path   = selectedCareerPath;
+
+  // Build dynamic stage routes based on active path
+  const STAGE_ROUTES = buildStageRoutes(path);
+
+  // Helper: get the correct level key for this path
+  const levelKey = (stageId, levelIdx) =>
+    getLevelKey(path?.id || 'java-fullstack', stageId, levelIdx);
 
   // Build stages list — inject 2.5 between 2 and 3 if not already present
   const rawStages = path?.stages || [];
@@ -243,25 +252,20 @@ export default function Roadmap() {
     }
   }
   // If path has no stages at all, use a default set
-  const displayStages = stages.length > 0 ? stages : STAGE_ORDER.map(sid => ({
-    id: sid,
-    title: STAGE_ROUTES[sid] ? `Stage ${sid}` : `Stage ${sid}`,
-    description: '',
-    emoji: sid === '2.5' ? '⚡' : '📚',
-    color: sid === '2.5' ? '#f59e0b' : '#6366f1',
-    levels: STAGE_ROUTES[sid]?.levels || 8,
-  }));
+  const displayStages = stages.length > 0 ? stages : [];
 
   // Determine current position — iterate STAGE_ORDER so 2.5 is included
   const totalCompleted = Object.keys(completedLevels).length;
   let currentStageId = '1';
   let currentLevel   = 0;
 
-  for (const sid of STAGE_ORDER) {
+  // Use the active path's stage list for iteration (not hardcoded STAGE_ORDER)
+  const activeStageIds = displayStages.map(s => String(s.id));
+  for (const sid of activeStageIds) {
     const max = STAGE_ROUTES[sid]?.levels || 8;
     let stageFullyDone = true;
     for (let l = 0; l < max; l++) {
-      if (!isLevelComplete(`${sid}-${l}`)) {
+      if (!isLevelComplete(levelKey(sid, l))) {
         currentStageId = sid;
         currentLevel   = l;
         stageFullyDone = false;
@@ -271,7 +275,7 @@ export default function Roadmap() {
     if (!stageFullyDone) break;
   }
 
-  const totalLevels = Object.values(STAGE_ROUTES).reduce((s, r) => s + r.levels, 0);
+  const totalLevels = displayStages.reduce((s, stage) => s + (stage.levels || 8), 0);
   const overallPct  = Math.round((totalCompleted / totalLevels) * 100);
 
   return (
@@ -334,7 +338,7 @@ export default function Roadmap() {
         </div>
 
         {/* Banner for existing users who skipped 2.5 */}
-        <Stage25Banner navigate={navigate} isLevelComplete={isLevelComplete} />
+        <Stage25Banner navigate={navigate} isLevelComplete={isLevelComplete} stage25Route={STAGE_ROUTES['2.5']} />
 
         {/* Stage cards */}
         <div className="roadmap-stages">
@@ -344,9 +348,11 @@ export default function Roadmap() {
               stage={stage}
               stageRoute={STAGE_ROUTES[String(stage.id)]}
               isLevelComplete={isLevelComplete}
+              isStageUnlocked={isStageUnlocked}
               navigate={navigate}
               currentStageId={currentStageId}
               currentLevel={currentLevel}
+              levelKey={levelKey}
             />
           ))}
         </div>
