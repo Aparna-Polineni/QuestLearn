@@ -6,11 +6,18 @@ import './DomainSelect.css';
 
 function DomainSelect() {
   const navigate = useNavigate();
-  const { setSelectedDomain } = useGame();
+  const { setSelectedDomain, selectedCareerPath } = useGame();
 
   function chooseDomain(domain) {
     setSelectedDomain(domain);
-    navigate('/stage/1/level/1');
+    // Navigate to the correct Stage 1 start for the active career path
+    const pathId = selectedCareerPath?.id;
+    const LEGACY_PATHS = new Set(['java-fullstack', 'frontend-react', 'math-student']);
+    if (!pathId || LEGACY_PATHS.has(pathId)) {
+      navigate('/stage/1/level/0');
+    } else {
+      navigate(`/path/${pathId}/stage/1/level/0`);
+    }
   }
 
   return (

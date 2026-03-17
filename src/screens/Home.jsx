@@ -123,13 +123,23 @@ export default function Home() {
     navigate(route);
   }
 
+  // Paths that need domain selection before starting
+  const DOMAIN_SELECT_PATHS = new Set(['java-fullstack', 'frontend-react', 'python-backend']);
+  // Paths that use legacy /stage/ URL format
+  const LEGACY_PATHS = new Set(['java-fullstack', 'frontend-react', 'math-student']);
+
+  function getStartUrl(pathId) {
+    if (pathId === 'math-student') return '/stage/math/level/1';
+    if (LEGACY_PATHS.has(pathId)) return '/stage/1/level/0';
+    return `/path/${pathId}/stage/1/level/0`;
+  }
+
   function handleStart(path) {
     setActivePath(path);
-    // If needs domain selection
-    if (['java-fullstack','frontend-react','python-backend'].includes(path.id)) {
+    if (DOMAIN_SELECT_PATHS.has(path.id)) {
       navigate('/domain-select');
     } else {
-      navigate('/stage/1/level/1');
+      navigate(getStartUrl(path.id));
     }
   }
 

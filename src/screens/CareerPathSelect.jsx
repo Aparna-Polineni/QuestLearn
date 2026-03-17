@@ -10,15 +10,26 @@ export default function CareerPathSelect() {
   const { setSelectedCareerPath, selectedCareerPath } = useGame();
   const { user, signOut } = useAuth();
 
+  // Paths that need domain selection before starting
+  const DOMAIN_SELECT_PATHS = new Set(['java-fullstack', 'frontend-react', 'python-backend']);
+
+  // Paths that use legacy /stage/ URL format
+  const LEGACY_PATHS = new Set(['java-fullstack', 'frontend-react', 'math-student']);
+
+  function getStartUrl(path) {
+    if (path.id === 'math-student') return '/stage/math/level/1';
+    if (LEGACY_PATHS.has(path.id)) return '/stage/1/level/0';
+    // New paths use /path/{id}/stage/1/level/0
+    return `/path/${path.id}/stage/1/level/0`;
+  }
+
   function choosePath(path) {
     if (path.status === 'coming-soon') return;
     setSelectedCareerPath(path);
-    if (path.id === 'math-student') {
-      navigate('/stage/math/level/1');
-    } else if (path.id === 'java-fullstack') {
+    if (DOMAIN_SELECT_PATHS.has(path.id)) {
       navigate('/domain-select');
     } else {
-      navigate('/domain-select');
+      navigate(getStartUrl(path));
     }
   }
 
