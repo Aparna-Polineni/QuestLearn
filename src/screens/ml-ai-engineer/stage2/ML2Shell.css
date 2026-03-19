@@ -1,0 +1,45 @@
+.ml2-shell { display:flex; flex-direction:column; min-height:100vh; background:#0f172a; color:#e2e8f0; font-family:'Inter',sans-serif; }
+.ml2-topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 24px; background:#1e293b; border-bottom:1px solid #334155; }
+.ml2-back { background:none; border:1px solid #475569; color:#94a3b8; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; transition:all .2s; }
+.ml2-back:hover { border-color:#fbbf24; color:#fbbf24; }
+.ml2-breadcrumb { display:flex; align-items:center; gap:8px; font-size:14px; }
+.ml2-path { font-weight:700; font-size:15px; }
+.ml2-sep { color:#475569; }
+.ml2-stage,.ml2-title { color:#94a3b8; }
+.ml2-title { color:#e2e8f0; font-weight:500; }
+.ml2-mode { padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.5px; }
+.mode-concepts { background:#1e3a5f; color:#60a5fa; }
+.mode-fill     { background:#14532d; color:#4ade80; }
+.mode-build    { background:#3b0764; color:#c084fc; }
+.mode-debug    { background:#450a0a; color:#f87171; }
+.ml2-content { flex:1; padding:32px 24px; max-width:900px; margin:0 auto; width:100%; box-sizing:border-box; }
+.ml2-footer { padding:16px 24px; background:#1e293b; border-top:1px solid #334155; display:flex; justify-content:flex-end; }
+.ml2-btn { padding:12px 32px; border:none; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:all .2s; }
+.ml2-btn:disabled { opacity:.45; cursor:not-allowed; }
+.ml2-btn:not(:disabled):hover { filter:brightness(1.1); transform:translateY(-1px); }
+/* Shared content styles */
+.ml2-intro h1 { font-size:22px; font-weight:700; color:#e2e8f0; margin:0 0 8px; }
+.ml2-tagline { color:#fbbf24; font-size:14px; font-weight:600; margin:0 0 10px; }
+.ml2-why { color:#94a3b8; font-size:14px; line-height:1.6; margin:0 0 24px; }
+.ml2-cards { display:grid; gap:12px; margin:20px 0; }
+.ml2-card { background:#1e293b; border:1px solid #334155; border-radius:10px; padding:16px 20px; cursor:pointer; border-left:3px solid #334155; transition:all .2s; }
+.ml2-card:hover,.ml2-card.seen { border-left-color:#fbbf24; }
+.ml2-card-top { display:flex; justify-content:space-between; align-items:center; }
+.ml2-card-title { font-size:15px; font-weight:600; color:#e2e8f0; }
+.ml2-card-body { color:#94a3b8; font-size:14px; line-height:1.6; margin:10px 0 0; }
+.ml2-table { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
+.ml2-table th { background:#0f172a; color:#fbbf24; padding:8px 12px; text-align:left; border-bottom:2px solid #334155; }
+.ml2-table td { padding:8px 12px; border-bottom:1px solid #1e293b; color:#cbd5e1; }
+.ml2-panel { background:#1e293b; border:1px solid #334155; border-radius:10px; margin:16px 0; overflow:hidden; }
+.ml2-panel-hdr { background:#0f172a; padding:10px 16px; font-size:12px; font-weight:700; color:#64748b; letter-spacing:1px; border-bottom:1px solid #334155; }
+.ml2-panel-body { padding:16px; font-family:'Fira Code',monospace; font-size:13px; line-height:1.8; }
+.ml2-blank { display:inline-block; background:#0f172a; border:1.5px dashed #fbbf24; border-radius:4px; min-width:90px; padding:1px 6px; margin:0 2px; font-family:'Fira Code',monospace; color:#e2e8f0; font-size:13px; outline:none; transition:border-color .2s; vertical-align:middle; }
+.ml2-blank.correct { border-color:#4ade80; border-style:solid; color:#4ade80; }
+.ml2-blank.incorrect { border-color:#f87171; border-style:solid; }
+.ml2-check-btn { background:#fbbf24; color:#0f172a; border:none; padding:10px 24px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; margin-top:12px; transition:all .2s; }
+.ml2-feedback { padding:12px 16px; border-radius:8px; margin:14px 0; font-size:14px; font-weight:500; }
+.ml2-feedback.success { background:#14532d40; border:1px solid #4ade8060; color:#4ade80; }
+.ml2-feedback.error   { background:#450a0a40; border:1px solid #f8717160; color:#f87171; }
+.ml2-editor { width:100%; min-height:280px; background:#0f172a; color:#e2e8f0; border:1px solid #334155; border-radius:8px; padding:16px; font-family:'Fira Code',monospace; font-size:13px; line-height:1.7; resize:vertical; outline:none; box-sizing:border-box; }
+.ml2-req { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid #1e293b; }
+.ml2-req:last-child { border-bottom:none; }
