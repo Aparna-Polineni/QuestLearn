@@ -9,88 +9,200 @@ import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
 
 // ─── Embedded Sample Level ────────────────────────────────────────────────────
-// A real interactive level, no auth required
-// Teaches: what a data engineer does, 3 fill-in-the-blanks
+// Story-first: real scenario → decision → concept → fills in naturally
 
-const SAMPLE_BLANKS = [
-  { id:'B1', answer:'Extract',   hint:'Pull raw data from the source system' },
-  { id:'B2', answer:'Transform', hint:'Clean, validate, reshape the data' },
-  { id:'B3', answer:'Load',      hint:'Write processed data to the destination' },
+const MC_OPTIONS = [
+  { id:'A', text:'Open Excel and start copy-pasting from each system', wrong:true,  why:"Copy-paste works once. Tomorrow it breaks. The CEO needs this every morning, not just today." },
+  { id:'B', text:'Write a script to pull data from all 3 systems automatically', wrong:false, why:"Exactly. A pipeline runs in seconds, every morning, without you. That's the job." },
+  { id:'C', text:'Email each department and ask them to send their data', wrong:true,  why:"You would be waiting until 10am. And tomorrow you would be doing it all over again." },
+  { id:'D', text:"Tell the CEO the data isn't ready yet", wrong:true,  why:"This is avoidable. That's why the data engineer role exists." },
 ];
 
-const SAMPLE_LINES = [
-  { type:'comment', text:'# A data engineer builds pipelines.' },
-  { type:'comment', text:'# Every pipeline has 3 steps — fill them in:' },
-  { type:'blank',   pre:'step_1 = "', bid:'B1', post:'"   # pull from source' },
-  { type:'blank',   pre:'step_2 = "', bid:'B2', post:'"   # clean & reshape' },
-  { type:'blank',   pre:'step_3 = "', bid:'B3', post:'"   # write to warehouse' },
+const PIPELINE_STEPS = [
+  { step:1, verb:'Extract',   colour:'#818cf8', icon:'📥', system:'EMR, Billing & A&E systems', action:"Pull yesterday's admissions from all 3 hospital databases. No manual downloading — your script connects directly." },
+  { step:2, verb:'Transform', colour:'#06b6d4', icon:'⚙️', system:'Your pipeline script', action:"Clean the data: fix date formats, remove duplicates, standardise patient IDs. Turn 3 messy tables into 1 clean one." },
+  { step:3, verb:'Load',      colour:'#34d399', icon:'📊', system:'Analytics warehouse', action:"Write the clean merged table to the data warehouse. The CEO's dashboard queries this. It auto-refreshes at 8:30am every day." },
+];
+
+const FILL_BLANKS = [
+  { id:'B1', answer:'Extract',   placeholder:'Step 1 verb' },
+  { id:'B2', answer:'Transform', placeholder:'Step 2 verb' },
+  { id:'B3', answer:'Load',      placeholder:'Step 3 verb' },
 ];
 
 function SampleLevel({ onComplete }) {
-  const [vals, setVals]     = useState({});
+  const [phase, setPhase]     = useState('scenario');  // scenario | decision | pipeline | fill | done
+  const [chosen, setChosen]   = useState(null);
+  const [vals, setVals]       = useState({});
   const [checked, setChecked] = useState(false);
   const [correct, setCorrect] = useState({});
   const [allRight, setAllRight] = useState(false);
 
-  function check() {
+  function chooseMC(opt) {
+    setChosen(opt);
+    setTimeout(() => setPhase('pipeline'), opt.wrong ? 1600 : 1200);
+  }
+
+  function checkFill() {
     const r = {};
-    SAMPLE_BLANKS.forEach(b => {
-      r[b.id] = (vals[b.id] || '').trim().toLowerCase() === b.answer.toLowerCase();
+    FILL_BLANKS.forEach(b => {
+      r[b.id] = vals[b.id]?.trim().toLowerCase() === b.answer.toLowerCase();
     });
     setCorrect(r);
     setChecked(true);
-    if (SAMPLE_BLANKS.every(b => r[b.id])) {
+    if (FILL_BLANKS.every(b => r[b.id])) {
       setAllRight(true);
-      setTimeout(onComplete, 1200);
+      setTimeout(onComplete, 1400);
     }
   }
 
   return (
     <div className="sample-level">
+
+      {/* Header — always visible */}
       <div className="sample-header">
         <span className="sample-badge">🛢️ Data Engineer</span>
-        <span className="sample-badge sample-badge--mode">FILL</span>
-        <span className="sample-level-title">What is a pipeline?</span>
+        <div className="sample-progress">
+          {['scenario','decision','pipeline','fill'].map((p, idx) => (
+            <div key={p} className={`sample-pip ${phase === p || (phase === 'done' && idx < 4) ? 'active' : ''} ${['decision','pipeline','fill','done'].indexOf(phase) > idx ? 'done' : ''}`}/>
+          ))}
+        </div>
+        <span className="sample-level-title">Your first day on the job</span>
       </div>
 
-      <div className="sample-code">
-        {SAMPLE_LINES.map((line, i) => {
-          if (line.type === 'comment') {
-            return <div key={i} className="sample-line sample-comment">{line.text}</div>;
-          }
-          const bl = SAMPLE_BLANKS.find(b => b.id === line.bid);
-          const st = !checked ? '' : correct[line.bid] ? 'correct' : 'incorrect';
-          return (
-            <div key={i} className="sample-line">
-              <span className="sample-code-text">{line.pre}</span>
-              <input
-                className={`sample-blank ${st}`}
-                value={vals[line.bid] || ''}
-                onChange={e => setVals(v => ({ ...v, [line.bid]: e.target.value }))}
-                placeholder={bl?.hint}
-                spellCheck={false}
-              />
-              <span className="sample-code-text">{line.post}</span>
+      {/* Phase 1 — Scenario */}
+      {phase === 'scenario' && (
+        <div className="sample-phase sample-phase--scenario">
+          <div className="sample-time-tag">⏰ 8:47am — Monday morning</div>
+          <div className="sample-scenario-body">
+            <p className="sample-scene-text">
+              You just started as a <strong>Data Engineer at City General Hospital</strong>.
+              Your manager sends you a Slack message:
+            </p>
+            <div className="sample-slack">
+              <div className="sample-slack-avatar">👩‍💼</div>
+              <div className="sample-slack-bubble">
+                <div className="sample-slack-name">Sarah Chen <span>— Head of Analytics</span></div>
+                <div className="sample-slack-msg">
+                  "Morning! Board meeting at 9. CEO wants yesterday's patient admission numbers —
+                  total count, broken down by ward. Data is in the EMR system, billing system,
+                  and A&E triage log. Can you get that into the dashboard before 9?"
+                </div>
+                <div className="sample-slack-time">8:47 AM</div>
+              </div>
             </div>
-          );
-        })}
-      </div>
-
-      {!allRight ? (
-        <button className="sample-check-btn" onClick={check}>
-          Check Answers →
-        </button>
-      ) : (
-        <div className="sample-success">
-          ✅ Exactly right. That's what data engineers do — all day, at scale.
+            <p className="sample-scene-subtext">
+              The data is in <strong>3 separate systems</strong>. The meeting is in <strong>13 minutes</strong>.
+              This will happen again tomorrow. And the day after that.
+            </p>
+          </div>
+          <button className="sample-check-btn" onClick={() => setPhase('decision')}>
+            What do you do? →
+          </button>
         </div>
       )}
 
-      {checked && !allRight && (
-        <p className="sample-hint-text">
-          {SAMPLE_BLANKS.filter(b => !correct[b.id]).map(b => `"${b.answer}"`).join(', ')} — try again
-        </p>
+      {/* Phase 2 — Decision */}
+      {phase === 'decision' && (
+        <div className="sample-phase sample-phase--decision">
+          <p className="sample-decision-q">What's your first move?</p>
+          <div className="sample-mc">
+            {MC_OPTIONS.map(opt => (
+              <button
+                key={opt.id}
+                className={`sample-mc-btn ${chosen?.id === opt.id ? (opt.wrong ? 'mc-wrong' : 'mc-right') : ''} ${chosen && chosen.id !== opt.id ? 'mc-faded' : ''}`}
+                onClick={() => !chosen && chooseMC(opt)}
+                disabled={!!chosen}
+              >
+                <span className="mc-letter">{opt.id}</span>
+                <span className="mc-text">{opt.text}</span>
+                {chosen?.id === opt.id && (
+                  <span className="mc-why">{opt.wrong ? '✗ ' : '✓ '}{opt.why}</span>
+                )}
+              </button>
+            ))}
+          </div>
+          {chosen && !chosen.wrong && (
+            <p className="sample-mc-next">Building the pipeline now →</p>
+          )}
+        </div>
       )}
+
+      {/* Phase 3 — Pipeline explained */}
+      {phase === 'pipeline' && (
+        <div className="sample-phase sample-phase--pipeline">
+          <p className="sample-pipeline-intro">
+            Here's what that script actually does — three steps that run every morning at 8:30am:
+          </p>
+          <div className="sample-pipeline-steps">
+            {PIPELINE_STEPS.map((s, idx) => (
+              <div key={s.step} className="sample-pipe-step" style={{'--step-colour': s.colour}}>
+                <div className="pipe-step-head">
+                  <span className="pipe-icon">{s.icon}</span>
+                  <span className="pipe-num">Step {s.step}</span>
+                  <strong className="pipe-verb">{s.verb}</strong>
+                  <span className="pipe-system">← {s.system}</span>
+                </div>
+                <p className="pipe-action">{s.action}</p>
+                {idx < PIPELINE_STEPS.length - 1 && <div className="pipe-arrow">↓</div>}
+              </div>
+            ))}
+          </div>
+          <button className="sample-check-btn" style={{marginTop:20}} onClick={() => setPhase('fill')}>
+            Now name the 3 steps →
+          </button>
+        </div>
+      )}
+
+      {/* Phase 4 — Fill in the blanks */}
+      {phase === 'fill' && !allRight && (
+        <div className="sample-phase sample-phase--fill">
+          <p className="sample-fill-intro">
+            Every data pipeline follows this pattern. Fill in the 3 step names — you just read them:
+          </p>
+          <div className="sample-fill-steps">
+            {PIPELINE_STEPS.map((s, idx) => {
+              const bl = FILL_BLANKS[idx];
+              const st = !checked ? '' : correct[bl.id] ? 'correct' : 'incorrect';
+              return (
+                <div key={s.step} className="sample-fill-row" style={{'--step-colour': s.colour}}>
+                  <span className="fill-icon">{s.icon}</span>
+                  <span className="fill-num">Step {s.step} —</span>
+                  <span className="fill-system">{s.system}</span>
+                  <span className="fill-arrow">→</span>
+                  <input
+                    className={`sample-blank ${st}`}
+                    value={vals[bl.id] || ''}
+                    onChange={e => setVals(v => ({...v, [bl.id]: e.target.value}))}
+                    placeholder={s.verb.toLowerCase()}
+                    spellCheck={false}
+                  />
+                  {checked && correct[bl.id] && <span className="fill-tick">✓</span>}
+                  {checked && !correct[bl.id] && <span className="fill-cross">→ {s.verb}</span>}
+                </div>
+              );
+            })}
+          </div>
+          <button className="sample-check-btn" onClick={checkFill}>Check →</button>
+          {checked && !allRight && (
+            <p className="sample-hint-text">Not quite — the answers are shown above. Try once more.</p>
+          )}
+        </div>
+      )}
+
+      {/* Done */}
+      {allRight && (
+        <div className="sample-phase sample-phase--done">
+          <div className="sample-done-check">✅</div>
+          <p className="sample-done-msg">
+            <strong>Extract → Transform → Load.</strong><br/>
+            That pipeline now runs automatically every morning at 8:30am.<br/>
+            The CEO gets their numbers. You're already working on the next thing.
+          </p>
+          <p className="sample-done-sub">That's one level. There are 200+ more across 7 career paths.</p>
+        </div>
+      )}
+
     </div>
   );
 }
@@ -280,13 +392,13 @@ export default function LandingPage() {
         <div className="section-eyebrow">Step 2 of 3</div>
         <h2 className="section-title">
           {userType === 'switcher'
-            ? 'Before you commit — try the actual job.'
-            : 'Before you pick a path — try one level.'}
+            ? "It's 8:47am. The CEO needs data in 13 minutes."
+            : 'What does a data engineer actually do at 9am?'}
         </h2>
         <p className="section-sub">
           {userType === 'switcher'
-            ? 'This is a real Data Engineer task. Not a quiz. Not a video. The actual thinking the job requires.'
-            : 'This is what learning on QuestLearn feels like. Complete it, then choose your path.'}
+            ? 'This is a real scenario from a real data engineering job. No experience needed — just follow the story.'
+            : 'This is one level from the Data Engineer path. Takes 3 minutes. No account, no setup, just do it.'}
         </p>
 
         {!sampleDone ? (

@@ -644,3 +644,251 @@
   .landing-section, .landing-section--dark { padding: 64px 20px; }
   .landing-footer { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
 }
+
+/* ── Sample Level Phases ──────────────────────────────────────────────────── */
+
+/* Progress pips */
+.sample-progress {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.sample-pip {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border-hi);
+  transition: all .3s;
+}
+.sample-pip.active { background: var(--accent-hi); transform: scale(1.3); }
+.sample-pip.done   { background: var(--green); }
+
+/* Phase wrapper */
+.sample-phase {
+  padding: 24px 20px;
+  animation: fadeSlideIn .35s ease;
+}
+
+/* ── Scenario phase ── */
+.sample-time-tag {
+  display: inline-block;
+  background: rgba(245,158,11,.15);
+  border: 1px solid rgba(245,158,11,.3);
+  color: #f59e0b;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 18px;
+  letter-spacing: .3px;
+}
+.sample-scene-text {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin: 0 0 16px;
+}
+.sample-scene-text strong { color: var(--text-1); }
+
+/* Slack message mockup */
+.sample-slack {
+  display: flex;
+  gap: 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border-hi);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+.sample-slack-avatar {
+  font-size: 28px;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sample-slack-bubble { flex: 1; }
+.sample-slack-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 5px;
+}
+.sample-slack-name span { color: var(--text-3); font-weight: 400; margin-left: 6px; }
+.sample-slack-msg {
+  font-size: 14px;
+  color: var(--text-1);
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+.sample-slack-time { font-size: 11px; color: var(--text-3); }
+
+.sample-scene-subtext {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  background: rgba(99,102,241,.08);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+}
+.sample-scene-subtext strong { color: var(--text-1); }
+
+/* ── Decision phase ── */
+.sample-decision-q {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin: 0 0 14px;
+}
+.sample-mc {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.sample-mc-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  background: var(--bg-raised);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: all .2s;
+  width: 100%;
+}
+.sample-mc-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(99,102,241,.08);
+}
+.mc-letter {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: .5px;
+  margin-bottom: 2px;
+}
+.mc-text {
+  font-size: 14px;
+  color: var(--text-1);
+  line-height: 1.4;
+}
+.mc-why {
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+.sample-mc-btn.mc-right { border-color: var(--green); background: rgba(52,211,153,.08); }
+.sample-mc-btn.mc-right .mc-why { color: var(--green); }
+.sample-mc-btn.mc-wrong { border-color: #f87171; background: rgba(248,113,113,.06); }
+.sample-mc-btn.mc-wrong .mc-why { color: #f87171; }
+.sample-mc-btn.mc-faded { opacity: .35; cursor: default; }
+.sample-mc-next {
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 600;
+  text-align: center;
+  animation: fadeSlideIn .4s ease;
+}
+
+/* ── Pipeline phase ── */
+.sample-pipeline-intro {
+  font-size: 14px;
+  color: var(--text-2);
+  margin: 0 0 18px;
+  line-height: 1.6;
+}
+.sample-pipeline-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.sample-pipe-step {
+  border: 1px solid var(--step-colour, var(--border));
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,.02);
+  position: relative;
+  margin-bottom: 4px;
+}
+.pipe-step-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.pipe-icon { font-size: 16px; }
+.pipe-num  { font-size: 11px; color: var(--text-3); font-weight: 600; letter-spacing: .5px; text-transform: uppercase; }
+.pipe-verb { font-size: 15px; color: var(--step-colour, var(--accent-hi)); font-weight: 700; }
+.pipe-system { font-size: 12px; color: var(--text-3); }
+.pipe-action { font-size: 13px; color: var(--text-2); line-height: 1.6; margin: 0; }
+.pipe-arrow {
+  text-align: center;
+  color: var(--text-3);
+  font-size: 18px;
+  padding: 2px 0;
+  line-height: 1;
+}
+
+/* ── Fill phase ── */
+.sample-fill-intro {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+.sample-fill-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.sample-fill-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--step-colour, var(--accent));
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.fill-icon  { font-size: 16px; flex-shrink: 0; }
+.fill-num   { font-size: 13px; font-weight: 600; color: var(--text-2); white-space: nowrap; }
+.fill-system{ font-size: 12px; color: var(--text-3); flex: 1; min-width: 120px; }
+.fill-arrow { font-size: 14px; color: var(--text-3); }
+.fill-tick  { font-size: 14px; color: var(--green); font-weight: 700; }
+.fill-cross { font-size: 12px; color: var(--step-colour, var(--accent-hi)); font-weight: 600; }
+
+/* ── Done phase ── */
+.sample-phase--done {
+  text-align: center;
+  padding: 32px 20px;
+}
+.sample-done-check {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+.sample-done-msg {
+  font-size: 15px;
+  color: var(--text-1);
+  line-height: 1.7;
+  margin: 0 0 10px;
+}
+.sample-done-msg strong { color: var(--green); }
+.sample-done-sub {
+  font-size: 13px;
+  color: var(--text-3);
+  margin: 0;
+}
