@@ -1,205 +1,245 @@
 // src/screens/LandingPage.jsx
-// Marketing homepage — shown to unauthenticated visitors at /
-// Headline: "From 'I don't know where to start' → to 'I've already started.'"
-// Two user type cards: Career Switcher / Fresher
-// Embedded sample level → then funnels to /auth
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
 
-// ─── Embedded Sample Level ────────────────────────────────────────────────────
-// Story-first: real scenario → decision → concept → fills in naturally
+// ─── The 6-layer experience per role ─────────────────────────────────────────
+// Layer 1: Scenario   — real, urgent, no jargon
+// Layer 2: Question   — one MCQ, reason not recall
+// Layer 3: Response   — explain the why, not just correct/wrong
+// Layer 4: Confidence — "you didn't need prior knowledge"
+// Layer 5: Identity   — "you might enjoy this if..."
+// Layer 6: Choice     — explore this path OR try another role
 
-const MC_OPTIONS = [
-  { id:'A', text:'Open Excel and start copy-pasting from each system', wrong:true,  why:"Copy-paste works once. Tomorrow it breaks. The CEO needs this every morning, not just today." },
-  { id:'B', text:'Write a script to pull data from all 3 systems automatically', wrong:false, why:"Exactly. A pipeline runs in seconds, every morning, without you. That's the job." },
-  { id:'C', text:'Email each department and ask them to send their data', wrong:true,  why:"You would be waiting until 10am. And tomorrow you would be doing it all over again." },
-  { id:'D', text:"Tell the CEO the data isn't ready yet", wrong:true,  why:"This is avoidable. That's why the data engineer role exists." },
+const ROLES = [
+  {
+    id: 'de',
+    emoji: '🛢️',
+    name: 'Data Engineer',
+    tagline: 'You make sure the right data reaches the right people.',
+    pathId: 'data-engineer',
+    color: '#06b6d4',
+    // Layer 1
+    scenario: {
+      headline: 'Two patients with the same name got merged into one record.',
+      detail: 'One of them is about to receive the wrong medication. The system has duplicate entries — and no one knows which one is correct. You are asked to fix it.',
+      button: 'What would you check first?',
+    },
+    // Layer 2
+    question: 'What is the first thing you check?',
+    options: [
+      { id:'A', text:'Delete one of the records randomly',           right:false },
+      { id:'B', text:'Check timestamps and recent updates',          right:true  },
+      { id:'C', text:'Ask the doctors which record is correct',      right:false },
+      { id:'D', text:'Leave it for now and flag it for later',       right:false },
+    ],
+    // Layer 3
+    correct_response: 'That\'s right. You looked for the most recent and reliable data instead of guessing. Data engineers solve problems like this every day — cleaning messy, conflicting data so systems can be trusted.',
+    wrong_response: 'Not quite — but this is how most people think at first. The key is: don\'t guess or delete blindly. You need a reliable way to decide which data is correct. That\'s why checking timestamps matters.',
+    // Layer 4
+    confidence_headline: 'You just thought like a Data Engineer.',
+    confidence_body: 'You didn\'t need prior knowledge — just logic and reasoning. This is exactly how real-world problems are approached in this role.',
+    // Layer 5
+    identity: ['Solving messy, real-world problems', 'Finding patterns in data', 'Working with logic and structure'],
+  },
+  {
+    id: 'ml',
+    emoji: '🤖',
+    name: 'ML / AI Engineer',
+    tagline: 'You teach computers to make decisions from patterns.',
+    pathId: 'ml-ai-engineer',
+    color: '#8b5cf6',
+    scenario: {
+      headline: 'Your fraud detection model worked fine yesterday. Today it flagged zero suspicious transactions.',
+      detail: 'Fraud doesn\'t just stop overnight. Something broke — but the model shows no errors. The bank is exposed right now and nobody knows why.',
+      button: 'What would you investigate first?',
+    },
+    question: 'What is the most likely cause of the model going silent?',
+    options: [
+      { id:'A', text:'The model needs to be retrained on newer data',          right:false },
+      { id:'B', text:'The data feeding the model changed format without warning', right:true  },
+      { id:'C', text:'Fraud genuinely stopped overnight',                      right:false },
+      { id:'D', text:'The server is running too slowly',                        right:false },
+    ],
+    correct_response: 'Exactly right. When a model suddenly goes silent, look at the inputs first — not the model itself. A pipeline change upstream broke the data format the model expects. ML engineers spend more time diagnosing data than tuning algorithms.',
+    wrong_response: 'Close — but the model itself is usually fine. When output changes dramatically overnight, the cause is almost always the data feeding into it. A format change upstream can make a perfect model produce nothing.',
+    confidence_headline: 'You just thought like an ML Engineer.',
+    confidence_body: 'You didn\'t need to know machine learning — you used logical elimination. That diagnostic instinct is exactly what this role requires every day.',
+    identity: ['Figuring out why something that should work doesn\'t', 'Thinking in systems and cause-and-effect', 'Working at the edge of what computers can do'],
+  },
+  {
+    id: 'cy',
+    emoji: '🔐',
+    name: 'Cyber Security Analyst',
+    tagline: 'You find the holes before the attackers do.',
+    pathId: 'cyber-security',
+    color: '#10b981',
+    scenario: {
+      headline: 'A nurse\'s account just logged in at 3am from Romania.',
+      detail: 'She is asleep in Manchester. Her password was leaked in a breach six months ago — but nobody noticed. Someone has been reading patient records ever since.',
+      button: 'What do you do first?',
+    },
+    question: 'What is your immediate first action?',
+    options: [
+      { id:'A', text:'Email the nurse and ask if she recognises the login',        right:false },
+      { id:'B', text:'Disable the account immediately, then investigate',          right:true  },
+      { id:'C', text:'Change the password and monitor for 24 hours',              right:false },
+      { id:'D', text:'Wait to gather more evidence before taking action',          right:false },
+    ],
+    correct_response: 'Right. Stop the bleeding first, ask questions second. Disabling the account cuts off the attacker instantly. Investigation comes after containment — not before. Security analysts call this "contain first, understand later".',
+    wrong_response: 'Not quite. Every second of delay gives the attacker more time inside. When a breach is confirmed, containment comes before everything — including investigation. Disable first, then trace what happened.',
+    confidence_headline: 'You just thought like a Cyber Security Analyst.',
+    confidence_body: 'You didn\'t need technical knowledge — you prioritised correctly under pressure. That instinct to act decisively is what separates good analysts from great ones.',
+    identity: ['Thinking like an attacker to defend systems', 'Staying calm when something is actively going wrong', 'Protecting things that really matter'],
+  },
+  {
+    id: 'ux',
+    emoji: '🎨',
+    name: 'UX / UI Designer',
+    tagline: 'You make products feel effortless to use.',
+    pathId: 'ux-ui-designer',
+    color: '#ec4899',
+    scenario: {
+      headline: 'Maria, 58, has tried to book her mother\'s appointment four times. She keeps giving up.',
+      detail: 'The form has a required mobile number field — but it looks optional. She presses Submit. Nothing happens. No error message. She doesn\'t know why it\'s failing. This happens 200 times a day.',
+      button: 'What would you do first?',
+    },
+    question: 'What is the first thing you do to fix this?',
+    options: [
+      { id:'A', text:'Make the Submit button bigger and change it to red',               right:false },
+      { id:'B', text:'Watch five people like Maria attempt the form without helping them', right:true  },
+      { id:'C', text:'Add a long explanation paragraph above the form',                  right:false },
+      { id:'D', text:'Remove the mobile number field entirely',                          right:false },
+    ],
+    correct_response: 'Exactly right. Any change without watching users first is a guess. Observing five real people reveals the exact moment they get stuck — which is almost always a surprise. This is usability testing and it is the foundation of UX design.',
+    wrong_response: 'Not quite. Making changes without evidence is designing in the dark. Watching five real users attempt the form will show you precisely where they stop — and it is almost never where the team assumed.',
+    confidence_headline: 'You just thought like a UX Designer.',
+    confidence_body: 'You chose observation over assumption. That single instinct — understand before you change — is the foundation of every great product ever made.',
+    identity: ['Noticing when something feels harder than it should', 'Understanding people, not just systems', 'Making the complex feel simple'],
+  },
 ];
 
-const PIPELINE_STEPS = [
-  { step:1, verb:'Extract',   colour:'#818cf8', icon:'📥', system:'EMR, Billing & A&E systems', action:"Pull yesterday's admissions from all 3 hospital databases. No manual downloading — your script connects directly." },
-  { step:2, verb:'Transform', colour:'#06b6d4', icon:'⚙️', system:'Your pipeline script', action:"Clean the data: fix date formats, remove duplicates, standardise patient IDs. Turn 3 messy tables into 1 clean one." },
-  { step:3, verb:'Load',      colour:'#34d399', icon:'📊', system:'Analytics warehouse', action:"Write the clean merged table to the data warehouse. The CEO's dashboard queries this. It auto-refreshes at 8:30am every day." },
+const ALL_PATHS = [
+  { id:'data-engineer',  emoji:'🛢️', title:'Data Engineer',      color:'#06b6d4', levels:84  },
+  { id:'ml-ai-engineer', emoji:'🤖', title:'ML / AI Engineer',   color:'#8b5cf6', levels:112 },
+  { id:'cyber-security', emoji:'🔐', title:'Cyber Security',     color:'#10b981', levels:84  },
+  { id:'ux-ui-designer', emoji:'🎨', title:'UX / UI Designer',   color:'#ec4899', levels:70  },
+  { id:'java-fullstack', emoji:'☕', title:'Java Full Stack Dev', color:'#f97316', levels:139 },
+  { id:'frontend-react', emoji:'⚛️', title:'Frontend Developer', color:'#38bdf8', levels:89  },
 ];
 
-const FILL_BLANKS = [
-  { id:'B1', answer:'Extract',   placeholder:'Step 1 verb' },
-  { id:'B2', answer:'Transform', placeholder:'Step 2 verb' },
-  { id:'B3', answer:'Load',      placeholder:'Step 3 verb' },
-];
+// ─── The 6-layer experience component ────────────────────────────────────────
+function RoleExperience({ role, onStartPath, onTryAnother }) {
+  // phase: scenario → question → response → confidence → choice
+  const [phase, setPhase]   = useState('scenario');
+  const [picked, setPicked] = useState(null);
 
-function SampleLevel({ onComplete }) {
-  const [phase, setPhase]     = useState('scenario');  // scenario | decision | pipeline | fill | done
-  const [chosen, setChosen]   = useState(null);
-  const [vals, setVals]       = useState({});
-  const [checked, setChecked] = useState(false);
-  const [correct, setCorrect] = useState({});
-  const [allRight, setAllRight] = useState(false);
-
-  function chooseMC(opt) {
-    setChosen(opt);
-    setTimeout(() => setPhase('pipeline'), opt.wrong ? 1600 : 1200);
-  }
-
-  function checkFill() {
-    const r = {};
-    FILL_BLANKS.forEach(b => {
-      r[b.id] = vals[b.id]?.trim().toLowerCase() === b.answer.toLowerCase();
-    });
-    setCorrect(r);
-    setChecked(true);
-    if (FILL_BLANKS.every(b => r[b.id])) {
-      setAllRight(true);
-      setTimeout(onComplete, 1400);
+  function choose(opt) {
+    if (picked) return;
+    setPicked(opt);
+    // Advance to confidence after a pause whether right or wrong
+    // Wrong answers show response, user can retry or advance
+    if (opt.right) {
+      setTimeout(() => setPhase('confidence'), 1600);
     }
   }
 
+  function retry() {
+    setPicked(null);
+    setPhase('question');
+  }
+
   return (
-    <div className="sample-level">
+    <div className="rx" style={{ '--rc': role.color }}>
 
-      {/* Header — always visible */}
-      <div className="sample-header">
-        <span className="sample-badge">🛢️ Data Engineer</span>
-        <div className="sample-progress">
-          {['scenario','decision','pipeline','fill'].map((p, idx) => (
-            <div key={p} className={`sample-pip ${phase === p || (phase === 'done' && idx < 4) ? 'active' : ''} ${['decision','pipeline','fill','done'].indexOf(phase) > idx ? 'done' : ''}`}/>
-          ))}
-        </div>
-        <span className="sample-level-title">Your first day on the job</span>
-      </div>
-
-      {/* Phase 1 — Scenario */}
+      {/* ── LAYER 1: SCENARIO ── */}
       {phase === 'scenario' && (
-        <div className="sample-phase sample-phase--scenario">
-          <div className="sample-time-tag">⏰ 8:47am — Monday morning</div>
-          <div className="sample-scenario-body">
-            <p className="sample-scene-text">
-              You just started as a <strong>Data Engineer at City General Hospital</strong>.
-              Your manager sends you a Slack message:
-            </p>
-            <div className="sample-slack">
-              <div className="sample-slack-avatar">👩‍💼</div>
-              <div className="sample-slack-bubble">
-                <div className="sample-slack-name">Sarah Chen <span>— Head of Analytics</span></div>
-                <div className="sample-slack-msg">
-                  "Morning! Board meeting at 9. CEO wants yesterday's patient admission numbers —
-                  total count, broken down by ward. Data is in the EMR system, billing system,
-                  and A&E triage log. Can you get that into the dashboard before 9?"
-                </div>
-                <div className="sample-slack-time">8:47 AM</div>
-              </div>
-            </div>
-            <p className="sample-scene-subtext">
-              The data is in <strong>3 separate systems</strong>. The meeting is in <strong>13 minutes</strong>.
-              This will happen again tomorrow. And the day after that.
-            </p>
-          </div>
-          <button className="sample-check-btn" onClick={() => setPhase('decision')}>
-            What do you do? →
+        <div className="rx-phase rx-scenario" style={{ animation: 'fadeUp .35s ease' }}>
+          <div className="rx-urgency-bar" />
+          <h3 className="rx-scenario-headline">{role.scenario.headline}</h3>
+          <p className="rx-scenario-detail">{role.scenario.detail}</p>
+          <button className="rx-scenario-btn" onClick={() => setPhase('question')}>
+            {role.scenario.button}
           </button>
         </div>
       )}
 
-      {/* Phase 2 — Decision */}
-      {phase === 'decision' && (
-        <div className="sample-phase sample-phase--decision">
-          <p className="sample-decision-q">What's your first move?</p>
-          <div className="sample-mc">
-            {MC_OPTIONS.map(opt => (
+      {/* ── LAYER 2 + 3: QUESTION + RESPONSE ── */}
+      {(phase === 'question' || phase === 'response') && (
+        <div className="rx-phase rx-question" style={{ animation: 'fadeUp .35s ease' }}>
+          <div className="rx-q-label">
+            <span className="rx-tag">{role.emoji} {role.name}</span>
+            <span className="rx-tag rx-tag--lt">One question</span>
+          </div>
+          <p className="rx-q-text">{role.question}</p>
+
+          <div className="rx-opts">
+            {role.options.map(o => (
               <button
-                key={opt.id}
-                className={`sample-mc-btn ${chosen?.id === opt.id ? (opt.wrong ? 'mc-wrong' : 'mc-right') : ''} ${chosen && chosen.id !== opt.id ? 'mc-faded' : ''}`}
-                onClick={() => !chosen && chooseMC(opt)}
-                disabled={!!chosen}
+                key={o.id}
+                disabled={!!picked}
+                onClick={() => choose(o)}
+                className={`rx-opt
+                  ${picked?.id === o.id && o.right  ? 'rx-opt--right' : ''}
+                  ${picked?.id === o.id && !o.right ? 'rx-opt--wrong' : ''}
+                  ${picked && picked.id !== o.id    ? 'rx-opt--faded' : ''}
+                `}
               >
-                <span className="mc-letter">{opt.id}</span>
-                <span className="mc-text">{opt.text}</span>
-                {chosen?.id === opt.id && (
-                  <span className="mc-why">{opt.wrong ? '✗ ' : '✓ '}{opt.why}</span>
-                )}
+                <span className="rx-opt-ltr">{o.id}</span>
+                <span className="rx-opt-txt">{o.text}</span>
               </button>
             ))}
           </div>
-          {chosen && !chosen.wrong && (
-            <p className="sample-mc-next">Building the pipeline now →</p>
+
+          {picked && (
+            <div className={`rx-response ${picked.right ? 'rx-response--right' : 'rx-response--wrong'}`}
+              style={{ animation: 'fadeUp .3s ease' }}>
+              <div className="rx-response-icon">{picked.right ? '✓' : '→'}</div>
+              <p className="rx-response-text">
+                {picked.right ? role.correct_response : role.wrong_response}
+              </p>
+              {!picked.right && (
+                <button className="rx-retry" onClick={retry}>Try again →</button>
+              )}
+            </div>
           )}
         </div>
       )}
 
-      {/* Phase 3 — Pipeline explained */}
-      {phase === 'pipeline' && (
-        <div className="sample-phase sample-phase--pipeline">
-          <p className="sample-pipeline-intro">
-            Here's what that script actually does — three steps that run every morning at 8:30am:
-          </p>
-          <div className="sample-pipeline-steps">
-            {PIPELINE_STEPS.map((s, idx) => (
-              <div key={s.step} className="sample-pipe-step" style={{'--step-colour': s.colour}}>
-                <div className="pipe-step-head">
-                  <span className="pipe-icon">{s.icon}</span>
-                  <span className="pipe-num">Step {s.step}</span>
-                  <strong className="pipe-verb">{s.verb}</strong>
-                  <span className="pipe-system">← {s.system}</span>
-                </div>
-                <p className="pipe-action">{s.action}</p>
-                {idx < PIPELINE_STEPS.length - 1 && <div className="pipe-arrow">↓</div>}
-              </div>
+      {/* ── LAYER 4 + 5 + 6: CONFIDENCE + IDENTITY + CHOICE ── */}
+      {phase === 'confidence' && (
+        <div className="rx-phase rx-confidence" style={{ animation: 'fadeUp .4s ease' }}>
+
+          {/* Layer 4: Confidence */}
+          <div className="rx-conf-check">✓</div>
+          <h3 className="rx-conf-headline">{role.confidence_headline}</h3>
+          <p className="rx-conf-body">{role.confidence_body}</p>
+
+          <div className="rx-conf-divider" />
+
+          {/* Layer 5: Identity */}
+          <p className="rx-identity-label">You might enjoy this if you like:</p>
+          <ul className="rx-identity-list">
+            {role.identity.map((item, i) => (
+              <li key={i}>{item}</li>
             ))}
-          </div>
-          <button className="sample-check-btn" style={{marginTop:20}} onClick={() => setPhase('fill')}>
-            Now name the 3 steps →
-          </button>
-        </div>
-      )}
+          </ul>
 
-      {/* Phase 4 — Fill in the blanks */}
-      {phase === 'fill' && !allRight && (
-        <div className="sample-phase sample-phase--fill">
-          <p className="sample-fill-intro">
-            Every data pipeline follows this pattern. Fill in the 3 step names — you just read them:
+          <p className="rx-discovery-note">
+            Most people only discover this after months of learning.<br />
+            You just experienced it in under a minute.
           </p>
-          <div className="sample-fill-steps">
-            {PIPELINE_STEPS.map((s, idx) => {
-              const bl = FILL_BLANKS[idx];
-              const st = !checked ? '' : correct[bl.id] ? 'correct' : 'incorrect';
-              return (
-                <div key={s.step} className="sample-fill-row" style={{'--step-colour': s.colour}}>
-                  <span className="fill-icon">{s.icon}</span>
-                  <span className="fill-num">Step {s.step} —</span>
-                  <span className="fill-system">{s.system}</span>
-                  <span className="fill-arrow">→</span>
-                  <input
-                    className={`sample-blank ${st}`}
-                    value={vals[bl.id] || ''}
-                    onChange={e => setVals(v => ({...v, [bl.id]: e.target.value}))}
-                    placeholder={s.verb.toLowerCase()}
-                    spellCheck={false}
-                  />
-                  {checked && correct[bl.id] && <span className="fill-tick">✓</span>}
-                  {checked && !correct[bl.id] && <span className="fill-cross">→ {s.verb}</span>}
-                </div>
-              );
-            })}
-          </div>
-          <button className="sample-check-btn" onClick={checkFill}>Check →</button>
-          {checked && !allRight && (
-            <p className="sample-hint-text">Not quite — the answers are shown above. Try once more.</p>
-          )}
-        </div>
-      )}
 
-      {/* Done */}
-      {allRight && (
-        <div className="sample-phase sample-phase--done">
-          <div className="sample-done-check">✅</div>
-          <p className="sample-done-msg">
-            <strong>Extract → Transform → Load.</strong><br/>
-            That pipeline now runs automatically every morning at 8:30am.<br/>
-            The CEO gets their numbers. You're already working on the next thing.
-          </p>
-          <p className="sample-done-sub">That's one level. There are 200+ more across 7 career paths.</p>
+          {/* Layer 6: Choice */}
+          <div className="rx-choice">
+            <button className="rx-choice-primary" onClick={() => onStartPath(role.pathId)}>
+              Explore {role.name} path →
+            </button>
+            <button className="rx-choice-secondary" onClick={onTryAnother}>
+              Try another role
+            </button>
+          </div>
+
         </div>
       )}
 
@@ -207,290 +247,168 @@ function SampleLevel({ onComplete }) {
   );
 }
 
-// ─── User Type Cards ──────────────────────────────────────────────────────────
-
-function UserTypeCard({ type, icon, headline, sub, bullets, cta, color, onSelect, selected }) {
-  return (
-    <button
-      className={`usertype-card ${selected ? 'usertype-card--selected' : ''}`}
-      style={{ '--card-color': color }}
-      onClick={onSelect}
-    >
-      <div className="usertype-icon">{icon}</div>
-      <div className="usertype-label">{type}</div>
-      <h3 className="usertype-headline">{headline}</h3>
-      <p className="usertype-sub">{sub}</p>
-      <ul className="usertype-bullets">
-        {bullets.map((b, i) => <li key={i}>{b}</li>)}
-      </ul>
-      <div className="usertype-cta">{selected ? '✓ This is me' : cta}</div>
-    </button>
-  );
-}
-
-// ─── Path Pills ───────────────────────────────────────────────────────────────
-const PATHS = [
-  { id:'data-engineer',  emoji:'🛢️', title:'Data Engineer',        color:'#06b6d4' },
-  { id:'ml-ai-engineer', emoji:'🤖', title:'ML / AI Engineer',     color:'#8b5cf6' },
-  { id:'cyber-security', emoji:'🔐', title:'Cyber Security',       color:'#10b981' },
-  { id:'ux-ui-designer', emoji:'🎨', title:'UX / UI Designer',     color:'#ec4899' },
-  { id:'java-fullstack', emoji:'☕', title:'Java Full Stack',       color:'#f97316' },
-  { id:'frontend-react', emoji:'⚛️', title:'Frontend Developer',   color:'#38bdf8' },
-];
-
-// ─── Testimonial data ─────────────────────────────────────────────────────────
-const TESTIMONIALS = [
-  { name:'Priya M.', role:'Was: HR Manager → Now: Data Analyst (6 months)', quote:'I tried 3 Udemy courses and quit all of them. QuestLearn was the first time I actually understood what I was doing.' },
-  { name:'Jordan K.', role:'Final year student, Computer Science', quote:'I knew I wanted tech but didn\'t know which direction. Tried the Cyber Security path in 20 minutes and knew immediately it was for me.' },
-  { name:'Sam T.', role:'Was: Retail Manager → Now: Junior Developer (8 months)', quote:'The sample level was the thing that convinced me. It felt like real work — not watching someone else do it.' },
-];
-
-// ─── Main Landing Page ────────────────────────────────────────────────────────
+// ─── Main page ────────────────────────────────────────────────────────────────
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [sampleDone, setSampleDone] = useState(false);
-  const [userType, setUserType]     = useState(null); // 'switcher' | 'fresher'
-  const [showPaths, setShowPaths]   = useState(false);
-  const [activePath, setActivePath] = useState(null);
-  const [scrolled, setScrolled]     = useState(false);
-  const [testimonialIdx, setTestimonialIdx] = useState(0);
+  const [active, setActive]     = useState(ROLES[0]);
+  const [expKey, setExpKey]     = useState(0);   // force remount on role change
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    const fn = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', fn);
+    return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  useEffect(() => {
-    const t = setInterval(() => setTestimonialIdx(i => (i + 1) % TESTIMONIALS.length), 4000);
-    return () => clearInterval(t);
-  }, []);
-
-  function handleUserType(type) {
-    setUserType(type);
-    setTimeout(() => {
-      document.getElementById('try-it')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+  function selectRole(r) {
+    setActive(r);
+    setExpKey(k => k + 1);  // remounts RoleExperience — clean state
   }
 
-  function handleSampleDone() {
-    setSampleDone(true);
-    setTimeout(() => {
-      setShowPaths(true);
-      document.getElementById('choose-path')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 800);
+  function handleStartPath(pathId) {
+    navigate(`/auth?next=/path/${pathId}/stage/1/level/0`);
   }
 
-  function handlePathSelect(pathId) {
-    setActivePath(pathId);
-    setTimeout(() => {
-      navigate(`/auth?next=/path/${pathId}/stage/1/level/0`);
-    }, 400);
+  function handleTryAnother() {
+    document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
-  const tm = TESTIMONIALS[testimonialIdx];
 
   return (
     <div className="landing">
 
-      {/* ── Sticky nav ── */}
+      {/* NAV */}
       <nav className={`landing-nav ${scrolled ? 'landing-nav--scrolled' : ''}`}>
         <div className="landing-nav-logo">◈ QuestLearn</div>
         <div className="landing-nav-actions">
           <button className="landing-nav-link" onClick={() => navigate('/auth')}>Sign in</button>
-          <button className="landing-nav-cta" onClick={() => navigate('/auth?mode=signup')}>Get started free →</button>
+          <button className="landing-nav-cta"  onClick={() => navigate('/auth?mode=signup')}>Get started free →</button>
         </div>
       </nav>
 
-      {/* ── Hero ── */}
+      {/* HERO */}
       <section className="landing-hero">
         <div className="hero-orb hero-orb--a" />
         <div className="hero-orb hero-orb--b" />
         <div className="hero-orb hero-orb--c" />
-
-        <div className="hero-eyebrow">Free to try · No credit card · Starts in 2 minutes</div>
-
+        <div className="hero-eyebrow">Free to try · No account needed · Under a minute</div>
         <h1 className="hero-headline">
-          From{' '}
-          <span className="hero-hl hero-hl--before">"I don't know<br />where to start"</span>
+          <span className="hero-hl--before">"I don't know<br />where to start"</span>
           <span className="hero-arrow">→</span>
-          <span className="hero-hl hero-hl--after">to "I've already<br />started."</span>
+          <span className="hero-hl--after">"I've already<br />started."</span>
         </h1>
-
         <p className="hero-sub">
-          Pick a career path. Do real work. Know if it's for you — in 20 minutes.
-          <br />No theory, no videos, no waiting. Just you and the actual job.
+          Don't read about tech careers.<br />
+          Experience what each one actually feels like — then choose the one that clicks.
         </p>
-
-        <div className="hero-actions">
-          <button className="hero-btn-primary" onClick={() => document.getElementById('who-are-you')?.scrollIntoView({ behavior:'smooth' })}>
-            Try it free — no account needed
-          </button>
-          <button className="hero-btn-ghost" onClick={() => navigate('/auth')}>
-            Sign in →
-          </button>
-        </div>
-
-        <div className="hero-proof">
-          <span className="hero-proof-dot" />
-          <span>7 career paths · 200+ levels · completely free to start</span>
-        </div>
+        <button className="hero-btn-primary"
+          onClick={() => document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth' })}>
+          See what these jobs feel like →
+        </button>
       </section>
 
-      {/* ── Testimonial ticker ── */}
-      <section className="testimonial-strip">
-        <div className="testimonial-card" key={testimonialIdx}>
-          <div className="testimonial-quote">"{tm.quote}"</div>
-          <div className="testimonial-who">
-            <strong>{tm.name}</strong> — {tm.role}
+      {/* EXPLORE + EXPERIENCE */}
+      <section className="exp-section" id="explore">
+        <div className="exp-wrap">
+
+          {/* Role tabs */}
+          <div className="exp-tabs">
+            <p className="exp-tabs-label">Choose a role to experience</p>
+            {ROLES.map(r => (
+              <button key={r.id}
+                className={`exp-tab ${active.id === r.id ? 'exp-tab--on' : ''}`}
+                style={{ '--rc': r.color }}
+                onClick={() => selectRole(r)}>
+                <span className="exp-tab-emoji">{r.emoji}</span>
+                <span className="exp-tab-name">{r.name}</span>
+              </button>
+            ))}
+            <p className="exp-tabs-hint">Each role takes under 60 seconds</p>
           </div>
+
+          {/* Experience panel */}
+          <div className="exp-panel">
+            <div className="exp-panel-header" style={{ '--rc': active.color }}>
+              <span className="exp-panel-emoji">{active.emoji}</span>
+              <div>
+                <div className="exp-panel-name">{active.name}</div>
+                <div className="exp-panel-tagline">{active.tagline}</div>
+              </div>
+            </div>
+
+            <RoleExperience
+              key={expKey}
+              role={active}
+              onStartPath={handleStartPath}
+              onTryAnother={handleTryAnother}
+            />
+          </div>
+
         </div>
       </section>
 
-      {/* ── Who are you ── */}
-      <section className="landing-section" id="who-are-you">
-        <div className="section-eyebrow">Step 1 of 3</div>
-        <h2 className="section-title">Who are you right now?</h2>
-        <p className="section-sub">We'll show you what matters to you — not a generic pitch.</p>
+      {/* ALL PATHS */}
+      <section className="choose-section" id="choose">
+        <div className="choose-wrap">
+          <div className="choose-eyebrow">All paths</div>
+          <h2 className="choose-title">Every path. Zero to job-ready.</h2>
+          <p className="choose-sub">Pick any path and start for free. You can explore all of them.</p>
 
-        <div className="usertype-grid">
-          <UserTypeCard
-            type="Career Switcher"
-            icon="🔄"
-            headline="You're employed. You want out."
-            sub="You've googled 'how to switch careers into tech' at midnight. You're scared of wasting 2 years on the wrong thing."
-            bullets={[
-              'You need to know it\'s worth it before you commit',
-              'You want to see if you can actually do this',
-              'You don\'t have time to take a 40-hour course to find out',
-            ]}
-            cta="This is me →"
-            color="#818cf8"
-            selected={userType === 'switcher'}
-            onSelect={() => handleUserType('switcher')}
-          />
-          <UserTypeCard
-            type="Starting Fresh"
-            icon="🚀"
-            headline="You're starting out. Everything looks overwhelming."
-            sub="Everyone says 'learn Python' or 'do bootcamp'. You don't know what any of it actually means day-to-day."
-            bullets={[
-              'You need clarity — what does this job actually feel like?',
-              'You want confidence before you tell anyone your plan',
-              'You learn by doing, not by reading about doing',
-            ]}
-            cta="This is me →"
-            color="#34d399"
-            selected={userType === 'fresher'}
-            onSelect={() => handleUserType('fresher')}
-          />
-        </div>
-      </section>
-
-      {/* ── Try it ── */}
-      <section className="landing-section landing-section--dark" id="try-it">
-        <div className="section-eyebrow">Step 2 of 3</div>
-        <h2 className="section-title">
-          {userType === 'switcher'
-            ? "It's 8:47am. The CEO needs data in 13 minutes."
-            : 'What does a data engineer actually do at 9am?'}
-        </h2>
-        <p className="section-sub">
-          {userType === 'switcher'
-            ? 'This is a real scenario from a real data engineering job. No experience needed — just follow the story.'
-            : 'This is one level from the Data Engineer path. Takes 3 minutes. No account, no setup, just do it.'}
-        </p>
-
-        {!sampleDone ? (
-          <div className="sample-wrapper">
-            <SampleLevel onComplete={handleSampleDone} />
-            <p className="sample-nudge">
-              💡 This is one level. There are 200+ more — across 7 career paths.
-            </p>
-          </div>
-        ) : (
-          <div className="sample-done-card">
-            <div className="sample-done-icon">🎯</div>
-            <h3 className="sample-done-title">You just did data engineering.</h3>
-            <p className="sample-done-sub">
-              {userType === 'switcher'
-                ? 'That felt manageable, right? It gets deeper — but the feeling stays the same. Now pick your path.'
-                : 'That\'s the whole platform in miniature. Every level builds on the last. Now pick your path.'}
-            </p>
-          </div>
-        )}
-      </section>
-
-      {/* ── Choose path ── */}
-      {showPaths && (
-        <section className="landing-section" id="choose-path">
-          <div className="section-eyebrow">Step 3 of 3</div>
-          <h2 className="section-title">Which direction pulls you?</h2>
-          <p className="section-sub">
-            {userType === 'switcher'
-              ? 'Each path is a complete curriculum — designed around what the job actually requires. Not what\'s trendy.'
-              : 'Don\'t overthink it. Pick what sounds interesting. You can explore all of them.'}
-          </p>
-
-          <div className="path-grid">
-            {PATHS.map(p => (
-              <button
-                key={p.id}
-                className={`path-pill ${activePath === p.id ? 'path-pill--selected' : ''}`}
-                style={{ '--pill-color': p.color }}
-                onClick={() => handlePathSelect(p.id)}
-              >
-                <span className="pill-emoji">{p.emoji}</span>
-                <span className="pill-title">{p.title}</span>
-                <span className="pill-arrow">→</span>
+          <div className="choose-grid">
+            {ALL_PATHS.map(p => (
+              <button key={p.id}
+                className="choose-card"
+                style={{ '--pc': p.color }}
+                onClick={() => navigate(`/auth?next=/path/${p.id}/stage/1/level/0`)}>
+                <div className="choose-card-body">
+                  <span className="choose-card-emoji">{p.emoji}</span>
+                  <div>
+                    <div className="choose-card-name">{p.title}</div>
+                    <div className="choose-card-levels">{p.levels} levels</div>
+                  </div>
+                </div>
+                <div className="choose-card-cta">Start free →</div>
               </button>
             ))}
           </div>
-
-          <p className="path-nudge">
-            Your progress is saved automatically once you create a free account.
-            Takes 30 seconds.
-          </p>
-        </section>
-      )}
-
-      {/* ── How it works ── */}
-      <section className="landing-section landing-section--dark">
-        <h2 className="section-title">How QuestLearn works</h2>
-        <div className="how-grid">
-          {[
-            { n:'1', icon:'🎯', title:'Pick a path', body:'Choose from 7 career paths. Each one is a complete curriculum — from total beginner to job-ready.' },
-            { n:'2', icon:'⚡', title:'Do real work', body:'Every level is an active challenge — fill in code, debug broken programs, build real outputs. No passive watching.' },
-            { n:'3', icon:'🔓', title:'Unlock stages', body:'Complete levels to unlock the next stage. Stages unlock at 80% — you stay in flow, never get stuck.' },
-            { n:'4', icon:'🏆', title:'Build a portfolio', body:'Every capstone level produces a real deliverable. By Stage 7, you have portfolio projects ready to show.' },
-          ].map(s => (
-            <div className="how-card" key={s.n}>
-              <div className="how-num">{s.n}</div>
-              <div className="how-icon">{s.icon}</div>
-              <h3 className="how-title">{s.title}</h3>
-              <p className="how-body">{s.body}</p>
-            </div>
-          ))}
+          <p className="choose-note">Free to start. Progress saves when you create an account — 30 seconds.</p>
         </div>
       </section>
 
-      {/* ── Final CTA ── */}
-      <section className="landing-cta-section">
-        <div className="cta-orb cta-orb--a" />
-        <div className="cta-orb cta-orb--b" />
-        <h2 className="cta-headline">
-          The career switch starts with one level.
-        </h2>
-        <p className="cta-sub">
-          You just did one. 200+ more are waiting.
-        </p>
-        <button className="cta-btn" onClick={() => navigate('/auth?mode=signup')}>
-          Create your free account →
-        </button>
-        <p className="cta-fine">No credit card. No commitment. Cancel any time.</p>
+      {/* HOW IT WORKS */}
+      <section className="how-section">
+        <div className="how-wrap">
+          <h2 className="how-title">How QuestLearn works</h2>
+          <div className="how-grid">
+            {[
+              { n:'1', icon:'🎯', t:'Pick a path',         b:'Choose a career. Each path goes from zero to job-ready.' },
+              { n:'2', icon:'⚡', t:'Do real work',         b:'Every level is active — write code, solve problems, make decisions. No passive watching.' },
+              { n:'3', icon:'🔓', t:'Unlock stages',        b:'Complete levels to unlock the next stage. You stay in flow.' },
+              { n:'4', icon:'🏆', t:'Build your portfolio', b:'Every capstone level produces a real deliverable for employers.' },
+            ].map(s => (
+              <div className="how-card" key={s.n}>
+                <div className="how-num">{s.n}</div>
+                <div className="how-icon">{s.icon}</div>
+                <h3 className="how-card-title">{s.t}</h3>
+                <p className="how-card-body">{s.b}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* ── Footer ── */}
+      {/* FINAL CTA */}
+      <section className="final-cta">
+        <div className="cta-orb cta-orb--a" />
+        <div className="cta-orb cta-orb--b" />
+        <h2 className="final-cta-title">The career switch starts with one level.</h2>
+        <p className="final-cta-sub">You just experienced one. 200+ more are waiting.</p>
+        <button className="final-cta-btn" onClick={() => navigate('/auth?mode=signup')}>
+          Create your free account →
+        </button>
+        <p className="final-cta-fine">No credit card. No commitment.</p>
+      </section>
+
+      {/* FOOTER */}
       <footer className="landing-footer">
         <div className="footer-logo">◈ QuestLearn</div>
         <div className="footer-links">
@@ -499,6 +417,7 @@ export default function LandingPage() {
         </div>
         <div className="footer-copy">Built for career switchers and fearless beginners.</div>
       </footer>
+
     </div>
   );
 }
