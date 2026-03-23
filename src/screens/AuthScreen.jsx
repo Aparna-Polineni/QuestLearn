@@ -40,10 +40,14 @@ export default function AuthScreen() {
     if (result.error) {
       setError(result.error.message);
     } else {
-      const raw  = searchParams.get('next') || '/career-select';
-      const next = decodeURIComponent(raw);
-      // Guard: never redirect back to /auth (would cause a loop)
-      const safe = next.startsWith('/auth') ? '/career-select' : next;
+      // Priority: sessionStorage (set by RequireAuth) > ?next= param > default
+      const stored  = sessionStorage.getItem('ql_redirect');
+      const param   = searchParams.get('next');
+      const raw     = stored || (param ? decodeURIComponent(param) : null) || '/career-select';
+      // Clear stored destination now that we've used it
+      sessionStorage.removeItem('ql_redirect');
+      // Guard: never redirect to / or /auth (loop prevention)
+      const safe = (raw.startsWith('/auth') || raw === '/') ? '/career-select' : raw;
       navigate(safe, { replace: true });
     }
   }

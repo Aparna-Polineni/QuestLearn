@@ -1,7 +1,10 @@
 // src/screens/data-engineer/stage1/DE1Shell.jsx
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../../context/GameContext';
+import { useAuth } from '../../../context/AuthContext';
 import { ConceptReveal } from '../../../components/LevelSupport';
+import SaveProgressModal from '../../../components/SaveProgressModal';
 import './DE1Shell.css';
 
 const LEVEL_TITLES = {
@@ -14,26 +17,41 @@ const LEVEL_TITLES = {
   6: 'The Data Stack',
   7: 'Capstone — Design a Pipeline',
 };
-const LEVEL_MODES = { 0:'CONCEPTS', 1:'DEBUG', 2:'FILL', 3:'FILL', 4:'FILL', 5:'FILL', 6:'CONCEPTS', 7:'BUILD' };
-const STAGE_COLOR = '#06b6d4';
+const LEVEL_MODES  = { 0:'CONCEPTS', 1:'DEBUG', 2:'FILL', 3:'FILL', 4:'FILL', 5:'FILL', 6:'CONCEPTS', 7:'BUILD' };
+const STAGE_COLOR  = '#06b6d4';
+const PATH_ID      = 'data-engineer';
 
 export default function DE1Shell({ levelId, canProceed, conceptReveal, children }) {
   const navigate = useNavigate();
   const { completeLevel } = useGame();
+  const { user } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+
+  const nextUrl = levelId < 7
+    ? `/path/${PATH_ID}/stage/1/level/${levelId + 1}`
+    : '/roadmap';
 
   function handleComplete() {
     completeLevel(`de-1-${levelId}`);
-    if (levelId < 7) navigate(`/path/data-engineer/stage/1/level/${levelId + 1}`);
-    else navigate('/roadmap');
+
+    // Level 0 guest — show save progress modal instead of navigating
+    if (levelId === 0 && !user) {
+      setShowModal(true);
+      return;
+    }
+
+    navigate(nextUrl);
   }
 
-  const mode = LEVEL_MODES[levelId] || 'FILL';
+  const mode  = LEVEL_MODES[levelId] || 'FILL';
   const title = LEVEL_TITLES[levelId] || `Level 1.${levelId}`;
 
   return (
     <div className="de1-shell">
       <div className="de1-topbar">
-        <button className="de1-back" onClick={() => navigate('/roadmap')}>← Roadmap</button>
+        <button className="de1-back" onClick={() => navigate(user ? '/roadmap' : '/')}>
+          {user ? '← Roadmap' : '← Back'}
+        </button>
         <div className="de1-breadcrumb">
           <span className="de1-path" style={{ color: STAGE_COLOR }}>Data Engineer</span>
           <span className="de1-sep">›</span>
@@ -43,8 +61,10 @@ export default function DE1Shell({ levelId, canProceed, conceptReveal, children 
         </div>
         <div className={`de1-mode mode-${mode.toLowerCase()}`}>{mode}</div>
       </div>
+
       <div className="de1-content">{children}</div>
       {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} />}
+
       <div className="de1-footer">
         <button
           className="de1-btn"
@@ -55,6 +75,16 @@ export default function DE1Shell({ levelId, canProceed, conceptReveal, children 
           {levelId < 7 ? `Continue to 1.${levelId + 1} →` : '🎓 Stage 1 Complete!'}
         </button>
       </div>
+
+      {showModal && (
+        <SaveProgressModal
+          pathId={PATH_ID}
+          stageId={1}
+          levelId={0}
+          nextUrl={nextUrl}
+          onClose={() => { setShowModal(false); navigate(nextUrl); }}
+        />
+      )}
     </div>
   );
 }

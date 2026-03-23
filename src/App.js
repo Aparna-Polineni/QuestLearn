@@ -259,15 +259,22 @@ function ComingSoon({ label }) {
 
 function RequireAuth({ children }) {
   const { user, loading } = useAuth();
+
   if (loading) return (
     <div style={{ minHeight:'100vh', background:'#080a0f', display:'flex', alignItems:'center', justifyContent:'center' }}>
       <div style={{ fontFamily:'DM Mono,monospace', fontSize:13, color:'#475569', letterSpacing:2 }}>loading...</div>
     </div>
   );
+
   if (!user) {
-    const next = window.location.pathname + window.location.search;
-    return <Navigate to={`/auth?next=${encodeURIComponent(next)}`} replace />;
+    // Save the intended destination so AuthScreen can redirect there after login
+    const dest = window.location.pathname + window.location.search;
+    if (dest !== '/' && !dest.startsWith('/auth')) {
+      sessionStorage.setItem('ql_redirect', dest);
+    }
+    return <Navigate to="/auth" replace />;
   }
+
   return children;
 }
 
@@ -280,10 +287,11 @@ function AppRoutes() {
       <Route path="/auth"          element={<AuthScreen />} />
       <Route path="/home"          element={<R><Home /></R>} />
       <Route path="/career-select" element={<R><CareerPathSelect /></R>} />
-      <Route path="/domain-select" element={<R><DomainSelect /></R>} />
+      <Route path="/domain-select" element={<DomainSelect />} />
       <Route path="/roadmap"       element={<R><Roadmap /></R>} />
 
       {/* Stage 1 */}
+      <Route path="/stage/1/level/0" element={<Navigate to="/stage/1/level/1" replace />} />
       <Route path="/stage/1/level/1" element={<R><Level1_1 /></R>} />
       <Route path="/stage/1/level/2" element={<R><Level1_2 /></R>} />
       <Route path="/stage/1/level/3" element={<R><Level1_3 /></R>} />
@@ -426,7 +434,7 @@ function AppRoutes() {
       <Route path="/stage/7/level/11" element={<R><Level7_11 /></R>} />
 
       {/* ── Data Engineer ── */}
-      <Route path="/path/data-engineer/stage/1/level/0" element={<R><DE1_Level0 /></R>} />
+      <Route path="/path/data-engineer/stage/1/level/0" element={<DE1_Level0 />} />
       <Route path="/path/data-engineer/stage/1/level/1" element={<R><DE1_Level1 /></R>} />
       <Route path="/path/data-engineer/stage/1/level/2" element={<R><DE1_Level2 /></R>} />
       <Route path="/path/data-engineer/stage/1/level/3" element={<R><DE1_Level3 /></R>} />
@@ -436,7 +444,7 @@ function AppRoutes() {
       <Route path="/path/data-engineer/stage/1/level/7" element={<R><DE1_Level7 /></R>} />
 
       {/* ── ML/AI Engineer ── */}
-      <Route path="/path/ml-ai-engineer/stage/1/level/0" element={<R><ML1_Level0 /></R>} />
+      <Route path="/path/ml-ai-engineer/stage/1/level/0" element={<ML1_Level0 />} />
       <Route path="/path/ml-ai-engineer/stage/1/level/1" element={<R><ML1_Level1 /></R>} />
       <Route path="/path/ml-ai-engineer/stage/1/level/2" element={<R><ML1_Level2 /></R>} />
       <Route path="/path/ml-ai-engineer/stage/1/level/3" element={<R><ML1_Level3 /></R>} />
@@ -446,7 +454,7 @@ function AppRoutes() {
       <Route path="/path/ml-ai-engineer/stage/1/level/7" element={<R><ML1_Level7 /></R>} />
 
       {/* ── Cyber Security ── */}
-      <Route path="/path/cyber-security/stage/1/level/0" element={<R><CY1_Level0 /></R>} />
+      <Route path="/path/cyber-security/stage/1/level/0" element={<CY1_Level0 />} />
       <Route path="/path/cyber-security/stage/1/level/1" element={<R><CY1_Level1 /></R>} />
       <Route path="/path/cyber-security/stage/1/level/2" element={<R><CY1_Level2 /></R>} />
       <Route path="/path/cyber-security/stage/1/level/3" element={<R><CY1_Level3 /></R>} />
@@ -456,7 +464,7 @@ function AppRoutes() {
       <Route path="/path/cyber-security/stage/1/level/7" element={<R><CY1_Level7 /></R>} />
 
       {/* ── UX/UI Designer ── */}
-      <Route path="/path/ux-ui-designer/stage/1/level/0" element={<R><UX1_Level0 /></R>} />
+      <Route path="/path/ux-ui-designer/stage/1/level/0" element={<UX1_Level0 />} />
       <Route path="/path/ux-ui-designer/stage/1/level/1" element={<R><UX1_Level1 /></R>} />
       <Route path="/path/ux-ui-designer/stage/1/level/2" element={<R><UX1_Level2 /></R>} />
       <Route path="/path/ux-ui-designer/stage/1/level/3" element={<R><UX1_Level3 /></R>} />

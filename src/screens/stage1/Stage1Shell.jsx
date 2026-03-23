@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
+import { useAuth } from '../../context/AuthContext';
 import RoadmapSidebar from '../../components/RoadmapSidebar';
+import SaveProgressModal from '../../components/SaveProgressModal';
 import './Stage1Shell.css';
 
 const LEVELS = [
@@ -16,64 +18,22 @@ const LEVELS = [
   { id: 8, title: "The Roadmap",           icon: "🗓️" },
 ];
 
-// ── Concept reveal panel — shown after every level completes ───────────────
-function ConceptPanel({ conceptReveal, conceptUnlocked, conceptText }) {
-  // Support both old format (conceptUnlocked + conceptText strings)
-  // and new format (conceptReveal object with full fields)
-  const reveal = conceptReveal || (conceptUnlocked ? {
-    concept: conceptUnlocked,
-    whatYouLearned: conceptText,
-  } : null);
-
-  if (!reveal) return null;
-
-  return (
-    <div className="s1-concept-reveal">
-
-      <div className="s1-cr-header">
-        <span className="s1-cr-icon">💡</span>
-        <div>
-          <div className="s1-cr-tag">Concept Unlocked</div>
-          <div className="s1-cr-title">{reveal.concept}</div>
-        </div>
-      </div>
-
-      {reveal.whatYouLearned && (
-        <div className="s1-cr-block">
-          <div className="s1-cr-block-label">✅ What you learned</div>
-          <p className="s1-cr-block-text">{reveal.whatYouLearned}</p>
-        </div>
-      )}
-
-      {reveal.realWorldUse && (
-        <div className="s1-cr-block">
-          <div className="s1-cr-block-label">🏢 How professionals use this</div>
-          <p className="s1-cr-block-text">{reveal.realWorldUse}</p>
-        </div>
-      )}
-
-      {reveal.developerSays && (
-        <div className="s1-cr-quote">
-          <span className="s1-cr-quote-mark">"</span>
-          <p className="s1-cr-quote-text">{reveal.developerSays}</p>
-          <span className="s1-cr-quote-attr">— Senior Developer</span>
-        </div>
-      )}
-
-    </div>
-  );
-}
-
-// ── Main shell ─────────────────────────────────────────────────────────────
-function Stage1Shell({ children, levelId, canProceed, conceptUnlocked, conceptText, conceptReveal, undoControls }) {
+function Stage1Shell({ children, levelId, canProceed, onComplete, conceptUnlocked, conceptText, conceptReveal, undoControls }) {
   const navigate = useNavigate();
   const { selectedDomain, completeLevel, isLevelComplete } = useGame();
+  const { user } = useAuth();
   const [showCelebration, setShowCelebration] = useState(false);
   const [roadmapOpen,     setRoadmapOpen]     = useState(false);
+  const [showModal,       setShowModal]       = useState(false);
 
   function handleComplete() {
     if (!canProceed) return;
     completeLevel(`1-${levelId}`, {});
+    // Guest completing first level — show save progress modal
+    if (levelId === 1 && !user) {
+      setShowModal(true);
+      return;
+    }
     setShowCelebration(true);
   }
 
@@ -82,19 +42,20 @@ function Stage1Shell({ children, levelId, canProceed, conceptUnlocked, conceptTe
     if (levelId < 8) {
       navigate(`/stage/1/level/${levelId + 1}`);
     } else {
-      navigate('/stage/2/level/0');
+      navigate('/stage/2/level/1');
     }
   }
 
   const progress = ((levelId - 1) / 8) * 100;
 
   return (
+    <>
     <div className="s1-shell">
 
       {/* Top HUD */}
       <div className="s1-hud">
         <div className="s1-hud-left">
-          <span className="s1-logo" style={{ cursor: 'pointer' }} onClick={() => navigate('/home')}>◈ QuestLearn</span>
+          <span className="s1-logo" style={{cursor:'pointer'}} onClick={() => navigate('/home')}>◈ QuestLearn</span>
           <span className="s1-sep">·</span>
           <span className="s1-stage">🎨 Stage 1 — Design</span>
         </div>
@@ -132,7 +93,7 @@ function Stage1Shell({ children, levelId, canProceed, conceptUnlocked, conceptTe
         ))}
       </div>
 
-      {/* Level header */}
+      {/* Level title */}
       <div className="s1-level-header">
         <div className="s1-level-number">Level 1.{levelId}</div>
         <div className="s1-level-title">
@@ -140,25 +101,19 @@ function Stage1Shell({ children, levelId, canProceed, conceptUnlocked, conceptTe
         </div>
       </div>
 
-      {/* Content */}
-      <div className="s1-content">{children}</div>
+      {/* Content area */}
+      <div className="s1-content">
+        {children}
+      </div>
 
-      {/* Action bar */}
+      {/* Bottom action bar */}
       <div className="s1-action-bar">
-        <div className="s1-action-left">
-          <button
-            className="s1-back-btn"
-            onClick={() => levelId > 1 ? navigate(`/stage/1/level/${levelId - 1}`) : navigate('/domain-select')}
-          >
-            ← Back
-          </button>
-          {undoControls && (
-            <div className="s1-undo-row">
-              <button className="s1-undo-btn" onClick={undoControls.undo} disabled={!undoControls.canUndo}>↩ Undo</button>
-              <button className="s1-undo-btn" onClick={undoControls.redo} disabled={!undoControls.canRedo}>↪ Redo</button>
-            </div>
-          )}
-        </div>
+        <button
+          className="s1-back-btn"
+          onClick={() => levelId > 1 ? navigate(`/stage/1/level/${levelId - 1}`) : navigate('/domain-select')}
+        >
+          ← Back
+        </button>
         <div className="s1-action-center">
           {canProceed
             ? <span className="s1-ready">✓ Ready to continue</span>
@@ -174,33 +129,25 @@ function Stage1Shell({ children, levelId, canProceed, conceptUnlocked, conceptTe
         </button>
       </div>
 
-      {/* ── Celebration overlay ─────────────────────────────── */}
+      {/* Celebration overlay */}
       {showCelebration && (
-        <div className="s1-celebration" onClick={e => e.target === e.currentTarget && setShowCelebration(false)}>
+        <div className="s1-celebration">
           <div className="s1-celebrate-box">
-
             <div className="s1-celebrate-emoji">🎉</div>
-            <h2 className="s1-celebrate-title">Level 1.{levelId} Complete!</h2>
+            <h2>Level 1.{levelId} Complete!</h2>
             <p className="s1-celebrate-sub">
               {LEVELS[levelId - 1].icon} {LEVELS[levelId - 1].title}
             </p>
-
-            {/* All the learning content */}
-            <ConceptPanel
-              conceptReveal={conceptReveal}
-              conceptUnlocked={conceptUnlocked}
-              conceptText={conceptText}
-            />
-
-            <div className="s1-celebrate-actions">
-              <button className="s1-home-btn" onClick={() => { setShowCelebration(false); navigate('/home'); }}>
-                🏠 Home
-              </button>
-              <button className="s1-next-level-btn" onClick={goNext}>
-                {levelId < 8 ? `Next → Level 1.${levelId + 1}` : '🚀 Start Stage 2'}
-              </button>
-            </div>
-
+            {conceptUnlocked && (
+              <div className="s1-concept-box">
+                <div className="s1-concept-label">💡 Concept Unlocked</div>
+                <div className="s1-concept-name">{conceptUnlocked}</div>
+                <div className="s1-concept-text">{conceptText}</div>
+              </div>
+            )}
+            <button className="s1-next-level-btn" onClick={goNext}>
+              {levelId < 8 ? `Next → Level 1.${levelId + 1}` : '🚀 Start Stage 2 — Java Core'}
+            </button>
           </div>
         </div>
       )}
@@ -214,6 +161,16 @@ function Stage1Shell({ children, levelId, canProceed, conceptUnlocked, conceptTe
       />
 
     </div>
+      {showModal && (
+        <SaveProgressModal
+          pathId="java-fullstack"
+          stageId={1}
+          levelId={1}
+          nextUrl={`/stage/1/level/${levelId + 1}`}
+          onClose={() => { setShowModal(false); setShowCelebration(true); }}
+        />
+      )}
+    </>
   );
 }
 
