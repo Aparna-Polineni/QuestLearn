@@ -264,7 +264,10 @@ function RequireAuth({ children }) {
       <div style={{ fontFamily:'DM Mono,monospace', fontSize:13, color:'#475569', letterSpacing:2 }}>loading...</div>
     </div>
   );
-  if (!user) return <Navigate to="/auth" replace />;
+  if (!user) {
+    const next = window.location.pathname + window.location.search;
+    return <Navigate to={`/auth?next=${encodeURIComponent(next)}`} replace />;
+  }
   return children;
 }
 

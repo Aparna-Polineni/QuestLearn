@@ -40,8 +40,11 @@ export default function AuthScreen() {
     if (result.error) {
       setError(result.error.message);
     } else {
-      const next = searchParams.get('next') || '/career-select';
-      navigate(next);
+      const raw  = searchParams.get('next') || '/career-select';
+      const next = decodeURIComponent(raw);
+      // Guard: never redirect back to /auth (would cause a loop)
+      const safe = next.startsWith('/auth') ? '/career-select' : next;
+      navigate(safe, { replace: true });
     }
   }
 

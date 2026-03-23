@@ -14,6 +14,7 @@ const JOBS = [
     feeling: 'It feels like finding a landmine before anyone steps on it. The work is invisible when it goes right — and catastrophic when it goes wrong.',
     who: 'People who enjoy this tend to like patterns, systems, and the satisfaction of something running quietly in the background keeping everything clean.',
     tags: ['Structured thinking', 'Patterns & logic', 'Behind the scenes'],
+    feels: 'Feels like: solving structured problems that run silently in the background',
     color: '#06b6d4', pathId: 'data-engineer',
   },
   {
@@ -24,6 +25,7 @@ const JOBS = [
     feeling: 'It feels like being a doctor for a system that cannot tell you what is wrong. You diagnose it from symptoms.',
     who: 'People who enjoy this tend to be comfortable with uncertainty and like figuring out why something that should work does not.',
     tags: ['Diagnostic thinking', 'Patterns in data', 'Systems that learn'],
+    feels: 'Feels like: diagnosing why a smart system is behaving unexpectedly',
     color: '#8b5cf6', pathId: 'ml-ai-engineer',
   },
   {
@@ -34,7 +36,19 @@ const JOBS = [
     feeling: 'Finding the breach is a gut-drop moment. The investigation that follows — containing it, tracing it, preventing the next one — is methodical and deeply satisfying.',
     who: 'People who enjoy this tend to think adversarially — they naturally ask "how could someone break this?" before anyone else does.',
     tags: ['Adversarial thinking', 'Investigation', 'Prevention'],
+    feels: 'Feels like: investigating a crime scene before anyone knows a crime happened',
     color: '#10b981', pathId: 'cyber-security',
+  },
+  {
+    id: 'fs', emoji: '☕', role: 'Full Stack Developer',
+    tagline: 'You build the whole product — what users see and everything behind it.',
+    day: 'A hospital reception team is managing patient appointments in a spreadsheet shared over email. Rows get overwritten. Appointments are lost. A patient arrives for a surgery that was cancelled three days ago — nobody told them.',
+    task: 'You build a web application: a React frontend receptionists use to book and manage appointments, connected to a Java Spring Boot backend that stores everything in a database, sends confirmation emails automatically, and prevents double-bookings at the database level.',
+    feeling: 'Watching someone use something you built from nothing — and watching it just work — is one of the clearest feelings of authorship you can have in a technical job.',
+    who: 'People who enjoy this tend to like variety — they want to understand the whole system, not just one layer. They get restless doing only one thing.',
+    tags: ['Frontend + backend', 'Build end-to-end', 'Full ownership'],
+    feels: 'Feels like: building an entire machine from scratch and watching it run',
+    color: '#f97316', pathId: 'java-fullstack',
   },
   {
     id: 'ux', emoji: '🎨', role: 'UX / UI Designer',
@@ -44,6 +58,7 @@ const JOBS = [
     feeling: 'When a frustrated person becomes a confident one because you understood them, it feels quietly powerful. One word changed 200 phone calls into 200 completed bookings.',
     who: 'People who enjoy this tend to notice when something feels harder than it should — and feel genuinely bothered until they fix it.',
     tags: ['Human behaviour', 'Visual clarity', 'Empathy-driven'],
+    feels: 'Feels like: understanding why people get confused and quietly fixing it',
     color: '#ec4899', pathId: 'ux-ui-designer',
   },
 ];
@@ -71,13 +86,18 @@ const REFLECTIONS = {
     unsure: "A fair response. UX is deceptively deep — it starts with observation but grows into research, systems thinking, and visual design. Worth spending more time with before deciding.",
     no:     "Useful to know. UX rewards patience with people and their confusion. If you preferred the logic-driven or investigative roles, Data Engineering or Cyber Security might suit you better.",
   },
+  fs: {
+    yes:    "That instinct — thinking in layers, choosing the right place to enforce a rule — is exactly how full stack developers approach every problem. The job rewards people who want to understand the whole system.",
+    unsure: "Reasonable. Full stack development is broad by nature — frontend, backend, database, deployment. If you liked the logic side more than the UI side, backend or data engineering might suit you better.",
+    no:     "Useful to know. Full stack requires context-switching between many layers. If you preferred a single focused domain — data, security, or design — those paths might feel more natural.",
+  },
 };
 
 // ─── Task data ────────────────────────────────────────────────────────────────
 
 const TASKS = {
   de: {
-    q: 'Two records exist for the same patient with different medication doses. Record A was created at 14:32. Record B at 14:33. Which do you remove?',
+    q: 'A duplicate entry was accidentally created. Two records exist for the same patient with different medication doses. Record A was created at 14:32, Record B at 14:33. Which do you remove?',
     opts: [
       { id:'A', text:'Remove Record A — older records can be outdated', right:false },
       { id:'B', text:'Remove Record B — created one minute later, it is the duplicate', right:true },
@@ -160,6 +180,27 @@ const TASKS = {
     confidence: 'You just thought like a UX Designer.',
     confidence_sub: 'You chose observation over assumption, then made the smallest change that solved the real problem. That two-step discipline is the whole practice of UX.',
   },
+  fs: {
+    q: 'A receptionist reports that two patients have been booked into the same appointment slot. What is the right place to prevent this from happening?',
+    opts: [
+      { id:'A', text:'Add a warning message in the UI asking receptionists to double-check before saving', right:false },
+      { id:'B', text:'Enforce a unique constraint at the database level so double-bookings are structurally impossible', right:true },
+      { id:'C', text:'Send an email alert when a clash is detected', right:false },
+      { id:'D', text:'Train the reception team to check the calendar before booking', right:false },
+    ],
+    good: 'Exactly. UI warnings get clicked past. Emails arrive too late. Training fails under pressure. A database constraint makes the problem structurally impossible — the system physically cannot create two bookings for the same slot. That is full stack thinking: fix it at the deepest reliable layer.',
+    miss: 'UI warnings and emails are soft defences — people ignore them under pressure. The correct answer is a hard constraint at the database level. Full stack developers learn to ask: what is the deepest layer where this can be prevented?',
+    micro_q: 'The database constraint is in place. Now what prevents a receptionist from accidentally booking the wrong patient into the correct slot?',
+    micro_opts: [
+      { id:'A', text:'Hope they read the form carefully', right:false },
+      { id:'B', text:'Show a confirmation screen summarising the booking details before it is saved', right:true },
+      { id:'C', text:'Require two staff members to approve every booking', right:false },
+    ],
+    micro_good: 'Right. A confirmation step forces a moment of review without blocking the workflow. It is the standard pattern for any destructive or consequential action in a UI — and it catches a large percentage of errors.',
+    micro_miss: "The confirmation screen is the standard UX pattern here — it creates a deliberate pause before commitment without requiring a second person. Simple, effective, and respectful of the user's time.",
+    confidence: 'You just thought like a Full Stack Developer.',
+    confidence_sub: 'You identified the right layer to enforce each constraint — database for hard rules, UI for soft guidance. That layered thinking is what full stack development is built on.',
+  },
 };
 
 // ─── Path grid data ───────────────────────────────────────────────────────────
@@ -241,7 +282,7 @@ function TryIt({ job, onDone, onCompare }) {
           </div>
           {pick1 && (
             <div className={`tryit-explain ${pick1.right ? 'exp--good':'exp--miss'}`}>
-              {pick1.right ? t.good : <>{t.miss}<button className="tryit-retry" onClick={()=>setPick1(null)}>Try again →</button></>}
+              {pick1.right ? t.good : <>{t.miss}<button className="tryit-retry" onClick={()=>setPick1(null)}>Try again — focus on what's most reliable →</button></>}
             </div>
           )}
           {pick1?.right && <p className="tryit-next-hint">One more question →</p>}
@@ -263,7 +304,7 @@ function TryIt({ job, onDone, onCompare }) {
           </div>
           {pick2 && (
             <div className={`tryit-explain ${pick2.right ? 'exp--good':'exp--miss'}`}>
-              {pick2.right ? t.micro_good : <>{t.micro_miss}<button className="tryit-retry" onClick={()=>setPick2(null)}>Try again →</button></>}
+              {pick2.right ? t.micro_good : <>{t.micro_miss}<button className="tryit-retry" onClick={()=>setPick2(null)}>Try again — focus on what's most reliable →</button></>}
             </div>
           )}
         </div>
@@ -285,6 +326,8 @@ function TryIt({ job, onDone, onCompare }) {
       {step === 'reflection' && (
         <div className="reflection-block" style={{animation:'fadeUp .4s ease', '--jc': job.color}}>
           <p className="refl-q">Did you enjoy solving this kind of problem?</p>
+
+          <p className="refl-bridge">Based on this, here is what your next step could look like:</p>
 
           {!feeling && (
             <div className="refl-btns">
@@ -327,6 +370,7 @@ function ComparisonPanel({ jobs }) {
   return (
     <div className="compare-panel">
       <div className="compare-header">
+        <div className="compare-momentum">You are getting closer to a decision.</div>
         You have explored {jobs.length} roles — here is how they compare:
       </div>
       <div className="compare-grid">
@@ -341,6 +385,7 @@ function ComparisonPanel({ jobs }) {
                 <span key={tag} className="compare-tag">{tag}</span>
               ))}
             </div>
+            {j.feels && <p className="compare-feels">{j.feels}</p>}
           </div>
         ))}
       </div>
