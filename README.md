@@ -1,243 +1,221 @@
 
 ◈ QuestLearn
-Career Transformation Learning Platform
-Project README — March 2026
-168 routes  ·  7 active career paths  ·  200+ levels built
-React 18  +  Spring Boot 3  +  MySQL  +  JWT Auth
- 
-1.  What is QuestLearn?
+Project README — Complete Technical Reference
+March 2026  ·  All builds documented
 
-Overview
-QuestLearn is a career transformation platform that takes learners from zero experience to job-ready through structured, interactive curricula. Unlike video courses, every level requires the learner to actively write, debug, or design — there is no passive watching.
+React 18  ·  Spring Boot 3  ·  MySQL  ·  JWT Auth
 
-The platform currently supports 7 active career paths with 200+ built levels, a Spring Boot + MySQL backend with JWT authentication, and a React 18 frontend with real-time progress tracking.
+1.  System Overview
 
-Core Design Principles
-•	Learn-by-doing — every level requires writing code, debugging, or making decisions. No passive content.
-•	Three learning modes — FILL (fill blanks in working code), BUILD (write from scratch), DEBUG (find and fix bugs).
-•	Anatomy-first — every concept gets a visual reference card before the exercise begins.
-•	Real-world context — all examples use a consistent hospital domain (patients, wards, doctors) so skills transfer to real jobs.
-•	Instant feedback — check buttons validate answers immediately with specific error messages per blank.
-•	Progressive unlocking — stages unlock at 80% completion of the previous stage, avoiding hard blockers.
- 
-2.  Tech Stack
+QuestLearn is a career discovery and learning platform. Users explore tech careers through interactive role demonstrations, then complete structured curriculum paths from beginner to job-ready.
 
-Layer	Technology
-Frontend	React 18, React Router v6, CSS (no framework), Context API
-Backend	Spring Boot 3, Spring Data JPA, Spring Security, JWT
-Database	MySQL (production), H2 (tests), Flyway migrations
-Auth	JWT tokens, BCrypt password hashing, AuthContext + GameContext
-Progress	localStorage (instant) + MySQL backend (persistent) + backend sync on login
-Build	Create React App, Maven Wrapper (mvnw)
-Deployment	Docker + Docker Compose (Stage 7 curriculum built, pending deploy)
- 
-3.  Project Structure
+Layer	Detail
+Frontend	React 18, port 3000, React Router v6
+Backend	Spring Boot 3, port 8080, REST API
+Database	MySQL — users, progress, completions
+Auth	JWT stored in localStorage via api.js
+Routing	React Router — RequireAuth guard for protected routes
 
-Frontend — src/
-src/
-  App.js                          168 routes (all stages + new paths)
-  context/
-    AuthContext.js                JWT auth, login/logout, session restore
-    GameContext.js                Progress, path-aware routing, level keys
-  data/
-    careerPaths.js                12 career paths (7 active, 5 coming soon)
-  screens/
-    CareerPathSelect.jsx          Path selection screen
-    DomainSelect.jsx              Domain picker (hospital/banking/etc)
-    Home.jsx                      Dashboard — started paths, resume
-    Roadmap.jsx                   Dynamic stage/level progress map
-    stage1/                       Design & Thinking (8 levels)
-    stage2/                       Java Core (20 levels)
-    stage2_5/                     JavaScript Fundamentals (20 levels)
-    stage3/                       React Frontend (16 levels)
-    stage4/                       Spring Boot Backend (16 levels)
-    stage5/                       Database & SQL (22 levels)
-    stage6/                       Full Stack Integration (14 levels)
-    stage7/                       Deployment & DevOps (12 levels)
-    data-engineer/stage1/         Data Engineer Stage 1 (8 levels)
-    ml-ai-engineer/stage1/        ML/AI Engineer Stage 1 (8 levels)
-    cyber-security/stage1/        Cyber Security Stage 1 (8 levels)
-    ux-ui-designer/stage1/        UX/UI Designer Stage 1 (8 levels)
-  components/
-    LevelSupport.jsx              ConceptReveal, HintPanel, ConceptIntro
+2.  Career Paths
 
-Backend — src/main/java/com/questlearn/
-  QuestLearnApplication.java
-  config/    SecurityConfig.java  (JWT filter, CORS, route rules)
-  controller/ AuthController.java, ProgressController.java
-  service/    UserService.java, ProgressService.java
-  repository/ UserRepository.java, ProgressRepository.java
-  model/      User.java, Progress.java
-  security/   JwtUtil.java, JwtFilter.java
- 
-4.  Career Paths
+Seven active paths. Five coming soon. Each path has numbered stages, each stage has numbered levels. Two URL formats exist based on when the path was built.
 
-Active Paths (selectable now)
-Path	Scale	Level / Duration
-☕ Java Full Stack Developer	139 levels · 8 stages	Beginner → Job Ready · 6–9 months
-⛛️ Frontend Developer	89 levels · 6 stages	Beginner → Job Ready · 4–6 months
-🔢 Math for Students	84 levels · 6 stages	Ages 13–19 · Own pace
-🗂️ Data Engineer	84 levels · 7 stages	Beginner → Job Ready · 6–8 months
-🤖 ML/AI Engineer	112 levels · 8 stages	Intermediate · 8–10 months
-🔐 Cyber Security Analyst	84 levels · 7 stages	Beginner → Job Ready · 6–8 months
-🎨 UX/UI Designer	70 levels · 7 stages	Beginner → Job Ready · 5–7 months
+Path	Levels	Status	URL Format
+Java Full Stack	139	Active	/stage/{n}/level/{n}  (legacy)
+Frontend React	89	Active	/stage/{n}/level/{n}  (legacy)
+Data Engineer	84	Active	/path/data-engineer/stage/{n}/level/{n}
+ML / AI Engineer	112	Active	/path/ml-ai-engineer/stage/{n}/level/{n}
+Cyber Security	84	Active	/path/cyber-security/stage/{n}/level/{n}
+UX / UI Designer	70	Active	/path/ux-ui-designer/stage/{n}/level/{n}
+Math Student	84	Active	/stage/math/level/{n}  (legacy)
 
-Coming Soon
-Path	Scale	Tech Stack
-📊 Data Analytics	95 levels · 7 stages	Python, SQL, Pandas, Tableau
-🔮 AI & Machine Learning	128 levels · 8 stages	TensorFlow, PyTorch, MLOps
-🐍 Backend Developer (Python)	102 levels · 7 stages	FastAPI, Django, PostgreSQL
-🚀 DevOps & Cloud Engineer	110 levels · 8 stages	Docker, K8s, AWS, Terraform
-📱 Mobile Developer	96 levels · 7 stages	React Native, Expo, Firebase
- 
-5.  Java Full Stack — Complete Curriculum
+Level Key Format
+Every completed level is stored with a unique key used by GameContext to track progress.
 
-Stage	Levels	Topics Covered
-Stage 1 — Design & Thinking	8 levels	MoSCoW, architecture canvas, wireframing, data modelling, API design, tech stack, project structure, roadmap
-Stage 2 — Java Core	20 levels	Variables, OOP, collections, exceptions, generics, streams, lambdas, Optional
-Stage 2.5 — JavaScript Fundamentals	20 levels	Arrow functions, destructuring, array methods, async/await, closures, DOM, modules
-Stage 3 — React Fundamentals	16 levels	Components, props, hooks, routing, API integration, Context, custom hooks, auth
-Stage 4 — Spring Boot Backend	16 levels	REST API, JPA, validation, exception handling, security, JWT, testing
-Stage 5 — Database & SQL	22 levels	SQL, JOINs, aggregates, Hibernate, @Transactional, N+1, Flyway migrations
-Stage 6 — Full Stack Integration	14 levels	CORS, Axios, auth flow, protected routes, file upload, CRUD, WebSockets
-Stage 7 — Deployment & DevOps	12 levels	Docker, Compose, GitHub Actions CI/CD, AWS EC2/RDS, Spring profiles
+Path Type	Key Format
+Legacy (java-fullstack)	{stageId}-{levelId}  e.g.  2-7
+New paths (data-engineer etc)	{prefix}-{stageId}-{levelId}  e.g.  de-1-3
 
-Total: 128 levels across 8 stages. Every stage ends with a BUILD capstone combining all concepts. Stages unlock at 80% completion of the previous stage.
- 
-6.  New Paths — Stage 1 Built
+Prefixes: de = data-engineer, ml = ml-ai-engineer, cy = cyber-security, ux = ux-ui-designer.
 
-All 4 new paths have complete Stage 1 (8 levels each)
+3.  Landing Page  (LandingPage.jsx + LandingPage.css)
 
-Data Engineer Stage 1 — The Data Problem
-Lvl	Mode	Content
-Level 0	CONCEPTS	What is Data Engineering? ETL, pipelines, data engineer vs analyst vs scientist
-Level 1	DEBUG	3 real data quality bugs: NULL crashes, duplicate transactions, timezone mismatch
-Level 2	FILL	Anatomy of an ETL pipeline — Extract, Transform, Load in Python
-Level 3	FILL	Schema design — fact tables, dimension tables, surrogate keys, star schema
-Level 4	FILL	Batch vs streaming — Airflow, Kafka, when to use each
-Level 5	FILL	Data formats — CSV, JSON, Parquet (columnar), Avro
-Level 6	CONCEPTS	The modern data stack — 6 layers from source to visualisation
-Level 7	BUILD	Capstone: design a complete pipeline (source, ETL, schema, quality, orchestration)
+The public marketing homepage at route /. Visible to all visitors with no account required. The previous behaviour was a cold redirect to /auth — replaced with a career discovery experience.
 
-ML/AI Engineer Stage 1 — AI Problem Framing
-Lvl	Mode	Content
-Level 0	CONCEPTS	What is ML? ML vs rules, 3 types of learning, data is everything
-Level 1	DEBUG	3 wrong ML choices: rule works better, too little data, black box in regulated context
-Level 2	FILL	Types of learning — supervised/unsupervised/RL, classification vs regression, features vs label
-Level 3	FILL	The 8-step ML workflow — problem definition to production monitoring
-Level 4	FILL	Data quality — imbalanced classes, data leakage, imputation, normalisation
-Level 5	FILL	Evaluation metrics — accuracy, precision, recall, F1, ROC-AUC, RMSE
-Level 6	CONCEPTS	ML in production — serving, drift, monitoring, A/B testing, MLOps
-Level 7	BUILD	Capstone: frame an ML problem with business metric, features, risks, serving strategy
+Design Philosophy
+•	Show the job before asking for anything — context before tasks removes beginner anxiety
+•	Human stakes over corporate stakes — patient safety scenarios not CEO board meetings
+•	One small win in under 2 minutes — two questions, not a full task
+•	Confidence layer before path selection — user is told what they demonstrated before being asked to choose
+•	Comparison memory — users who try multiple roles see a side-by-side panel with trait tags and a "feels like" description per role
 
-Cyber Security Stage 1 — Security Mindset
-Lvl	Mode	Content
-Level 0	CONCEPTS	Security mindset, CIA triad, threat modelling, attack surfaces, defence in depth
-Level 1	FILL	CIA Triad in practice — threats, controls, encryption, hashing, DDoS, MFA
-Level 2	FILL	Threat modelling — STRIDE framework, risk = likelihood × impact, DREAD scoring
-Level 3	FILL	Attack surfaces — network ports, nmap, social engineering, supply chain, patching
-Level 4	DEBUG	3 real vulnerabilities: SQL injection, hardcoded credentials, missing rate limiting
-Level 5	FILL	Defence in depth — perimeter, segmentation, EDR, backups, SIEM, zero trust
-Level 6	CONCEPTS	Security careers — SOC analyst, pen tester, AppSec, cloud security, IR, GRC
-Level 7	BUILD	Capstone: complete threat model for hospital portal (assets, actors, STRIDE, mitigations)
+Page Sections
+Section	Description
+Nav	Sticky. Opaque on scroll. Sign in + Get started free buttons.
+Hero	Full viewport. Headline: "I don't know where to start" → "I've already started." One CTA scrolls to Explore.
+Explore	Two-column: 5 job tabs left, detail panel right. Shows situation, task, feeling, who enjoys it per role.
+TryIt widget	Two questions inside the panel. Step progress bar. Confidence layer. Reflection question. Compare loop.
+Choose Path	Six path cards. After completing TryIt, matched path gets "Matches what you just did" badge.
+How it works	Four cards: Pick, Do, Unlock, Build.
+Final CTA	One headline, one button.
 
-UX/UI Designer Stage 1 — Design Thinking
-Lvl	Mode	Content
-Level 0	CONCEPTS	Design Thinking — 5 stages, human-centred design, UX vs UI, prototype early
-Level 1	FILL	Empathy — empathy map, user interviews, observation, personas, Jobs to Be Done
-Level 2	FILL	Define — POV statement, HMW questions, root cause, scope, success metrics
-Level 3	BUILD	Ideate — brainstorming rules, Crazy 8s, SCAMPER, worst idea technique
-Level 4	FILL	Prototype — fidelity spectrum, paper sketch, wireframe, interactive prototype, affordances
-Level 5	FILL	Test — usability testing, think-aloud, facilitator rules, affinity mapping, SUS score
-Level 6	CONCEPTS	UX vs UI vs IA vs Interaction Design, accessibility (WCAG), designer tool stack
-Level 7	BUILD	Capstone: full design challenge (empathy + POV + HMW + ideation + prototype + test tasks)
- 
-7.  Key Components
+TryIt Widget — State Machine
+The TryIt widget inside the Explore panel runs five sequential phases:
+Phase	What happens
+q1	Main reasoning question. 4 options. Wrong answer shows explanation + retry guidance. Correct auto-advances to q2.
+q2	Prevention question ("What stops this happening again?"). 3 options. Slightly harder framing.
+confidence	Large bordered box: "You just thought like a [Role]." + one supporting sentence. Button: "One quick question →"
+reflection	"Did you enjoy solving this kind of problem?" — three buttons: Yes / Not sure / Not really. Each gives a personalised response before showing path CTA.
+(choice)	Two buttons: "Start [role] path →" and "Compare with another role". Compare resets to browse and scrolls up.
 
-Shared Interactive Editors
-Component	Purpose
-FillEditor.jsx	Fill-in-the-blank Java/JSX editor. Syntax highlighting, per-blank correct/incorrect state, hint placeholders, case-insensitive matching. Used by Stages 2, 3, 4, 5 (JPA levels).
-JsEditor.jsx	Browser-based JavaScript runner using eval(). lockedCode prop for read-only starter code, console.log capture, error display. Used by Stage 2.5.
-DebugEditor.jsx	Read-only code display with writable answer area. Locked lines in grey, editable slots highlighted. Used by debug levels in Stages 2 and 3.
-Stage Shells	Each stage has a Shell (Stage2Shell, Stage5Shell etc.) — breadcrumb nav, mode badge (FILL/BUILD/DEBUG/CONCEPTS), canProceed gate, ConceptReveal footer.
-ConceptReveal	Celebration panel after level completion. Shows "what you learned", "why it matters", "real-world use". Animated appearance.
-LevelSupport	Three-layer support: ConceptIntro modal (before level), HintPanel (progressive hints), ConceptReveal (after completion).
+Jobs in the Explore Tabs
+Five jobs: Data Engineer, ML/AI Engineer, Cyber Security Analyst, UX/UI Designer, Full Stack Developer. Each has: id, emoji, role, tagline, day (scenario), task (what you do), feeling, who (personality match), tags[], feels (one-line comparison descriptor), color, pathId.
 
-State Management
-File	Responsibility
-GameContext.js	Central progress store. Path-aware routing (legacy /stage/ vs new /path/{id}/stage/), prefixed level keys per path (de-1-0, ml-1-0), 80% unlock threshold, getResumeRoute(), isStageUnlocked().
-AuthContext.js	JWT auth lifecycle. login(), logout(), session restore on startup (/api/auth/me), token in localStorage, 401 interceptor redirect.
-Roadmap.jsx	Dynamic stage map. buildStageRoutes() generates correct URLs per active path. levelKey() generates path-aware progress keys. Stage25Banner for legacy user migration.
-careerPaths.js	12 career paths with stages, level counts, colours, descriptions. Resolved live from this file on startup (prevents stale localStorage cache).
- 
-8.  Backend API
+Comparison Panel
+Appears above the path grid after two or more roles are explored. Shows: "You are getting closer to a decision." + role cards with trait tags and feels line side by side. Driven by completedJobs[] state in LandingPage.
 
-Endpoint	Description
-POST /api/auth/register	Create account. Body: { name, email, password }. Returns: { token, user }.
-POST /api/auth/login	Login. Body: { email, password }. Returns: { token, user }.
-GET /api/auth/me	Verify token, return current user. Requires: Authorization: Bearer <token>.
-GET /api/progress	Get all completed levels for authenticated user.
-POST /api/progress	Mark level complete. Body: { levelKey, pathId, stageId, levelId }.
+Key State (LandingPage)
+Variable	Purpose
+active	Which JOBS entry is currently shown in the panel
+phase	browse | tryit | done — controls what shows below the panel blocks
+completedJobs[]	Array of JOBS objects the user has finished TryIt for. Drives comparison panel.
+scrolled	Triggers opaque nav bar at 40px scroll
 
-URL Patterns
-Pattern	Format
-Legacy paths (java-fullstack etc.)	/stage/{stageId}/level/{levelIndex}
-New paths (data-engineer etc.)	/path/{pathId}/stage/{stageId}/level/{levelIndex}
-Level key — legacy	{stageId}-{levelIndex}  e.g. "2.5-7", "3-14"
-Level key — new paths	{prefix}-{stageId}-{levelIndex}  e.g. "de-1-0", "ml-1-7"
- 
-9.  Local Development Setup
+4.  Authentication & Routing
 
-Prerequisites
-•	Node.js 18+, npm
-•	Java 17 (Temurin/OpenJDK)
-•	MySQL 8.0 running on localhost:3306
-•	Maven (or use ./mvnw wrapper)
+Guest Level 0 — No Auth Wall
+The most important conversion change made in this session. Previously, clicking any path card on the landing page redirected to /auth before the user had done anything. Now:
 
-Frontend
-cd questlearn/frontend
-npm install
-npm start                    # http://localhost:3000
+•	All /path/{id}/stage/1/level/0 routes are public (no RequireAuth wrapper)
+•	/domain-select is public (java-fullstack guests choose their project domain before signing up)
+•	/stage/1/level/0 redirects to /stage/1/level/1 (java-fullstack has no level 0 — level 1 is the entry)
+•	Level 1+ routes remain behind RequireAuth
 
-Backend
-cd questlearn/backend
-# Create the database first:
-mysql -u root -p -e "CREATE DATABASE questlearn;"
-./mvnw spring-boot:run       # http://localhost:8080
+SaveProgressModal (src/components/SaveProgressModal.jsx)
+Replaces the cold auth wall. When a guest completes Level 0 and clicks "Continue to 1.1 →", the shell checks useAuth().user. If null, it renders SaveProgressModal instead of navigating.
 
-Environment (application.properties)
-spring.datasource.url=jdbc:mysql://localhost:3306/questlearn
-spring.datasource.username=YOUR_USER
-spring.datasource.password=YOUR_PASSWORD
-app.jwt.secret=YOUR_JWT_SECRET_32_CHARS_MIN
-spring.jpa.hibernate.ddl-auto=update   # dev only
+Element	Detail
+Progress bar	Shows 1/7 levels complete — makes the investment visible
+Headline	"Save your progress" — not "Create an account"
+Subtext	"Free. Takes 30 seconds. No credit card."
+Form	Name (signup only), email, password. "Save & continue →" on submit.
+After auth	Clears ql_guest_{pathId} from localStorage. Navigates to nextUrl (Level 1).
+Skip link	"Continue without saving (progress will be lost)" — subtle, below the form
 
-Run with Docker Compose (full stack)
-# Requires Docker Desktop
-docker compose up --build
-# React: http://localhost:80
-# API:   http://localhost:8080
- 
-10.  Build Status
+The modal is used in: DE1Shell, ML1Shell, CY1Shell, UX1Shell (level 0 check), and Stage1Shell (level 1 check for java-fullstack).
 
-Completed
-•	Java Full Stack path — all 7 stages fully built (128 levels)
-•	Stage 2.5 JavaScript Fundamentals — 20 levels, browser-based JS runner
-•	Stage 5 Database & SQL — 22 levels covering SQL + Hibernate + Flyway
-•	Stage 6 Full Stack Integration — 14 levels: CORS, Axios, auth, WebSockets
-•	Stage 7 Deployment & DevOps — 12 levels: Docker, GitHub Actions, AWS
-•	4 new paths Stage 1 — 8 levels each: Data Engineer, ML/AI, Cyber Security, UX/UI
-•	Spring Boot backend — JWT auth, progress API, CORS, MySQL
-•	Dynamic routing — path-aware URLs and level keys for all 12 paths
-•	Roadmap — dynamic stage map adapts to any active career path
-•	Custom favicon and branding (QuestLearn ◈ diamond icon)
+Destination Preservation — sessionStorage
+Previous bug: after signing in, users were redirected back to /auth in a loop. Fixed with sessionStorage:
 
-In Progress / Pending
-•	New paths Stage 2+ — Data Engineer, ML/AI, Cyber Security, UX/UI need stages 2–7
-•	Set B paths — Data Analytics, AI & ML, Python Backend, DevOps/Cloud (coming-soon)
-•	Stage 3 levels 3.9 and 3.13 — still using old DebugEditor, needs FillEditor conversion
-•	Production deployment — Docker Compose config built, needs cloud hosting (AWS EC2 + RDS)
-•	Frontend-only paths — Frontend Developer and Math for Students need stage content beyond Stage 1
+•	RequireAuth writes the intended URL to sessionStorage key "ql_redirect" before redirecting to /auth
+•	AuthScreen reads sessionStorage first, then ?next= param, then falls back to /career-select
+•	AuthScreen guards against /auth appearing as destination (loop prevention)
+•	CareerPathSelect reads sessionStorage on mount — if a redirect is stored, honours it immediately, skipping the path picker
 
+RequireAuth Logic
+if (!user) {
+  const dest = window.location.pathname + window.location.search;
+  if (dest !== "/" && !dest.startsWith("/auth")) {
+    sessionStorage.setItem("ql_redirect", dest);
+  }
+  return <Navigate to="/auth" replace />;
+}
 
-QuestLearn · Built with React 18 + Spring Boot 3 · March 2026
+5.  Stage 1 Shell Components
+
+Each new-path has a dedicated shell component that wraps all 8 levels of Stage 1. The shell handles: top bar, breadcrumb, mode badge, content slot, ConceptReveal, and the footer continue button. All four have been updated to support the guest flow.
+
+Shell	Path	Color	File
+DE1Shell	data-engineer	#06b6d4 cyan	src/screens/data-engineer/stage1/
+ML1Shell	ml-ai-engineer	#8b5cf6 purple	src/screens/ml-ai-engineer/stage1/
+CY1Shell	cyber-security	#10b981 green	src/screens/cyber-security/stage1/
+UX1Shell	ux-ui-designer	#ec4899 pink	src/screens/ux-ui-designer/stage1/
+
+Guest Flow in Each Shell
+handleComplete() checks levelId === 0 && !user. If true, sets showModal(true) instead of navigate(). The SaveProgressModal receives pathId, stageId:1, levelId:0, nextUrl (level 1 URL), and onClose (which skips signup and navigates to level 1 anyway).
+
+The back button shows "← Back" for guests (navigates to /) and "← Roadmap" for authenticated users.
+
+Stage1Shell (Java Full Stack)
+File: src/screens/stage1/Stage1Shell.jsx. Java fullstack starts at level 1 (no level 0). SaveProgressModal is shown when a guest completes level 1 and tries to continue. The modal is placed outside the root div inside a React Fragment (<>...</>) to avoid JSX sibling errors.
+
+6.  Java Full Stack — Special Routing
+
+Java fullstack uses legacy URL format and has domain selection. Its routing chain is different from the new paths.
+
+Step	What happens
+1. Landing page	User clicks "Start Full Stack Developer →". startPath("java-fullstack") navigates to /domain-select (not /path/java-fullstack/...).
+2. Domain select	User picks their project domain (hospital, school, e-commerce etc). /domain-select is now public — no auth required.
+3. Level 1	DomainSelect navigates to /stage/1/level/0, which redirects to /stage/1/level/1 (first real level).
+4. Guest gate	Guest completes level 1 → Stage1Shell shows SaveProgressModal → user signs up → continues to level 2.
+
+Previous bug: Landing page sent java-fullstack to /path/java-fullstack/stage/1/level/0 which does not exist. The catch-all route matched it and redirected to /auth, creating an infinite loop.
+
+7.  GameContext — Progress Tracking
+
+GameContext manages all learning progress. Key configuration:
+
+Stage Order per Path
+STAGE_ORDER = ['1','2','2.5','3','4','5','6','7','8']  // legacy
+PATH_STAGE_ORDERS = {
+  'data-engineer':  ['1','2','3','4','5','6','7'],
+  'ml-ai-engineer': ['1','2','3','4','5','6','7','8'],
+  'cyber-security': ['1','2','3','4','5','6','7'],
+  'ux-ui-designer': ['1','2','3','4','5','6','7'],
+}
+
+Level Counts per Stage
+Path	Stage level counts
+data-engineer	Stage 1: 8,  Stage 2: 14,  Stages 3-7: 14, 12, 12, 12, 12
+ml-ai-engineer	Stage 1: 8,  Stage 2: 14,  Stages 3-8: 16, 16, 18, 16, 12, 12
+cyber-security	Stage 1: 8,  Stage 2: 14,  Stages 3-7: 12, 14, 12, 12, 12
+ux-ui-designer	Stage 1: 8,  Stage 2: 10,  Stages 3-7: 10, 10, 10, 10, 12
+
+Stage unlock threshold: 80%. Users must complete 80% of a stage to unlock the next. The system uses retroactive unlocking so existing users are never regressed.
+
+8.  Stage 2 Content — Build Status
+
+Path	Levels	Status
+Data Engineer — SQL & Databases	14 (0–13)	All 14 fully built. Covers SQL basics, aggregates, JOINs, CTEs, window functions, ACID, NoSQL.
+ML/AI Engineer — Python & Math	14 (0–13)	Levels 0–5 fully built. Levels 6–13 placeholder (mark-complete buttons).
+Cyber Security — Linux & Networking	14 (0–13)	Levels 0–11 fully built. Levels 12–13 placeholder.
+UX/UI Designer — Figma Foundations	10 (0–9)	Level 0 fully built. Levels 1–9 placeholder.
+
+Placeholder levels display a "Mark Complete" button so users can progress without being blocked. Full content for remaining placeholders is next build priority.
+
+9.  Files Changed — This Session
+
+New Files
+File	Purpose
+src/components/SaveProgressModal.jsx	Guest-to-user conversion modal at end of Level 0
+src/components/SaveProgressModal.css	Styles for the modal
+src/screens/LandingPage.jsx	Full rewrite — career discovery interface
+src/screens/LandingPage.css	Full rewrite — single-source clean stylesheet
+
+Updated Files
+File	Change
+src/App.js	Level 0 routes unprotected. /domain-select unprotected. /stage/1/level/0 redirect added. RequireAuth uses sessionStorage.
+src/screens/AuthScreen.jsx	Reads sessionStorage for redirect destination. Decodes ?next= param. Guards against /auth loop.
+src/screens/CareerPathSelect.jsx	useEffect checks sessionStorage on mount and honours stored redirect immediately.
+src/screens/data-engineer/stage1/DE1Shell.jsx	Guest gate at level 0 — shows SaveProgressModal
+src/screens/ml-ai-engineer/stage1/ML1Shell.jsx	Guest gate at level 0 — shows SaveProgressModal
+src/screens/cyber-security/stage1/CY1Shell.jsx	Guest gate at level 0 — shows SaveProgressModal
+src/screens/ux-ui-designer/stage1/UX1Shell.jsx	Guest gate at level 0 — shows SaveProgressModal
+src/screens/stage1/Stage1Shell.jsx	Guest gate at level 1 (java-fullstack entry). Fragment wrapper for modal.
+
+10.  Known Issues & Next Build Priority
+
+Pending Content
+•	ML/AI Stage 2 levels 6–13: placeholders only
+•	Cyber Security Stage 2 levels 12–13: placeholders only
+•	UX/UI Designer Stage 2 levels 1–9: placeholders only
+•	Stage 3+ for all 4 new paths: not yet built
+
+Next Build Priority
+•	Complete ML/AI Stage 2 remaining levels (gradient descent, feature engineering, EDA capstone)
+•	Complete CY Stage 2 remaining levels (intrusion investigation, server hardening capstone)
+•	Complete UX Stage 2 levels (Figma foundations, auto-layout, components, prototyping, capstone)
+•	Stage 3 content for all 4 new paths
+•	Production deployment (Docker Compose built, needs cloud host)
+
+QuestLearn  ·  March 2026
