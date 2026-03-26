@@ -1,5 +1,4 @@
 // src/screens/CareerPathSelect.jsx
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import { useAuth } from '../context/AuthContext';
@@ -11,14 +10,6 @@ export default function CareerPathSelect() {
   const { setSelectedCareerPath, selectedCareerPath } = useGame();
   const { user, signOut } = useAuth();
 
-  // If user was sent here as a fallback but there's a stored redirect, honour it
-  useEffect(() => {
-    const stored = sessionStorage.getItem('ql_redirect');
-    if (stored && !stored.startsWith('/auth') && stored !== '/') {
-      sessionStorage.removeItem('ql_redirect');
-      navigate(stored, { replace: true });
-    }
-  }, [navigate]);
 
   // Paths that need domain selection before starting
   const DOMAIN_SELECT_PATHS = new Set(['java-fullstack', 'frontend-react', 'python-backend']);

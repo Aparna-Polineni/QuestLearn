@@ -454,7 +454,7 @@ export default function LandingPage() {
         <div className="landing-nav-logo">◈ QuestLearn</div>
         <div className="landing-nav-actions">
           <button className="landing-nav-link" onClick={() => navigate('/auth')}>Sign in</button>
-          <button className="landing-nav-cta"  onClick={() => navigate('/auth?mode=signup')}>Get started free →</button>
+          <button className="landing-nav-cta"  onClick={() => navigate(phase === 'done' ? `/auth?mode=signup&next=/path/${active.pathId}/stage/1/level/0` : '/auth?mode=signup')}>Get started free →</button>
         </div>
       </nav>
 
@@ -614,7 +614,7 @@ export default function LandingPage() {
         <div className="cta-orb cta-orb--b" />
         <h2 className="final-cta-title">The career switch starts with one level.</h2>
         <p className="final-cta-sub">You just tried one. 200+ more are waiting.</p>
-        <button className="final-cta-btn" onClick={() => navigate('/auth?mode=signup')}>
+        <button className="final-cta-btn" onClick={() => navigate(phase === 'done' ? `/auth?mode=signup&next=/path/${active.pathId}/stage/1/level/0` : '/auth?mode=signup')}>
           Create your free account →
         </button>
         <p className="final-cta-fine">No credit card. No commitment.</p>
@@ -625,7 +625,7 @@ export default function LandingPage() {
         <div className="footer-logo">◈ QuestLearn</div>
         <div className="footer-links">
           <button onClick={() => navigate('/auth')}>Sign in</button>
-          <button onClick={() => navigate('/auth?mode=signup')}>Get started</button>
+          <button onClick={() => navigate(phase === 'done' ? `/auth?mode=signup&next=/path/${active.pathId}/stage/1/level/0` : '/auth?mode=signup')}>Get started</button>
         </div>
         <div className="footer-copy">Built for career switchers and fearless beginners.</div>
       </footer>
