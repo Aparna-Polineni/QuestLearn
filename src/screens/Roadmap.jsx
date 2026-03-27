@@ -64,7 +64,7 @@ function LevelDot({ stageId, levelNum, isComplete, isCurrent, isLocked, onClick 
 }
 
 // ── Stage card ───────────────────────────────────────────────────────────────
-function StageCard({ stage, stageRoute, isLevelComplete, isStageUnlocked, navigate, currentStageId, currentLevel, levelKey }) {
+function StageCard({ stage, stageRoute, isLevelComplete, isStageUnlocked, navigate, currentStageId, currentLevel, levelKey, isFirstStage, totalCompleted }) {
   const sid         = String(stage.id);
   const totalLevels = stageRoute?.levels || stage.levels || 8;
 
@@ -121,6 +121,19 @@ function StageCard({ stage, stageRoute, isLevelComplete, isStageUnlocked, naviga
       </div>
 
       <div className="stage-desc">{stage.description}</div>
+
+      {/* START HERE indicator — only on Stage 1 when user has zero progress */}
+      {isFirstStage && totalCompleted === 0 && (
+        <div className="stage-start-here">
+          <span className="stage-start-arrow">↓ Start here</span>
+          <span className="stage-start-time">⏱ About 20 minutes</span>
+        </div>
+      )}
+
+      {/* Time estimate for started-but-not-complete stage 1 */}
+      {isFirstStage && totalCompleted > 0 && !isComplete && (
+        <div className="stage-time-hint">⏱ About 20 minutes for this stage</div>
+      )}
 
       {/* Level dots */}
       {!isStageLocked && (
@@ -342,7 +355,7 @@ export default function Roadmap() {
 
         {/* Stage cards */}
         <div className="roadmap-stages">
-          {displayStages.map(stage => (
+          {displayStages.map((stage, stageIdx) => (
             <StageCard
               key={stage.id}
               stage={stage}
@@ -353,6 +366,8 @@ export default function Roadmap() {
               currentStageId={currentStageId}
               currentLevel={currentLevel}
               levelKey={levelKey}
+              isFirstStage={stageIdx === 0}
+              totalCompleted={totalCompleted}
             />
           ))}
         </div>

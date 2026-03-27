@@ -43,29 +43,50 @@ export function ConceptIntro({ concept, tagline, whatYouWillDo, whyItMatters, on
 }
 
 // ── LAYER 2 — Progressive Hints Panel ─────────────────────────────────────
-// Player requests hints one by one — each one more direct than the last
-export function HintsPanel({ hints, isVisible, onToggle, levelComplete }) {
+// Player requests hints one by one — each one more direct than the last.
+// Auto-surfaces after 2 wrong attempts so stuck users always find help.
+export function HintsPanel({ hints, isVisible, onToggle, levelComplete, wrongAttempts = 0 }) {
   const [revealedCount, setRevealedCount] = useState(0);
-  const [showPanel, setShowPanel] = useState(false);
+  const [showPanel, setShowPanel]         = useState(false);
+  const [autoOpened, setAutoOpened]       = useState(false);
+
+  // Auto-open + reveal first hint after 2 wrong attempts
+  // Only fires once per level (autoOpened flag)
+  if (wrongAttempts >= 2 && !showPanel && !autoOpened && !levelComplete) {
+    setShowPanel(true);
+    setAutoOpened(true);
+    if (revealedCount === 0) setRevealedCount(1);
+  }
 
   function togglePanel() {
-    setShowPanel(prev => !prev);
-    if (!showPanel && revealedCount === 0) {
-      // Auto-reveal first hint when panel opens first time
-      setRevealedCount(1);
-    }
+    const opening = !showPanel;
+    setShowPanel(opening);
+    if (opening && revealedCount === 0) setRevealedCount(1);
   }
 
   function revealNext() {
-    if (revealedCount < hints.length) {
-      setRevealedCount(prev => prev + 1);
-    }
+    if (revealedCount < hints.length) setRevealedCount(prev => prev + 1);
   }
 
   if (levelComplete) return null;
 
   return (
     <div className="hints-container">
+
+      {/* Nudge after 1 wrong attempt — before auto-open kicks in */}
+      {wrongAttempts === 1 && !showPanel && (
+        <div className="hints-nudge">
+          Not quite — hints are available if you need them.
+        </div>
+      )}
+
+      {/* Auto-open label — shown when panel was surfaced automatically */}
+      {autoOpened && showPanel && revealedCount === 1 && (
+        <div className="hints-auto-label">
+          💡 Looks like you might be stuck — here's a hint
+        </div>
+      )}
+
       <button className="hints-toggle" onClick={togglePanel}>
         {showPanel ? '▼ Hide Hints' : '💡 I need a hint'}
         {revealedCount > 0 && !showPanel && (
@@ -74,7 +95,7 @@ export function HintsPanel({ hints, isVisible, onToggle, levelComplete }) {
       </button>
 
       {showPanel && (
-        <div className="hints-panel">
+        <div className={`hints-panel ${autoOpened ? 'hints-panel--auto' : ''}`}>
           <div className="hints-header">
             <span className="hints-title">Progressive Hints</span>
             <span className="hints-sub">{revealedCount} of {hints.length} revealed</span>
@@ -165,17 +186,14 @@ export function ConceptReveal({ concept, whatYouLearned, realWorldUse, developer
 // ── COMBINED: Level Support Wrapper ───────────────────────────────────────
 // Drop this into any level to get all three layers automatically
 export function LevelSupportWrapper({
-  // Layer 1
   conceptIntro,
-  // Layer 2
   hints,
   levelComplete,
-  // Layer 3 — passed to celebration in Stage1Shell via props
+  wrongAttempts,   // pass this from the level's check() function
   children,
 }) {
   const [introSeen, setIntroSeen] = useState(false);
 
-  // Show intro on first load
   if (!introSeen && conceptIntro) {
     return (
       <ConceptIntro
@@ -192,6 +210,7 @@ export function LevelSupportWrapper({
         <HintsPanel
           hints={hints}
           levelComplete={levelComplete}
+          wrongAttempts={wrongAttempts || 0}
         />
       )}
     </>
