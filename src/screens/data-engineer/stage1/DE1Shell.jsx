@@ -5,6 +5,7 @@ import { useGame } from '../../../context/GameContext';
 import { useAuth } from '../../../context/AuthContext';
 import { ConceptReveal } from '../../../components/LevelSupport';
 import SaveProgressModal from '../../../components/SaveProgressModal';
+import StageCelebration from '../../../components/StageCelebration';
 import './DE1Shell.css';
 
 const LEVEL_TITLES = {
@@ -26,6 +27,7 @@ export default function DE1Shell({ levelId, canProceed, conceptReveal, children 
   const { completeLevel } = useGame();
   const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const nextUrl = levelId < 7
     ? `/path/${PATH_ID}/stage/1/level/${levelId + 1}`
@@ -37,6 +39,12 @@ export default function DE1Shell({ levelId, canProceed, conceptReveal, children 
     // Level 0 guest — show save progress modal instead of navigating
     if (levelId === 0 && !user) {
       setShowModal(true);
+      return;
+    }
+
+    // Last level — show stage celebration before navigating
+    if (levelId === 7) {
+      setShowCelebration(true);
       return;
     }
 
@@ -83,6 +91,18 @@ export default function DE1Shell({ levelId, canProceed, conceptReveal, children 
           levelId={0}
           nextUrl={nextUrl}
           onClose={() => { setShowModal(false); navigate(nextUrl); }}
+        />
+      )}
+
+      {showCelebration && (
+        <StageCelebration
+          pathId={PATH_ID}
+          pathName="Data Engineer"
+          stageId="1"
+          stageTitle="The Data Problem"
+          stageEmoji="🛢️"
+          stageColor={STAGE_COLOR}
+          onContinue={() => { setShowCelebration(false); navigate(nextUrl); }}
         />
       )}
     </div>

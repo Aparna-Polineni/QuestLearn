@@ -1,0 +1,288 @@
+/* src/components/StageCelebration.css */
+
+/* ── Overlay ── */
+.sc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 18, 0.92);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* ── Confetti canvas ── */
+.sc-confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 201;
+}
+
+/* ── Modal ── */
+.sc-modal {
+  position: relative;
+  z-index: 202;
+  background: #0d1420;
+  border: 1px solid #2d3f58;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.sc-modal--in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Top section ── */
+.sc-top {
+  padding: 36px 32px 28px;
+  text-align: center;
+  background: linear-gradient(160deg, rgba(99,102,241,.12), rgba(13,20,32,0));
+  border-bottom: 1px solid #1e2d42;
+  position: relative;
+}
+.sc-top::before {
+  content: '';
+  position: absolute;
+  top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, var(--stage-color, #6366f1) 0%, transparent 70%);
+  opacity: .12;
+  pointer-events: none;
+}
+
+.sc-emoji {
+  font-size: 52px;
+  margin-bottom: 14px;
+  animation: sc-pop .5s cubic-bezier(.17,.67,.27,1.4) .2s both;
+}
+@keyframes sc-pop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.sc-stage-label {
+  display: inline-block;
+  background: var(--stage-color, #6366f1);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 100px;
+  margin-bottom: 16px;
+}
+
+.sc-headline {
+  font-family: 'Syne', 'DM Sans', sans-serif;
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 800;
+  color: #f0f4ff;
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+}
+
+.sc-path-name {
+  font-size: 13px;
+  color: #4a5a72;
+  font-weight: 500;
+}
+
+/* ── Skills section ── */
+.sc-skills {
+  padding: 24px 32px;
+  border-bottom: 1px solid #1e2d42;
+}
+
+.sc-skills-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #4a5a72;
+  margin-bottom: 14px;
+}
+
+.sc-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sc-bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: #cbd5e1;
+  line-height: 1.5;
+  opacity: 0;
+  animation: sc-bullet-in .4s ease forwards;
+}
+@keyframes sc-bullet-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.sc-bullet-check {
+  font-size: 15px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Share section ── */
+.sc-share-section {
+  padding: 22px 32px;
+  border-bottom: 1px solid #1e2d42;
+}
+
+.sc-share-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #4a5a72;
+  margin-bottom: 14px;
+}
+
+/* Visual card preview */
+.sc-share-card {
+  background: linear-gradient(135deg, var(--card-color, #6366f1), #0d1420);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+  border: 1px solid var(--card-color, #6366f1);
+  position: relative;
+  overflow: hidden;
+}
+.sc-share-card::after {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: var(--card-color, #6366f1);
+  opacity: .12;
+}
+.sc-share-card-logo {
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+.sc-share-card-badge {
+  display: inline-block;
+  background: var(--card-color, #6366f1);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+}
+.sc-share-card-path {
+  font-size: 11px;
+  color: rgba(255,255,255,.5);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  margin-bottom: 4px;
+}
+.sc-share-card-stage {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.sc-share-card-foot {
+  font-size: 11px;
+  color: rgba(255,255,255,.35);
+  margin-top: 12px;
+}
+
+/* Share buttons */
+.sc-share-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sc-share-btn {
+  flex: 1;
+  min-width: 100px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 14px;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.sc-share-copy {
+  background: #1e2d42;
+  color: #8899bb;
+  border: 1px solid #2d3f58;
+}
+.sc-share-copy:hover { background: #2d3f58; color: #f0f4ff; }
+.sc-share-twitter {
+  background: #000;
+  color: #fff;
+}
+.sc-share-twitter:hover { background: #1a1a1a; transform: translateY(-1px); }
+.sc-share-linkedin {
+  background: #0077b5;
+  color: #fff;
+}
+.sc-share-linkedin:hover { background: #005f8e; transform: translateY(-1px); }
+
+/* ── CTA ── */
+.sc-cta {
+  padding: 22px 32px 28px;
+  text-align: center;
+}
+
+.sc-continue-btn {
+  width: 100%;
+  border: none;
+  color: #000;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 15px 28px;
+  border-radius: 11px;
+  transition: all .2s;
+  letter-spacing: -0.2px;
+}
+.sc-continue-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,.4);
+}
+
+/* ── Responsive ── */
+@media (max-width: 560px) {
+  .sc-modal { border-radius: 16px; }
+  .sc-top, .sc-skills, .sc-share-section, .sc-cta { padding-left: 20px; padding-right: 20px; }
+  .sc-share-buttons { flex-direction: column; }
+  .sc-share-btn { min-width: unset; }
+}

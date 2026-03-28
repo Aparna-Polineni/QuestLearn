@@ -5,6 +5,7 @@ import { useGame } from '../../../context/GameContext';
 import { useAuth } from '../../../context/AuthContext';
 import { ConceptReveal } from '../../../components/LevelSupport';
 import SaveProgressModal from '../../../components/SaveProgressModal';
+import StageCelebration from '../../../components/StageCelebration';
 import './UX1Shell.css';
 
 const LEVEL_TITLES = {
@@ -26,6 +27,7 @@ export default function UX1Shell({ levelId, canProceed, conceptReveal, children 
   const { completeLevel } = useGame();
   const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const maxLevel = Object.keys(LEVEL_TITLES).length - 1;
   const nextUrl  = levelId < maxLevel
@@ -38,6 +40,12 @@ export default function UX1Shell({ levelId, canProceed, conceptReveal, children 
       setShowModal(true);
       return;
     }
+    // Last level — show stage celebration before navigating
+    if (levelId === 7) {
+      setShowCelebration(true);
+      return;
+    }
+
     navigate(nextUrl);
   }
 
@@ -81,6 +89,17 @@ export default function UX1Shell({ levelId, canProceed, conceptReveal, children 
           levelId={0}
           nextUrl={nextUrl}
           onClose={() => { setShowModal(false); navigate(nextUrl); }}
+        />
+      )}
+      {showCelebration && (
+        <StageCelebration
+          pathId="{ux-ui-designer}"
+          pathName="UX / UI Designer"
+          stageId="1"
+          stageTitle="Design Thinking"
+          stageEmoji="🎨"
+          stageColor={STAGE_COLOR}
+          onContinue={() => { setShowCelebration(false); navigate(nextUrl); }}
         />
       )}
     </div>
