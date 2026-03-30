@@ -183,39 +183,3 @@ UX/UI Designer — Figma Foundations	10 (0–9)	Level 0 fully built. Levels 1–
 
 Placeholder levels display a "Mark Complete" button so users can progress without being blocked. Full content for remaining placeholders is next build priority.
 
-9.  Files Changed — This Session
-
-New Files
-File	Purpose
-src/components/SaveProgressModal.jsx	Guest-to-user conversion modal at end of Level 0
-src/components/SaveProgressModal.css	Styles for the modal
-src/screens/LandingPage.jsx	Full rewrite — career discovery interface
-src/screens/LandingPage.css	Full rewrite — single-source clean stylesheet
-
-Updated Files
-File	Change
-src/App.js	Level 0 routes unprotected. /domain-select unprotected. /stage/1/level/0 redirect added. RequireAuth uses sessionStorage.
-src/screens/AuthScreen.jsx	Reads sessionStorage for redirect destination. Decodes ?next= param. Guards against /auth loop.
-src/screens/CareerPathSelect.jsx	useEffect checks sessionStorage on mount and honours stored redirect immediately.
-src/screens/data-engineer/stage1/DE1Shell.jsx	Guest gate at level 0 — shows SaveProgressModal
-src/screens/ml-ai-engineer/stage1/ML1Shell.jsx	Guest gate at level 0 — shows SaveProgressModal
-src/screens/cyber-security/stage1/CY1Shell.jsx	Guest gate at level 0 — shows SaveProgressModal
-src/screens/ux-ui-designer/stage1/UX1Shell.jsx	Guest gate at level 0 — shows SaveProgressModal
-src/screens/stage1/Stage1Shell.jsx	Guest gate at level 1 (java-fullstack entry). Fragment wrapper for modal.
-
-10.  Known Issues & Next Build Priority
-
-Pending Content
-•	ML/AI Stage 2 levels 6–13: placeholders only
-•	Cyber Security Stage 2 levels 12–13: placeholders only
-•	UX/UI Designer Stage 2 levels 1–9: placeholders only
-•	Stage 3+ for all 4 new paths: not yet built
-
-Next Build Priority
-•	Complete ML/AI Stage 2 remaining levels (gradient descent, feature engineering, EDA capstone)
-•	Complete CY Stage 2 remaining levels (intrusion investigation, server hardening capstone)
-•	Complete UX Stage 2 levels (Figma foundations, auto-layout, components, prototyping, capstone)
-•	Stage 3 content for all 4 new paths
-•	Production deployment (Docker Compose built, needs cloud host)
-
-QuestLearn  ·  March 2026
