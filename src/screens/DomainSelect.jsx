@@ -1,5 +1,6 @@
 // src/screens/DomainSelect.jsx
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import domains from '../data/domains';
 import './DomainSelect.css';
@@ -11,7 +12,8 @@ function DomainSelect() {
   function chooseDomain(domain) {
     setSelectedDomain(domain);
     // Navigate to the correct Stage 1 start for the active career path
-    const pathId = selectedCareerPath?.id;
+    const [searchParams] = useSearchParams();
+    const pathId = searchParams.get('path') || selectedCareerPath?.id;
     const LEGACY_PATHS = new Set(['java-fullstack', 'frontend-react', 'math-student']);
     if (!pathId || LEGACY_PATHS.has(pathId)) {
       navigate('/stage/1/level/0');
