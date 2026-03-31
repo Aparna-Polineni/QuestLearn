@@ -376,7 +376,20 @@ export default function Roadmap() {
         <div className="roadmap-cta">
           <button
             className="roadmap-continue-btn"
-            onClick={() => navigate(`/stage/${currentStageId}/level/${currentLevel}`)}
+            onClick={() => {
+              const route = STAGE_ROUTES[currentStageId];
+              if (route) {
+                navigate(`${route.base}${currentLevel}`);
+              } else {
+                // Fallback: use makeRouteUrl equivalent
+                const pid = path?.id;
+                const isLegacy = ['java-fullstack','frontend-react','math-student'].includes(pid);
+                const url = isLegacy
+                  ? `/stage/${currentStageId}/level/${currentLevel}`
+                  : `/path/${pid}/stage/${currentStageId}/level/${currentLevel}`;
+                navigate(url);
+              }
+            }}
           >
             Continue Learning → Stage {currentStageId}, Level {currentLevel}
           </button>

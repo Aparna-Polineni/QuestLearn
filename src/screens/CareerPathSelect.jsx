@@ -28,7 +28,7 @@ export default function CareerPathSelect() {
     if (path.status === 'coming-soon') return;
     setSelectedCareerPath(path);
     if (DOMAIN_SELECT_PATHS.has(path.id)) {
-      navigate('/domain-select');
+      navigate(`/domain-select?path=${path.id}`);
     } else {
       navigate(getStartUrl(path));
     }

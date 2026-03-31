@@ -1,20 +1,24 @@
 // src/screens/DomainSelect.jsx
-import { useNavigate } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import domains from '../data/domains';
 import './DomainSelect.css';
 
+const LEGACY_PATHS = new Set(['java-fullstack', 'frontend-react', 'math-student']);
+
 function DomainSelect() {
   const navigate = useNavigate();
-  const { setSelectedDomain, selectedCareerPath } = useGame();
+  const [searchParams] = useSearchParams();
+  const { setSelectedDomain, selectedCareerPath, setSelectedCareerPath } = useGame();
+
+  // Read pathId from URL param first (passed by Home.jsx and LandingPage.jsx)
+  // Fall back to context (for users who navigated here directly)
+  const pathId = searchParams.get('path') || selectedCareerPath?.id || 'java-fullstack';
 
   function chooseDomain(domain) {
     setSelectedDomain(domain);
-    // Navigate to the correct Stage 1 start for the active career path
-    const [searchParams] = useSearchParams();
-    const pathId = searchParams.get('path') || selectedCareerPath?.id;
-    const LEGACY_PATHS = new Set(['java-fullstack', 'frontend-react', 'math-student']);
+
+    // Navigate to the correct Stage 1 start for the active path
     if (!pathId || LEGACY_PATHS.has(pathId)) {
       navigate('/stage/1/level/0');
     } else {

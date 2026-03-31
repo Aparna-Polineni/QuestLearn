@@ -439,7 +439,7 @@ export default function LandingPage() {
   function startPath(id) {
     // Java fullstack needs domain selection first
     if (id === 'java-fullstack') {
-      navigate('/domain-select');
+      navigate('/domain-select?path=java-fullstack');
       return;
     }
     // All other paths: go directly to level 0 — no auth required

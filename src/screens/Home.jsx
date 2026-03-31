@@ -137,7 +137,8 @@ export default function Home() {
   function handleStart(path) {
     setActivePath(path);
     if (DOMAIN_SELECT_PATHS.has(path.id)) {
-      navigate('/domain-select');
+      // Pass pathId in URL so DomainSelect doesn't depend on async context state
+      navigate(`/domain-select?path=${path.id}`);
     } else {
       navigate(getStartUrl(path.id));
     }
