@@ -218,3 +218,116 @@ export function LevelSupportWrapper({
 }
 
 export default LevelSupportWrapper;
+
+// ── DIAGNOSTIC FEEDBACK ───────────────────────────────────────────────────
+// Replaces generic "wrong" messages with teaching-oriented diagnostic text.
+// Backward compatible — levels without wrong_feedback fall back to hint text.
+
+// Category labels shown before the diagnostic message
+const CATEGORY_LABELS = {
+  syntax:   '📝 Syntax',
+  logic:    '🔀 Logic',
+  state:    '🔍 State / Value',
+  type:     '🏷️ Data Type',
+  null:     '⚠️ Null / Empty',
+  scope:    '📦 Scope',
+  concept:  '💡 Concept',
+  order:    '↕️ Order',
+  default:  '↩️ Not quite',
+};
+
+// Get the most useful diagnostic message for a wrong blank
+function getDiagnostic(blank, typedValue) {
+  if (!blank) return null;
+
+  // 1. Try specific match in wrong_feedback keyed by what they typed
+  if (blank.wrong_feedback && typedValue) {
+    const key = typedValue.toLowerCase().trim();
+    if (blank.wrong_feedback[key]) return blank.wrong_feedback[key];
+    // Try prefix match — e.g. "arraylist" matches "array"
+    const prefixMatch = Object.keys(blank.wrong_feedback)
+      .find(k => k !== '*' && key.includes(k));
+    if (prefixMatch) return blank.wrong_feedback[prefixMatch];
+    // Fall back to catch-all
+    if (blank.wrong_feedback['*']) return blank.wrong_feedback['*'];
+  }
+
+  // 2. Fall back to hint text
+  if (blank.hint) return blank.hint;
+
+  return null;
+}
+
+export function DiagnosticFeedback({ blanks, vals, correct, checked }) {
+  if (!checked) return null;
+
+  const wrongBlanks = blanks.filter(b => correct[b.id] === false);
+  if (wrongBlanks.length === 0) return null;
+
+  return (
+    <div className="diag-container">
+      {wrongBlanks.map(blank => {
+        const typed    = vals[blank.id] || '';
+        const message  = getDiagnostic(blank, typed);
+        const category = blank.category || 'default';
+        const label    = CATEGORY_LABELS[category] || CATEGORY_LABELS.default;
+
+        return (
+          <div key={blank.id} className="diag-item">
+            <div className="diag-header">
+              <span className="diag-blank-id">{blank.id}</span>
+              {typed && (
+                <span className="diag-typed">
+                  You wrote: <code>{typed}</code>
+                </span>
+              )}
+              <span className={`diag-category diag-cat-${category}`}>{label}</span>
+            </div>
+            {message && <p className="diag-message">{message}</p>}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── DEBUG DIAGNOSTIC FEEDBACK ─────────────────────────────────────────────
+// For debug levels — gives directional hint when user identifies the wrong
+// bug location. Shown immediately, before they reveal the fix.
+
+// Category descriptions for debug mode
+const DEBUG_CATEGORY_DIRECTIONS = {
+  syntax:  'That line is syntactically valid. The real issue is not about how the code is written.',
+  logic:   'The syntax is fine. Look at what the code is doing, not how it is written.',
+  state:   'The structure looks right. The problem is about what VALUE a variable holds at that point.',
+  type:    'The operation itself is valid. The problem is about the type or shape of the data.',
+  null:    'Look for where a value could be missing, undefined, or empty — not where it is used.',
+  scope:   'Think about where this variable or value is defined vs where it is being used.',
+  concept: 'This is the right area — but the issue is deeper. What assumption does this code make?',
+};
+
+export function DebugDiagnostic({ selectedId, correctId, bugs, onClear }) {
+  if (!selectedId || selectedId === correctId) return null;
+
+  const selectedBug = bugs.find(b => String(b.id) === String(selectedId));
+  if (!selectedBug) return null;
+
+  // Use bug-specific misdirection message if provided, else category fallback
+  const direction = selectedBug.wrong_direction
+    || DEBUG_CATEGORY_DIRECTIONS[selectedBug.wrong_category]
+    || 'That line looks fine. The bug is elsewhere — look at data flow and assumptions.';
+
+  return (
+    <div className="debug-diag">
+      <div className="debug-diag-header">
+        <span className="debug-diag-icon">🔍</span>
+        <span className="debug-diag-label">Not quite the right line</span>
+        <button className="debug-diag-clear" onClick={onClear}>Try again</button>
+      </div>
+      <p className="debug-diag-direction">{direction}</p>
+      {selectedBug.wrong_hint && (
+        <p className="debug-diag-hint">💡 {selectedBug.wrong_hint}</p>
+      )}
+    </div>
+  );
+}

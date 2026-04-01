@@ -414,3 +414,128 @@
   0%   { opacity:0; transform:translateY(-8px) scale(.98); }
   100% { opacity:1; transform:none scale(1); }
 }
+
+/* ── Diagnostic Feedback ────────────────────────────────────────────────── */
+.diag-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0 4px;
+  animation: fadeIn .3s ease;
+}
+
+.diag-item {
+  background: rgba(248, 113, 113, 0.06);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-left: 3px solid #f87171;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.diag-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.diag-blank-id {
+  font-size: 11px;
+  font-weight: 800;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.diag-typed {
+  font-size: 12px;
+  color: #64748b;
+}
+.diag-typed code {
+  font-family: 'DM Mono', 'Courier New', monospace;
+  font-size: 12px;
+  color: #fca5a5;
+  background: rgba(248, 113, 113, 0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.diag-category {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-left: auto;
+}
+/* Category colour variants */
+.diag-cat-syntax  { background: rgba(99,102,241,.15); color: #818cf8; }
+.diag-cat-logic   { background: rgba(251,191,36,.12); color: #fbbf24; }
+.diag-cat-state   { background: rgba(52,211,153,.12); color: #34d399; }
+.diag-cat-type    { background: rgba(251,146,60,.12); color: #fb923c; }
+.diag-cat-null    { background: rgba(248,113,113,.12); color: #f87171; }
+.diag-cat-scope   { background: rgba(167,139,250,.12); color: #a78bfa; }
+.diag-cat-concept { background: rgba(56,189,248,.12); color: #38bdf8; }
+.diag-cat-order   { background: rgba(244,114,182,.12); color: #f472b6; }
+.diag-cat-default { background: rgba(100,116,139,.12); color: #94a3b8; }
+
+.diag-message {
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Debug Diagnostic ───────────────────────────────────────────────────── */
+.debug-diag {
+  background: rgba(251, 191, 36, 0.06);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  border-left: 3px solid #fbbf24;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 10px 0;
+  animation: fadeIn .3s ease;
+}
+
+.debug-diag-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.debug-diag-icon  { font-size: 14px; }
+.debug-diag-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fbbf24;
+  flex: 1;
+}
+.debug-diag-clear {
+  background: none;
+  border: 1px solid rgba(251,191,36,.3);
+  color: #fbbf24;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+}
+.debug-diag-clear:hover { background: rgba(251,191,36,.1); }
+
+.debug-diag-direction {
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.65;
+  margin: 0 0 6px;
+}
+.debug-diag-hint {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+  font-style: italic;
+}

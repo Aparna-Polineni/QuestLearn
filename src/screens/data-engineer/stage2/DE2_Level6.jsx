@@ -1,115 +1,194 @@
 // src/screens/data-engineer/stage2/DE2_Level6.jsx — SQL Bug Hunt (DEBUG)
+// Reference implementation of DebugDiagnostic
 import { useState } from 'react';
 import DE2Shell from './DE2Shell';
+import { DebugDiagnostic } from '../../../components/LevelSupport';
 
 const BUGS = [
   {
-    id:1, label:'Bug 1 — Aggregating without grouping all non-aggregate columns',
-    bad:`SELECT ward_id, name, COUNT(*) AS patients
+    id: 1,
+    label: 'Bug 1 — Aggregating without grouping all non-aggregate columns',
+    bad:
+`SELECT ward_id, name, COUNT(*) AS patients
 FROM patients
 GROUP BY ward_id;
--- ERROR: column "name" must appear in GROUP BY or be used in aggregate`,
-    good:`-- Fix: only select columns in GROUP BY + aggregates
+-- Runs in MySQL but returns unpredictable names
+-- Fails in Postgres, BigQuery, standard SQL`,
+    good:
+`-- Fix: only select columns that are in GROUP BY or wrapped in an aggregate
 SELECT ward_id, COUNT(*) AS patients
 FROM patients
 GROUP BY ward_id;
 
--- Or: aggregate name too
-SELECT ward_id, STRING_AGG(name, ', ') AS patient_names, COUNT(*) AS patients
+-- If you need name: pick a specific one with MIN/MAX
+SELECT ward_id, MIN(name) AS sample_name, COUNT(*) AS patients
 FROM patients
 GROUP BY ward_id;`,
-    why:'Every column in SELECT must either be in GROUP BY or wrapped in an aggregate function. "name" has many values per ward — SQL doesn\'t know which to pick. Standard SQL enforces this strictly (Postgres, BigQuery). MySQL sometimes allows it — giving unpredictable results silently.',
-    hint:'Non-aggregate SELECT columns must be in GROUP BY.',
+    why: 'Every column in SELECT must either be in GROUP BY or wrapped in an aggregate function. "name" has many values per ward — SQL doesn\'t know which to return. Standard SQL enforces this. MySQL sometimes allows it, giving unpredictable results silently.',
+    hint: 'Non-aggregate SELECT columns must be in GROUP BY.',
+    // DebugDiagnostic fields — for WRONG selections
+    wrong_category: 'logic',
+    wrong_direction: 'The GROUP BY clause itself is not the problem — the issue is in what you\'re selecting alongside it. Look at which columns appear in SELECT vs which appear in GROUP BY.',
+    wrong_hint: 'Count the columns in SELECT. Count the columns in GROUP BY. Do they match (excluding aggregates)?',
   },
   {
-    id:2, label:'Bug 2 — NULL comparison with = instead of IS NULL',
-    bad:`-- Find patients with no ward assigned
+    id: 2,
+    label: 'Bug 2 — NULL comparison with = instead of IS NULL',
+    bad:
+`-- Find patients with no ward assigned
 SELECT name FROM patients
-WHERE ward_id = NULL;   -- Returns 0 rows!
--- NULL = NULL is always UNKNOWN, not TRUE`,
-    good:`SELECT name FROM patients
-WHERE ward_id IS NULL;   -- Correct
+WHERE ward_id = NULL;
+-- Returns 0 rows — always — even when NULLs exist`,
+    good:
+`-- Fix: NULL comparisons require IS NULL / IS NOT NULL
+SELECT name FROM patients
+WHERE ward_id IS NULL;
 
--- Also:
-WHERE ward_id IS NOT NULL  -- Non-null rows
-COALESCE(ward_id, 0)       -- Replace NULL with 0 in expressions
-NULLIF(ward_id, 0)         -- Return NULL if ward_id = 0`,
-    why:'NULL represents unknown. NULL = NULL is not true — it\'s UNKNOWN. Any comparison with NULL using = or != returns UNKNOWN, which is treated as false. Always use IS NULL / IS NOT NULL. This is the most common SQL beginner bug and silently returns wrong data.',
-    hint:'Never use = NULL. Use IS NULL.',
+-- Checking for non-null:
+WHERE ward_id IS NOT NULL`,
+    why: 'NULL means unknown. NULL = NULL evaluates to UNKNOWN (not TRUE) in SQL. Any comparison with NULL using = or != returns UNKNOWN, which is treated as false. IS NULL is the only correct way to test for NULL.',
+    hint: 'Never use = NULL. Use IS NULL.',
+    wrong_category: 'null',
+    wrong_direction: 'The structure of the query is fine — WHERE clause is in the right place. The problem is much smaller: look at the comparison operator used with NULL specifically.',
+    wrong_hint: 'In SQL, you cannot compare a value to NULL using =. NULL is "unknown" — it requires a different operator.',
   },
   {
-    id:3, label:'Bug 3 — Wrong JOIN type losing data',
-    bad:`-- Report: revenue per doctor including doctors with no appointments
+    id: 3,
+    label: 'Bug 3 — Wrong JOIN type losing data',
+    bad:
+`-- Report: revenue per doctor including doctors with no appointments
 SELECT d.name, SUM(a.fee) AS total_revenue
 FROM appointments a
 INNER JOIN doctors d ON a.doctor_id = d.id
 GROUP BY d.name;
--- Doctors with zero appointments are excluded entirely
--- Report understates how many doctors are in the system`,
-    good:`SELECT d.name, COALESCE(SUM(a.fee), 0) AS total_revenue
+-- Doctors with zero appointments don't appear`,
+    good:
+`-- Fix: start from doctors, LEFT JOIN to appointments
+SELECT d.name, COALESCE(SUM(a.fee), 0) AS total_revenue
 FROM doctors d
 LEFT JOIN appointments a ON a.doctor_id = d.id
-GROUP BY d.name
-ORDER BY total_revenue DESC;
--- All doctors appear; those with no appointments show 0`,
-    why:'INNER JOIN excludes doctors who have never had an appointment. LEFT JOIN from doctors includes all doctors — those without appointments get NULL for fee, which SUM ignores (showing 0 with COALESCE). Always think: which rows must appear even if they have no match?',
-    hint:'When you need ALL rows from one table, start there with a LEFT JOIN.',
+GROUP BY d.name;
+-- COALESCE turns NULL sum (no appointments) into 0`,
+    why: 'INNER JOIN excludes doctors who have no appointments at all. LEFT JOIN from doctors includes all doctors — those without appointments get NULL for fee fields, which COALESCE converts to 0.',
+    hint: 'When you need ALL rows from one table, start there with a LEFT JOIN.',
+    wrong_category: 'logic',
+    wrong_direction: 'The aggregation and grouping are correct. The problem is about which rows survive the join. Ask: which doctors will this query return — all doctors, or only doctors who already have appointments?',
+    wrong_hint: 'INNER JOIN returns only rows that match in both tables. What happens to a doctor who has never had an appointment?',
   },
   {
-    id:4, label:'Bug 4 — Division producing integer result',
-    bad:`-- Calculate what % of patients are in ward 1
-SELECT COUNT(*) / (SELECT COUNT(*) FROM patients) AS pct_in_ward1
-FROM patients WHERE ward_id = 1;
--- Returns 0! Integer divided by integer = integer in SQL`,
-    good:`SELECT
-  COUNT(*) * 100.0 / (SELECT COUNT(*) FROM patients) AS pct_in_ward1
-FROM patients WHERE ward_id = 1;
+    id: 4,
+    label: 'Bug 4 — Integer division silently truncates',
+    bad:
+`-- Calculate percentage of patients in ward 1
+SELECT
+  SUM(CASE WHEN ward_id = 1 THEN 1 ELSE 0 END) * 100 / COUNT(*) AS pct
+FROM patients;
+-- Returns 0 when ward_1_count < total_count`,
+    good:
+`-- Fix: force decimal arithmetic with 100.0 or CAST
+SELECT
+  SUM(CASE WHEN ward_id = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS pct
+FROM patients;
 
--- Or explicitly cast:
-SELECT CAST(COUNT(*) AS DECIMAL) / COUNT(*) OVER () AS pct
-FROM patients WHERE ward_id = 1;`,
-    why:'In SQL, integer / integer = integer (truncated). 3 / 10 = 0, not 0.3. Multiply by 100.0 (not 100) to force a decimal result, or use CAST(). This is an extremely common analytics bug — percentages silently return 0 or wrong whole numbers.',
-    hint:'Integer division truncates. Multiply by 100.0 or CAST to decimal.',
+-- Alternative:
+  CAST(SUM(CASE WHEN ward_id = 1 THEN 1 ELSE 0 END) AS DECIMAL(10,2))
+  * 100 / COUNT(*) AS pct`,
+    why: 'In SQL, integer ÷ integer = integer (truncated). 3 / 10 = 0, not 0.3. Changing 100 to 100.0 forces floating-point arithmetic for the whole expression. This is an extremely common analytics bug — percentages silently return 0.',
+    hint: 'Integer division truncates. Use 100.0 or CAST to decimal.',
+    wrong_category: 'type',
+    wrong_direction: 'The CASE statement logic is fine. The aggregation is fine. The problem is in how SQL handles arithmetic between two integers — specifically what happens to the decimal part of the result.',
+    wrong_hint: 'What is 3 / 10 in integer arithmetic? What is 3 / 10.0?',
   },
 ];
 
 export default function DE2_Level6() {
-  const [found, setFound] = useState(new Set());
+  const [found,    setFound]    = useState(new Set());
+  const [selected, setSelected] = useState(null); // wrong selection for diagnostic
+
+  function handleReveal(bugId) {
+    setFound(prev => { const n = new Set(prev); n.add(bugId); return n; });
+    setSelected(null);
+  }
+
+  const allDone = found.size >= BUGS.length;
 
   return (
-    <DE2Shell levelId={6} canProceed={found.size >= BUGS.length}
-      conceptReveal={[{ label:'4 SQL Bugs That Corrupt Analytics', detail:'GROUP BY missing columns, NULL comparison with =, wrong JOIN losing rows, integer division returning 0. These four account for a huge proportion of "the numbers don\'t add up" complaints analysts raise. Knowing them makes you the person who finds them.' }]}
+    <DE2Shell levelId={6} canProceed={allDone}
+      conceptReveal={[
+        { label:'The Four SQL Traps', detail:'GROUP BY without all non-aggregate selects, NULL = NULL (always false), wrong JOIN type losing rows, integer division truncating decimals. These four bugs are in real production SQL right now. Recognise them from the symptom: unexpected zero rows, wrong totals, missing data, or truncated percentages.' },
+      ]}
     >
       <div className="de2-intro">
         <h1>SQL Bug Hunt</h1>
-        <p className="de2-tagline">🐛 Four bugs that produce wrong data silently. No error messages.</p>
-        <p className="de2-why">The worst SQL bugs don't crash — they return wrong numbers confidently. These are in real dashboards right now causing bad business decisions.</p>
+        <p className="de2-tagline">🐛 Four bugs producing silently wrong data. Find and fix each one.</p>
+        <p className="de2-why">The worst SQL bugs don't throw errors — they return plausible-looking wrong results. 0 rows when you expect some. 0% when the real answer is 33%. These are in production dashboards right now.</p>
       </div>
-      <div style={{display:'flex',flexDirection:'column',gap:14}}>
-        {BUGS.map(bug => (
-          <div key={bug.id} style={{background:'#1e293b',borderRadius:10,padding:'16px 20px',border:`1px solid ${found.has(bug.id)?'#4ade8060':'#334155'}`,borderLeft:`3px solid ${found.has(bug.id)?'#4ade80':'#f87171'}`}}>
-            <h3 style={{color:found.has(bug.id)?'#4ade80':'#f87171',margin:'0 0 10px',fontSize:14}}>{bug.label}</h3>
-            <div className="de2-panel" style={{margin:'0 0 8px'}}>
-              <div className="de2-panel-hdr" style={{color:'#f87171'}}>❌ Bug</div>
-              <pre className="de2-panel-body" style={{margin:0,overflowX:'auto',fontSize:12,color:'#cbd5e1'}}>{bug.bad}</pre>
+
+      <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+        {BUGS.map(bug => {
+          const isSolved = found.has(bug.id);
+          const isWrongSelected = selected === bug.id && !isSolved;
+
+          return (
+            <div key={bug.id} style={{
+              background:'#1e293b', borderRadius:10, padding:'16px 20px',
+              border:`1px solid ${isSolved ? '#4ade8060' : '#334155'}`,
+              borderLeft:`3px solid ${isSolved ? '#4ade80' : '#f87171'}`,
+            }}>
+              <h3 style={{ color: isSolved ? '#4ade80' : '#f87171', margin:'0 0 10px', fontSize:14 }}>
+                {bug.label}
+              </h3>
+
+              {/* Buggy code */}
+              <div className="de2-panel" style={{ margin:'0 0 8px' }}>
+                <div className="de2-panel-hdr" style={{ color:'#f87171' }}>❌ Buggy code</div>
+                <pre className="de2-panel-body" style={{ margin:0, overflowX:'auto', fontSize:12, color:'#cbd5e1' }}>
+                  {bug.bad}
+                </pre>
+              </div>
+
+              {/* Hint */}
+              <p style={{ color:'#64748b', fontSize:13, margin:'8px 0' }}>💡 {bug.hint}</p>
+
+              {/* DebugDiagnostic — shown when wrong bug selected */}
+              {isWrongSelected && (
+                <DebugDiagnostic
+                  selectedId={selected}
+                  correctId={bug.id}
+                  bugs={[{ ...bug, id: 'wrong' }]}
+                  onClear={() => setSelected(null)}
+                />
+              )}
+
+              {!isSolved ? (
+                <button
+                  className="de2-check-btn"
+                  style={{ background:'#334155', color:'#94a3b8', fontSize:13, padding:'7px 16px' }}
+                  onClick={() => handleReveal(bug.id)}
+                >
+                  Show Fix & Explanation
+                </button>
+              ) : (
+                <>
+                  <div className="de2-panel" style={{ margin:'8px 0 6px' }}>
+                    <div className="de2-panel-hdr" style={{ color:'#4ade80' }}>✅ Fixed code</div>
+                    <pre className="de2-panel-body" style={{ margin:0, overflowX:'auto', fontSize:12, color:'#94a3b8' }}>
+                      {bug.good}
+                    </pre>
+                  </div>
+                  <p style={{ color:'#94a3b8', fontSize:13, lineHeight:1.6, margin:'6px 0' }}>{bug.why}</p>
+                </>
+              )}
             </div>
-            <p style={{color:'#64748b',fontSize:13,margin:'8px 0'}}>💡 {bug.hint}</p>
-            {!found.has(bug.id) ? (
-              <button className="de2-check-btn" style={{background:'#334155',color:'#94a3b8',fontSize:13,padding:'7px 16px'}}
-                onClick={() => setFound(p=>{const n=new Set(p);n.add(bug.id);return n;})}>Reveal Fix</button>
-            ) : (
-              <>
-                <div className="de2-panel" style={{margin:'8px 0 6px'}}>
-                  <div className="de2-panel-hdr" style={{color:'#4ade80'}}>✅ Fixed</div>
-                  <pre className="de2-panel-body" style={{margin:0,overflowX:'auto',fontSize:12,color:'#94a3b8'}}>{bug.good}</pre>
-                </div>
-                <p style={{color:'#94a3b8',fontSize:13,lineHeight:1.6,margin:'6px 0'}}>{bug.why}</p>
-              </>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
-      {found.size >= BUGS.length && <div className="de2-feedback success" style={{marginTop:20}}>✅ All 4 SQL bugs identified. Your analytics will never be silently wrong.</div>}
+
+      {allDone && (
+        <div className="de2-feedback success" style={{ marginTop:20 }}>
+          ✅ Four SQL traps identified. Your queries will never silently lie.
+        </div>
+      )}
     </DE2Shell>
   );
 }
