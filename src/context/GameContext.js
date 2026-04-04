@@ -341,7 +341,7 @@ export function GameProvider({ children }) {
       completedLevels,   xp, streak, totalXpAllPaths,
       completeLevel,     isLevelComplete,
       getStageProgress,  isStageComplete, isStageUnlocked,
-      getResumeRoute,    getPathData,
+      getResumeRoute,    getPathData,    updatePathData,
       // Legacy alias
       selectedCareerPath: activePath, setSelectedCareerPath: setActivePath,
     }}>
