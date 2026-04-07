@@ -117,6 +117,16 @@ export default function DE2_Level6() {
       conceptReveal={[
         { label:'The Four SQL Traps', detail:'GROUP BY without all non-aggregate selects, NULL = NULL (always false), wrong JOIN type losing rows, integer division truncating decimals. These four bugs are in real production SQL right now. Recognise them from the symptom: unexpected zero rows, wrong totals, missing data, or truncated percentages.' },
       ]}
+      prevLevelContext="In the last level you structured queries with CTEs. Now you\'ll find four bugs producing silently wrong data — the SQL errors that appear in real hospital dashboards today."
+      cumulativeSkills={[
+        "Set up the hospital analytics database and ran first SELECT queries",
+        "Written SELECT, FROM, WHERE, ORDER BY, LIMIT, DISTINCT, and LIKE queries",
+        "Aggregated patient data with GROUP BY, COUNT, SUM, AVG, and HAVING",
+        "Connected patients, wards, appointments, and doctors with INNER and LEFT JOINs",
+        "Handled NULL correctly: IS NULL, COALESCE, NULLIF, and NOT EXISTS patterns",
+        "Structured complex queries as CTEs: readable, testable, and reusable blocks",
+        "Diagnosed four SQL bugs: GROUP BY violation, NULL =, wrong JOIN, integer division",
+      ]}
     >
       <div className="de2-intro">
         <h1>SQL Bug Hunt</h1>

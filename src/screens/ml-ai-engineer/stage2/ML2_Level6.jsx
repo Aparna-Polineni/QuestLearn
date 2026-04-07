@@ -59,7 +59,18 @@ export default function ML2_Level6() {
   const [found, setFound] = useState(new Set());
 
   return (
-    <ML2Shell levelId={6} canProceed={found.size >= BUGS.length}
+    <ML2Shell levelId={6} canProceed={found.size
+      prevLevelContext="In the last level you explored clean data. Now you\'ll see what happens when Pandas data is not clean — three bugs that silently corrupt model training without raising a single error."
+      cumulativeSkills={[
+        "Set up the Python ML environment and ran first NumPy array operations",
+        "Implemented vectorised operations: dot products, broadcasting, array slicing",
+        "Loaded and inspected the patient dataset: shape, dtypes, missing values, distributions",
+        "Cleaned the dataset: imputed nulls, fixed dtypes, removed duplicates",
+        "Engineered five new predictive features from the raw patient columns",
+        "Produced a full EDA: correlation matrix, class balance, distribution analysis",
+        "Identified three Pandas traps that silently corrupt ML training data",
+      ]}
+    >= BUGS.length}
       conceptReveal={[{ label:'The Three Pandas Traps', detail:'SettingWithCopyWarning (modifying a slice), chained indexing (wrong index after filter), dtype mismatch in merge (silent NaN flood). These three bugs are in real ML codebases right now producing wrong training data. Recognise them instantly.' }]}
     >
       <div className="ml2-intro">

@@ -3,12 +3,12 @@ import { useState } from 'react';
 import ML1Shell from './ML1Shell';
 
 const CARDS = [
-  { id:'def', title:'What is Machine Learning?', body:'ML is programming a system to learn patterns from data instead of following explicit rules. Classic programming: you write rules → computer follows them. ML: you provide examples → computer discovers the rules itself.' },
-  { id:'vs', title:'ML vs Traditional Programming', body:'Traditional: if fraud_amount > 10000 and country != home_country → flag. ML: train on 10 million historical transactions, let the model discover what "suspicious" looks like — including patterns you\'d never think to write.' },
-  { id:'types', title:'Three Types of ML', body:'Supervised: labelled data — you show the model inputs AND correct answers (spam/not spam). Unsupervised: no labels — model finds patterns itself (customer segments). Reinforcement: agent learns by trial and error with rewards (game AI).' },
-  { id:'data', title:'Data is Everything', body:'An ML model is only as good as its training data. Garbage in, garbage out. If your training data has biases — like historical hiring decisions that discriminated by gender — your model will reproduce those biases at scale.' },
-  { id:'when', title:'When ML is Worth It', body:'ML is worth it when: rules are too complex to write manually, data is abundant, patterns change over time. ML is overkill when: the problem is simple, data is scarce, you need to explain exactly why each decision was made (regulated industries).' },
-  { id:'job', title:'What ML Engineers Build', body:'Not just models — the full system. Data pipelines to feed the model. Training infrastructure. Evaluation frameworks. APIs to serve predictions. Monitoring to detect when the model degrades. Model retraining pipelines.' },
+  { id:'def',    title:'What is Machine Learning?',       body:'ML is programming by example instead of by rules. Classic: you write if/else logic. ML: you show the model thousands of examples and it learns the pattern itself. The model finds rules you\'d never think to write.' },
+  { id:'vs',     title:'ML vs Traditional Programming',   body:'Traditional: if fraud_amount > 10000 → flag. Works for simple rules. ML: train on 10M transactions and discover that fraud correlates with unusual time + location + device combination — a pattern impossible to write manually.' },
+  { id:'types',  title:'3 Types of ML',                  body:'Supervised: you provide labelled examples (spam/not spam) — model learns to classify. Unsupervised: no labels — model finds hidden structure (customer segments). Reinforcement: agent learns by trial and reward (game AI, robotics).' },
+  { id:'data',   title:'Data is Everything',              body:'A model trained on biased data produces biased results. If your fraud training data over-represents certain demographics, your model will discriminate. "Garbage in, garbage out" is the most important phrase in ML.' },
+  { id:'eng',    title:'What ML Engineers Actually Build', body:'Not just models. The full system: data pipelines to feed training. Feature engineering. Training infrastructure. Evaluation frameworks. Serving APIs. Monitoring for model drift. Automated retraining. The model is 10% of the work.' },
+  { id:'when',   title:'When ML is Worth It',             body:'Use ML when: rules are too complex, data is abundant, patterns change over time. Skip ML when: a simple rule works, data is scarce, every decision needs a legal explanation (credit, hiring). This is Level 1\'s topic.' },
 ];
 
 export default function ML1_Level0() {
@@ -16,11 +16,15 @@ export default function ML1_Level0() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <ML1Shell levelId={0} canProceed={seen.size >= CARDS.length}>
+    <ML1Shell levelId={0} canProceed={seen.size
+      cumulativeSkills={[
+        "Explained what machine learning is and the three problems it can and cannot solve",
+      ]}
+    >= CARDS.length}>
       <div className="ml1-intro">
         <h1>What is Machine Learning?</h1>
-        <p className="ml1-tagline">🧠 Teaching computers to learn instead of following rules.</p>
-        <p className="ml1-why">ML engineers don't just train models — they build the data pipelines, serving infrastructure, monitoring, and retraining systems that make models work in production for real users.</p>
+        <p className="ml1-tagline">🧠 Teaching computers to learn instead of programming every rule.</p>
+        <p className="ml1-why">ML engineers don't just train models — they build the full system: data pipelines, training infrastructure, serving APIs, and monitoring. The model is the smallest part.</p>
       </div>
       <div className="ml1-cards">
         {CARDS.map(c => (
@@ -34,7 +38,7 @@ export default function ML1_Level0() {
         ))}
       </div>
       {seen.size < CARDS.length && <p style={{textAlign:'center',color:'#475569',fontSize:13}}>Open all {CARDS.length} cards to continue →</p>}
-      {seen.size >= CARDS.length && <div className="ml1-feedback success">✅ You understand what ML is — and what it isn't. Next: when NOT to use it.</div>}
+      {seen.size >= CARDS.length && <div className="ml1-feedback success">✅ Foundation set. Next: when NOT to use ML.</div>}
     </ML1Shell>
   );
 }

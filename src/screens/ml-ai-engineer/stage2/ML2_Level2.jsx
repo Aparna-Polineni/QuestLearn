@@ -70,6 +70,12 @@ export default function ML2_Level2() {
         { label:'The EDA Opening Move', detail:'Every ML project starts the same way: df.head() to see the data, df.info() to see types and nulls, df.describe() to see numeric distributions. These three commands in 30 seconds reveal the structure of any dataset.' },
         { label:'DataFrame vs Series', detail:'df["ward_id"] returns a Series (1D). df[["ward_id"]] returns a DataFrame (2D with one column). The double brackets are intentional — you\'re passing a list of column names. Most operations work the same on both, but some functions require DataFrames.' },
       ]}
+      prevLevelContext="In the last level you built the NumPy foundation. Now you\'ll load the patient readmission dataset into Pandas and answer the first question any ML engineer asks: what is this data?"
+      cumulativeSkills={[
+        "Set up the Python ML environment and ran first NumPy array operations",
+        "Implemented vectorised operations: dot products, broadcasting, array slicing",
+        "Loaded and inspected the patient dataset: shape, dtypes, missing values, distributions",
+      ]}
     >
       <div className="ml2-intro">
         <h1>Pandas — DataFrames Basics</h1>

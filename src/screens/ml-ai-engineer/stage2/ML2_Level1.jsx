@@ -71,6 +71,11 @@ export default function ML2_Level1() {
         { label:'Vectorisation is Everything', detail:'NumPy operations work on entire arrays without Python loops. features * 2 doubles every element in compiled C code. A loop over 1M elements takes ~1s in Python, ~1ms in NumPy. Every ML library uses NumPy arrays — you must understand them.' },
         { label:'Broadcasting', detail:'np.array([1,2,3]) + 10 adds 10 to every element. This is broadcasting — NumPy expands the scalar to match the array shape. More complex: (3,2) array + (2,) array broadcasts the (2,) across all 3 rows. This is how bias vectors are added to weight matrices in neural networks.' },
       ]}
+      prevLevelContext="In the last level you set up NumPy. Now you\'ll implement the fundamental operations that power every ML computation — vectorised arithmetic, broadcasting, and array manipulation."
+      cumulativeSkills={[
+        "Set up the Python ML environment and ran first NumPy array operations",
+        "Implemented vectorised operations: dot products, broadcasting, array slicing",
+      ]}
     >
       <div className="ml2-intro">
         <h1>NumPy Arrays & Vectorisation</h1>

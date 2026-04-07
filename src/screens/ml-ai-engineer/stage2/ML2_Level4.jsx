@@ -73,6 +73,14 @@ export default function ML2_Level4() {
         { label:'Never Drop NULLs Blindly', detail:'dropna() without arguments removes every row with any NaN — you can lose 40% of your dataset. Always ask WHY values are missing. Is it random (safe to impute with median)? Is the NULL itself informative (no fee = outpatient visit)? Understand before you act.' },
         { label:'Outlier Strategy', detail:'Outliers can be valid (£50k surgery) or errors (age=999). Check domain knowledge first. Clipping (cap at 99th percentile) is safer than dropping — you keep the row but limit extreme influence on the model. Removing outliers is often the wrong choice.' },
       ]}
+      prevLevelContext="In the last level you cleaned the patient data. Now you\'ll engineer new features from existing columns — length of stay, log fee, weekend admission flag — the signals that actually predict readmission."
+      cumulativeSkills={[
+        "Set up the Python ML environment and ran first NumPy array operations",
+        "Implemented vectorised operations: dot products, broadcasting, array slicing",
+        "Loaded and inspected the patient dataset: shape, dtypes, missing values, distributions",
+        "Cleaned the dataset: imputed nulls, fixed dtypes, removed duplicates",
+        "Engineered five new predictive features from the raw patient columns",
+      ]}
     >
       <div className="ml2-intro">
         <h1>Data Cleaning</h1>

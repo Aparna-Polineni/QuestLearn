@@ -19,7 +19,7 @@ const LEVEL_MODES = {
 };
 const STAGE_COLOR = '#818cf8';
 
-export default function DE2Shell({ levelId, canProceed, conceptReveal, children }) {
+export default function DE2Shell({ levelId, canProceed, conceptReveal, children , prevLevelContext, cumulativeSkills }) {
   const navigate = useNavigate();
   const { completeLevel } = useGame();
   const mode  = LEVEL_MODES[levelId] || 'FILL';
@@ -44,8 +44,14 @@ export default function DE2Shell({ levelId, canProceed, conceptReveal, children 
         </div>
         <div className={`de2-mode mode-${mode.toLowerCase()}`}>{mode}</div>
       </div>
+      {prevLevelContext && (
+        <div className="level-thread">
+          <span className="level-thread-icon">↩</span>
+          <span>{prevLevelContext}</span>
+        </div>
+      )}
       <div className="de2-content">{children}</div>
-      {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} />}
+      {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} cumulativeSkills={cumulativeSkills} />}
       <div className="de2-footer">
         <button className="de2-btn" style={{ background: canProceed ? STAGE_COLOR : '#334155', color: canProceed ? '#0f172a' : '#64748b' }}
           disabled={!canProceed} onClick={handleComplete}>

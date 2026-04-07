@@ -22,7 +22,7 @@ const LEVEL_MODES = { 0:'CONCEPTS', 1:'FILL', 2:'FILL', 3:'FILL', 4:'DEBUG', 5:'
 const STAGE_COLOR = '#10b981';
 const PATH_ID     = 'cyber-security';
 
-export default function CY1Shell({ levelId, canProceed, conceptReveal, children }) {
+export default function CY1Shell({ levelId, canProceed, conceptReveal, children, prevLevelContext, cumulativeSkills }) {
   const navigate = useNavigate();
   const { completeLevel } = useGame();
   const { user } = useAuth();
@@ -68,8 +68,14 @@ export default function CY1Shell({ levelId, canProceed, conceptReveal, children 
         <div className={`cy1-mode mode-${mode.toLowerCase()}`}>{mode}</div>
       </div>
 
+      {prevLevelContext && (
+        <div className="level-thread">
+          <span className="level-thread-icon">↩</span>
+          <span>{prevLevelContext}</span>
+        </div>
+      )}
       <div className="cy1-content">{children}</div>
-      {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} />}
+      {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} cumulativeSkills={cumulativeSkills} />}
 
       <div className="cy1-footer">
         <button

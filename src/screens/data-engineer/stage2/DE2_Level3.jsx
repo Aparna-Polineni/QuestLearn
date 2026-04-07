@@ -70,6 +70,13 @@ export default function DE2_Level3() {
         { label:'Finding Missing Data with LEFT JOIN + IS NULL', detail:'LEFT JOIN from wards to patients returns all wards. WHERE p.id IS NULL filters to wards with no matching patients — the anti-join pattern. This is one of the most common data quality checks in analytics: "which accounts have no transactions this month?"' },
         { label:'Self-Joins', detail:'A self-join joins a table to itself using two different aliases. Used for: comparing rows within the same table (same-day admissions), hierarchical data (employee and their manager in the same table), finding duplicates.' },
       ]}
+      prevLevelContext="In the last level you aggregated data within a single table. Now you\'ll connect tables — writing JOINs that link patients to their wards, appointments, and doctors."
+      cumulativeSkills={[
+        "Set up the hospital analytics database and ran first SELECT queries",
+        "Written SELECT, FROM, WHERE, ORDER BY, LIMIT, DISTINCT, and LIKE queries",
+        "Aggregated patient data with GROUP BY, COUNT, SUM, AVG, and HAVING",
+        "Connected patients, wards, appointments, and doctors with INNER and LEFT JOINs",
+      ]}
     >
       <div className="de2-intro">
         <h1>JOINs</h1>

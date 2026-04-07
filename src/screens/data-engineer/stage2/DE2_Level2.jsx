@@ -68,7 +68,14 @@ export default function DE2_Level2() {
   return (
     <DE2Shell levelId={2} canProceed={allCorrect}
       conceptReveal={[
-        { label:'WHERE vs HAVING', detail:'WHERE filters individual rows before grouping. HAVING filters groups after grouping. You cannot use aggregate functions in WHERE. SELECT ward_id, COUNT(*) FROM patients WHERE status="active" GROUP BY ward_id HAVING COUNT(*) > 5 — WHERE filters rows, HAVING filters the resulting groups.' },
+        { label:'WHERE vs HAVING', detail:'WHERE filters individual rows before grouping. HAVING filters groups after grouping. You cannot use aggregate functions in WHERE. SELECT ward_id, COUNT(*) FROM patients WHERE status="active" GROUP BY ward_id HAVING COUNT(*)
+      prevLevelContext="In the last level you selected and filtered individual rows. Now you\'ll group them — aggregating patient data to answer questions like \"how many patients per ward?\""
+      cumulativeSkills={[
+        "Set up the hospital analytics database and ran first SELECT queries",
+        "Written SELECT, FROM, WHERE, ORDER BY, LIMIT, DISTINCT, and LIKE queries",
+        "Aggregated patient data with GROUP BY, COUNT, SUM, AVG, and HAVING",
+      ]}
+    > 5 — WHERE filters rows, HAVING filters the resulting groups.' },
         { label:'COUNT(*) vs COUNT(column)', detail:'COUNT(*) counts all rows including NULLs. COUNT(fee) counts only rows where fee is not NULL. For totals, use COUNT(*). For non-null counts, use COUNT(column). This distinction causes subtle bugs in analytics when columns have missing values.' },
       ]}
     >

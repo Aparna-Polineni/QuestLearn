@@ -22,7 +22,7 @@ const LEVEL_MODES = { 0:'CONCEPTS', 1:'FILL', 2:'FILL', 3:'BUILD', 4:'FILL', 5:'
 const STAGE_COLOR = '#ec4899';
 const PATH_ID     = 'ux-ui-designer';
 
-export default function UX1Shell({ levelId, canProceed, conceptReveal, children }) {
+export default function UX1Shell({ levelId, canProceed, conceptReveal, children, prevLevelContext, cumulativeSkills }) {
   const navigate = useNavigate();
   const { completeLevel } = useGame();
   const { user } = useAuth();
@@ -68,8 +68,14 @@ export default function UX1Shell({ levelId, canProceed, conceptReveal, children 
         <div className={`ux1-mode mode-${mode.toLowerCase()}`}>{mode}</div>
       </div>
 
+      {prevLevelContext && (
+        <div className="level-thread">
+          <span className="level-thread-icon">↩</span>
+          <span>{prevLevelContext}</span>
+        </div>
+      )}
       <div className="ux1-content">{children}</div>
-      {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} />}
+      {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} cumulativeSkills={cumulativeSkills} />}
 
       <div className="ux1-footer">
         <button

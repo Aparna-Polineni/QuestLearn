@@ -64,7 +64,13 @@ export default function ML1_Level1() {
   const [found, setFound] = useState(new Set());
 
   return (
-    <ML1Shell levelId={1} canProceed={found.size >= BUGS.length}
+    <ML1Shell levelId={1} canProceed={found.size
+      prevLevelContext="In the last level you learned what ML is. Now you\'ll map the 8-step workflow that every ML project follows — from business problem to deployed model."
+      cumulativeSkills={[
+        "Explained what ML is and the three problem types it solves",
+        "Mapped the 8-step ML workflow from problem definition to production deployment",
+      ]}
+    >= BUGS.length}
       conceptReveal={[{ label:'The ML Decision Framework', detail:'Ask 4 questions: (1) Can a rule solve it? If yes, use the rule. (2) Do you have enough data? If no, collect more. (3) Does it need to be explainable? If yes, use a simple model. (4) Is the cost of being wrong acceptable? Medical/legal = extreme caution.' }]}
     >
       <div className="ml1-intro">

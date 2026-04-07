@@ -74,6 +74,14 @@ export default function DE2_Level4() {
         { label:'CTE vs Subquery', detail:'A CTE (WITH clause) names a subquery result and lets you reference it multiple times. It\'s not faster — the database executes it the same way — but it\'s dramatically more readable. Complex multi-step transformations are unreadable as nested subqueries but clear as a chain of CTEs.' },
         { label:'EXISTS vs IN', detail:'EXISTS stops as soon as it finds one matching row — faster for large tables. IN evaluates the entire subquery. For correlated subqueries (WHERE EXISTS(SELECT 1 FROM ... WHERE outer.id = inner.id)), EXISTS is almost always faster. For simple lists, both are fine.' },
       ]}
+      prevLevelContext="In the last level you joined tables. Now you\'ll handle the value that breaks every join silently — NULL — and write queries that return correct results even when data is missing."
+      cumulativeSkills={[
+        "Set up the hospital analytics database and ran first SELECT queries",
+        "Written SELECT, FROM, WHERE, ORDER BY, LIMIT, DISTINCT, and LIKE queries",
+        "Aggregated patient data with GROUP BY, COUNT, SUM, AVG, and HAVING",
+        "Connected patients, wards, appointments, and doctors with INNER and LEFT JOINs",
+        "Handled NULL correctly: IS NULL, COALESCE, NULLIF, and NOT EXISTS patterns",
+      ]}
     >
       <div className="de2-intro">
         <h1>Subqueries & CTEs</h1>
