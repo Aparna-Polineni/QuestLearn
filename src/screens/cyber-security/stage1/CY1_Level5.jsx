@@ -77,7 +77,7 @@ export default function CY1_Level5() {
         { label:'Zero Trust Architecture', detail:'"Never trust, always verify" — assume the network is already compromised. Every access request is authenticated, authorised, and encrypted regardless of where it originates. Internal systems authenticate each other with certificates. The Castle-and-Moat model (strong perimeter, trust everything inside) is dead.' },
         { label:'Backups Are the Last Line of Defence', detail:'Ransomware encrypts all reachable files. If backups are network-attached, they get encrypted too. Offline, immutable backups (write-once storage, air-gapped) survive ransomware. Test restore procedures quarterly — a backup you\'ve never tested may not actually restore.' },
       ]}
-      prevLevelContext="In the last level you secured the login gate. Now you\'ll protect what\'s behind it — encrypting patient data at rest and in transit so a breach doesn\'t become a catastrophe."
+      prevLevelContext="In the last level you secured the login gate. Now you'll protect what's behind it — encrypting patient data at rest and in transit so a breach doesn't become a catastrophe."
       cumulativeSkills={[
         "Applied the CIA triad to evaluate a hospital system's security posture",
         "Built a STRIDE threat model identifying spoofing, tampering, and escalation risks",

@@ -71,7 +71,7 @@ Biggest assumption in badge tap login:
         { label:'Diverge Before You Converge', detail:'Ideation has two phases: divergent (generate as many ideas as possible — no criticism) and convergent (select and refine). Most teams skip divergence and jump to refining the first reasonable idea. The best solution is almost never the first one you think of.' },
         { label:'The Worst Idea Technique', detail:'Ask "what\'s the worst possible solution?" to this problem. "Force nurses to complete a 20-field form with CAPTCHA every login." Now reverse it: "zero-field authentication." Terrible ideas point to great ones — they reveal assumptions you were afraid to challenge.' },
       ]}
-      prevLevelContext="In the last level you built a persona representing the patient. Now you\'ll Ideate and Prototype — sketching three wireframes for the mobile booking flow that persona will use."
+      prevLevelContext="In the last level you built a persona representing the patient. Now you'll Ideate and Prototype — sketching three wireframes for the mobile booking flow that persona will use."
       cumulativeSkills={[
         "Defined UX vs UI and mapped the five phases of Design Thinking",
         "Applied Design Thinking: empathised and defined the booking problem",

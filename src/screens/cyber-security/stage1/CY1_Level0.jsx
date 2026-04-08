@@ -16,11 +16,11 @@ export default function CY1_Level0() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <CY1Shell levelId={0} canProceed={seen.size
+    <CY1Shell levelId={0} canProceed={seen.size >= CARDS.length}
       cumulativeSkills={[
         "Applied the CIA triad to evaluate a hospital system's security posture",
       ]}
-    >= CARDS.length}>
+    >
       <div className="cy1-intro">
         <h1>The Security Mindset</h1>
         <p className="cy1-tagline">🔐 Think like an attacker. Defend like an architect.</p>

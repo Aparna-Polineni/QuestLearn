@@ -73,7 +73,7 @@ export default function ML2_Level7() {
         { label:'Why ML is Linear Algebra', detail:'A neural network is just: output = activation(X @ W + b). X is the input matrix, W is the weight matrix, b is the bias vector, @ is matrix multiplication. Every layer, every prediction, every gradient is a matrix operation. NumPy makes this fast.' },
         { label:'Dot Product = Similarity', detail:'The dot product of two vectors measures how much they point in the same direction. In NLP, words with similar meaning have vectors with high dot products. In recommendation systems, users with similar tastes have high dot products. It\'s the mathematical definition of "similar".' },
       ]}
-      prevLevelContext="In the last level you identified the bugs that corrupt data. Now you\'ll visualise the patient dataset in full — the plots that reveal model problems before a single line of training code is written."
+      prevLevelContext="In the last level you identified the bugs that corrupt data. Now you'll visualise the patient dataset in full — the plots that reveal model problems before a single line of training code is written."
       cumulativeSkills={[
         "Set up the Python ML environment and ran first NumPy array operations",
         "Implemented vectorised operations: dot products, broadcasting, array slicing",

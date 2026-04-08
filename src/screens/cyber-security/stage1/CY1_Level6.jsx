@@ -16,8 +16,8 @@ export default function CY1_Level6() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <CY1Shell levelId={6} canProceed={seen.size
-      prevLevelContext="In the last level you encrypted the data. Now you\'ll step into the attacker\'s shoes — enumerate, scan, exploit, and persist — to find what you missed from the defender\'s side."
+    <CY1Shell levelId={6} canProceed={seen.size >= CARDS.length}
+      prevLevelContext="In the last level you encrypted the data. Now you'll step into the attacker's shoes — enumerate, scan, exploit, and persist — to find what you missed from the defender's side."
       cumulativeSkills={[
         "Applied the CIA triad to evaluate a hospital system's security posture",
         "Built a STRIDE threat model identifying spoofing, tampering, and escalation risks",
@@ -27,7 +27,7 @@ export default function CY1_Level6() {
         "Selected and applied encryption for data at rest and in transit",
         "Conducted an attacker-perspective review: reconnaissance, exploitation, and persistence",
       ]}
-    >= CARDS.length}>
+    >
       <div className="cy1-intro">
         <h1>Security Careers</h1>
         <p className="cy1-tagline">💼 3.4 million unfilled security jobs globally. Which role fits you?</p>

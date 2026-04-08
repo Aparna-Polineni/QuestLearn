@@ -16,11 +16,11 @@ export default function DE2_Level0() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <DE2Shell levelId={0} canProceed={seen.size
+    <DE2Shell levelId={0} canProceed={seen.size >= CARDS.length}
       cumulativeSkills={[
         "Set up the hospital analytics database and ran first SELECT queries",
       ]}
-    >= CARDS.length}>
+    >
       <div className="de2-intro">
         <h1>SQL & Databases</h1>
         <p className="de2-tagline">🗄️ The universal language of data. Every data engineer lives in SQL.</p>

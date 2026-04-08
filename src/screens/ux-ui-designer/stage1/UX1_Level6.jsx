@@ -16,8 +16,8 @@ export default function UX1_Level6() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <UX1Shell levelId={6} canProceed={seen.size
-      prevLevelContext="In the last level you designed the visual hierarchy. Now you\'ll test it — running a five-user usability test on the booking prototype and turning observations into actionable changes."
+    <UX1Shell levelId={6} canProceed={seen.size >= CARDS.length}
+      prevLevelContext="In the last level you designed the visual hierarchy. Now you'll test it — running a five-user usability test on the booking prototype and turning observations into actionable changes."
       cumulativeSkills={[
         "Defined UX vs UI and mapped the five phases of Design Thinking",
         "Applied Design Thinking: empathised and defined the booking problem",
@@ -27,7 +27,7 @@ export default function UX1_Level6() {
         "Applied visual hierarchy: size, weight, and colour to direct patient attention",
         "Planned and conducted a five-user usability test with documented findings",
       ]}
-    >= CARDS.length}>
+    >
       <div className="ux1-intro">
         <h1>UX vs UI — What\'s the Difference?</h1>
         <p className="ux1-tagline">🎨 UX = the journey. UI = the vehicle. Both matter.</p>

@@ -16,11 +16,11 @@ export default function ML2_Level0() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <ML2Shell levelId={0} canProceed={seen.size
+    <ML2Shell levelId={0} canProceed={seen.size >= CARDS.length}
       cumulativeSkills={[
         "Set up the Python ML environment and ran first NumPy array operations",
       ]}
-    >= CARDS.length}>
+    >
       <div className="ml2-intro">
         <h1>Python & Math for ML</h1>
         <p className="ml2-tagline">🐍 NumPy, Pandas, maths — the toolkit every ML engineer lives in.</p>

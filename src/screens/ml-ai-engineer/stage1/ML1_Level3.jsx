@@ -77,7 +77,7 @@ export default function ML1_Level3() {
         { label:'Always Establish a Baseline First', detail:'A "dumb" model that predicts the majority class can reach 95% accuracy on an imbalanced dataset. If your ML model gets 96%, the business impact is tiny. The baseline reveals whether ML is actually adding value.' },
         { label:'Never Touch the Test Set', detail:'The test set is your one shot at an honest estimate of real-world performance. If you evaluate on the test set during development, you\'re implicitly tuning to it and your final number is optimistic. Use validation for tuning, test for the final report only.' },
       ]}
-      prevLevelContext="In the last level you framed the prediction problem. Now you\'ll define the data requirements — what you need to collect before you can train a model to predict hospital readmissions."
+      prevLevelContext="In the last level you framed the prediction problem. Now you'll define the data requirements — what you need to collect before you can train a model to predict hospital readmissions."
       cumulativeSkills={[
         "Explained what ML is and the three problem types it solves",
         "Mapped the 8-step ML workflow from problem definition to production deployment",

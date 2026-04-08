@@ -16,11 +16,11 @@ export default function ML1_Level0() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <ML1Shell levelId={0} canProceed={seen.size
+    <ML1Shell levelId={0} canProceed={seen.size >= CARDS.length}
       cumulativeSkills={[
         "Explained what machine learning is and the three problems it can and cannot solve",
       ]}
-    >= CARDS.length}>
+    >
       <div className="ml1-intro">
         <h1>What is Machine Learning?</h1>
         <p className="ml1-tagline">🧠 Teaching computers to learn instead of programming every rule.</p>

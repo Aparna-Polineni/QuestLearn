@@ -72,7 +72,7 @@ export default function CY1_Level3() {
         { label:'Reduce Before You Protect', detail:'Every unnecessary open port, running service, or user account is a liability. Before adding security controls, ask: do we need this? A web server doesn\'t need port 22 (SSH) open to the internet. Disable it. Smaller attack surface = less to protect.' },
         { label:'Supply Chain Attacks', detail:'SolarWinds (2020): attackers compromised a software update mechanism — 18,000 organisations downloaded malware as a legitimate update. Log4Shell (2021): a single logging library had a critical RCE vulnerability affecting millions of Java applications. Your dependencies are part of your attack surface.' },
       ]}
-      prevLevelContext="In the last level you mapped the technical attack surface. Now you\'ll study the human one — phishing, pretexting, and vishing attacks that bypass every firewall by targeting staff."
+      prevLevelContext="In the last level you mapped the technical attack surface. Now you'll study the human one — phishing, pretexting, and vishing attacks that bypass every firewall by targeting staff."
       cumulativeSkills={[
         "Applied the CIA triad to evaluate a hospital system's security posture",
         "Built a STRIDE threat model identifying spoofing, tampering, and escalation risks",

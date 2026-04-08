@@ -74,7 +74,7 @@ export default function UX1_Level4() {
         { label:'Test Early, Fail Cheap', detail:'A paper sketch takes 10 minutes. A Figma wireframe takes 2 hours. A coded feature takes 2 weeks. If you discover a fundamental navigation problem after coding, it costs 2 weeks to fix. If you discover it in a paper prototype, it costs 10 minutes. Always test before building.' },
         { label:'5 Users Find 85% of Issues', detail:'Jakob Nielsen\'s research shows that 5 users uncover 85% of usability issues. You don\'t need 100 participants. Run 5 sessions, fix the issues, run 5 more. Iterating in small cycles is more efficient than one large study.' },
       ]}
-      prevLevelContext="In the last level you sketched the booking flow. Now you\'ll structure it — organising the navigation so any patient can find what they need without getting lost."
+      prevLevelContext="In the last level you sketched the booking flow. Now you'll structure it — organising the navigation so any patient can find what they need without getting lost."
       cumulativeSkills={[
         "Defined UX vs UI and mapped the five phases of Design Thinking",
         "Applied Design Thinking: empathised and defined the booking problem",

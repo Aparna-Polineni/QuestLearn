@@ -67,10 +67,7 @@ export default function ML2_Level5() {
 
   return (
     <ML2Shell levelId={5} canProceed={allCorrect}
-      conceptReveal={[
-        { label:'Visualise Before You Model', detail:'A scatter plot of age vs fee might show fee spikes exponentially after 70 — a non-linear relationship a linear model would miss. A countplot might show 95% negative class — your model will predict "negative" always and get 95% accuracy. Charts expose what statistics hide.' },
-        { label:'Correlation Heatmap', detail:'If two features have correlation
-      prevLevelContext="In the last level you created the features. Now you\'ll explore them — visualise distributions, compute correlations, and check class balance — to understand what the model will actually learn."
+      prevLevelContext="In the last level you created the features. Now you'll explore them — visualise distributions, compute correlations, and check class balance."
       cumulativeSkills={[
         "Set up the Python ML environment and ran first NumPy array operations",
         "Implemented vectorised operations: dot products, broadcasting, array slicing",
@@ -78,6 +75,10 @@ export default function ML2_Level5() {
         "Cleaned the dataset: imputed nulls, fixed dtypes, removed duplicates",
         "Engineered five new predictive features from the raw patient columns",
         "Produced a full EDA: correlation matrix, class balance check, distribution analysis",
+      ]}
+      conceptReveal={[
+        { label:'Visualise Before You Model', detail:'A scatter plot of age vs fee might show fee spikes exponentially after 70 — a non-linear relationship a linear model would miss. A countplot might show 95% negative class — your model will predict negative always and get 95% accuracy. Charts expose what statistics hide.' },
+        { label:'Correlation Heatmap', detail:'If two features have correlation above 0.9, one is redundant — drop the weaker predictor. If a feature correlates strongly with the target, it is a strong candidate. Always check the heatmap before choosing features.' },
       ]}
     > 0.95, they carry nearly identical information. Including both wastes model capacity and can cause instability in linear models (multicollinearity). The heatmap identifies this instantly — drop one of the highly correlated pair.' },
       ]}

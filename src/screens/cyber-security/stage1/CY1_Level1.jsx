@@ -69,7 +69,7 @@ export default function CY1_Level1() {
         { label:'Every Attack Maps to CIA', detail:'Ransomware: Availability (files encrypted, system unusable) + Confidentiality (data exfiltrated before encryption). SQL injection: Confidentiality (data stolen) + Integrity (data modified). Phishing: Confidentiality (credentials stolen). Use CIA to categorise any incident.' },
         { label:'Least Privilege', detail:'Users and systems should only have the minimum permissions needed to do their job. An HR employee shouldn\'t have read access to source code. A web server shouldn\'t have write access to the database. Least privilege limits the blast radius of any breach.' },
       ]}
-      prevLevelContext="In the last level you assessed a system using the CIA triad. Now you\'ll apply STRIDE — a structured framework for finding every category of threat before an attacker does."
+      prevLevelContext="In the last level you assessed a system using the CIA triad. Now you'll apply STRIDE — a structured framework for finding every category of threat before an attacker does."
       cumulativeSkills={[
         "Applied the CIA triad to evaluate a hospital system's security posture",
         "Built a STRIDE threat model identifying spoofing, tampering, and escalation risks",

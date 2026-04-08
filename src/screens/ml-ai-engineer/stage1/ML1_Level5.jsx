@@ -73,7 +73,7 @@ export default function ML1_Level5() {
         { label:'Precision vs Recall Trade-off', detail:'You can\'t maximise both. Fraud detection: high recall (catch every fraud) at the cost of low precision (more false alarms). Cancer screening: same. Spam filter: high precision (never miss real email) at the cost of recall (some spam gets through). The business decides which matters more.' },
         { label:'Why Accuracy Lies', detail:'99% accuracy on a dataset with 1% positives is achieved by predicting "negative" every time. This model is useless. Always report precision, recall, and F1 alongside accuracy. Always look at the confusion matrix.' },
       ]}
-      prevLevelContext="In the last level you chose the model type. Now you\'ll define how you\'ll know if it\'s working — accuracy, precision, recall, and AUC — and why choosing the wrong metric is as dangerous as a wrong diagnosis."
+      prevLevelContext="In the last level you chose the model type. Now you'll define how you'll know if it's working — accuracy, precision, recall, and AUC — and why choosing the wrong metric is as dangerous as a wrong diagnosis."
       cumulativeSkills={[
         "Explained what ML is and the three problem types it solves",
         "Mapped the 8-step ML workflow from problem definition to production deployment",

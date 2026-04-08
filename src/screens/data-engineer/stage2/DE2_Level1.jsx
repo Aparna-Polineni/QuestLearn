@@ -157,7 +157,7 @@ export default function DE2_Level1() {
         { label:'Clause Order is Enforced', detail:'SQL clauses must appear in order: SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT. Writing them out of order causes a syntax error. The database executes them in a different order internally (FROM first, SELECT last) — but you write them in the standard order.' },
         { label:'DISTINCT vs GROUP BY', detail:'SELECT DISTINCT ward_id returns unique ward IDs in one line. SELECT ward_id, COUNT(*) FROM patients GROUP BY ward_id returns unique ward IDs plus a count per ward. Use DISTINCT for deduplication, GROUP BY for aggregation.' },
       ]}
-      prevLevelContext="In the last level you set up the database and ran basic reads. Now you\'ll master SELECT — the clause that names which columns to return, combined with filtering and sorting."
+      prevLevelContext="In the last level you set up the database and ran basic reads. Now you'll master SELECT — the clause that names which columns to return, combined with filtering and sorting."
       cumulativeSkills={[
         "Set up the hospital analytics database and ran first SELECT queries",
         "Written SELECT, FROM, WHERE, ORDER BY, LIMIT, DISTINCT, and LIKE queries",

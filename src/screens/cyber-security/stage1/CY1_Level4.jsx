@@ -76,8 +76,8 @@ export default function CY1_Level4() {
   const [found, setFound] = useState(new Set());
 
   return (
-    <CY1Shell levelId={4} canProceed={found.size
-      prevLevelContext="In the last level you studied attacks that target people. Now you\'ll harden the authentication layer — the gate every attacker tries to bypass first."
+    <CY1Shell levelId={4} canProceed={found.size >= BUGS.length}
+      prevLevelContext="In the last level you studied attacks that target people. Now you'll harden the authentication layer — the gate every attacker tries to bypass first."
       cumulativeSkills={[
         "Applied the CIA triad to evaluate a hospital system's security posture",
         "Built a STRIDE threat model identifying spoofing, tampering, and escalation risks",
@@ -85,7 +85,7 @@ export default function CY1_Level4() {
         "Identified social engineering attacks targeting hospital staff",
         "Designed an authentication system resistant to credential stuffing and brute force",
       ]}
-    >= BUGS.length}
+
       conceptReveal={[
         { label:'OWASP Top 10', detail:'The Open Web Application Security Project publishes the 10 most critical web security risks. SQL injection, broken authentication, and security misconfiguration are perennial top entries. Every developer should know OWASP Top 10 — it covers the vulnerabilities that cause 90% of real breaches.' },
       ]}

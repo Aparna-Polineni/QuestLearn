@@ -79,7 +79,7 @@ export default function DE2_Level7() {
         { label: 'NULL is Unknown Not Zero', detail: 'NULL means no value — not zero, not empty string. NULL = NULL is UNKNOWN in SQL. Always use IS NULL or IS NOT NULL. COALESCE(ward_id, 0) safely replaces NULL with a default.' },
         { label: 'Never Use FLOAT for Money', detail: 'FLOAT stores approximations: 0.1 + 0.2 = 0.30000000000000004. Always use DECIMAL(10,2) for currency — it stores exact values. A rounding error of 0.01 on 10 million transactions is 100,000 in accounting discrepancy.' },
       ]}
-      prevLevelContext="In the last level you fixed queries that lied quietly. Now you\'ll make them fast — reading EXPLAIN output, understanding index usage, and rewriting a query that scans a million rows unnecessarily."
+      prevLevelContext="In the last level you fixed queries that lied quietly. Now you'll make them fast — reading EXPLAIN output, understanding index usage, and rewriting a query that scans a million rows unnecessarily."
       cumulativeSkills={[
         "Set up the hospital analytics database and ran first SELECT queries",
         "Written SELECT, FROM, WHERE, ORDER BY, LIMIT, DISTINCT, and LIKE queries",

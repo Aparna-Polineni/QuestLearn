@@ -73,7 +73,7 @@ export default function ML2_Level3() {
         { label:'groupby is Lazy', detail:'df.groupby("ward_id") creates a GroupBy object — nothing is computed yet. The aggregation (.mean(), .sum(), .agg()) triggers execution. This allows efficient chaining. Always reset_index() after groupby to flatten the multi-level index into regular columns.' },
         { label:'merge vs join', detail:'df.merge(other, on="ward_id", how="left") is like SQL LEFT JOIN. how="inner" drops unmatched rows. how="outer" keeps all rows. The on parameter specifies the join key. Use suffixes=("_x","_y") when both DataFrames have columns with the same name.' },
       ]}
-      prevLevelContext="In the last level you inspected the raw patient data. Now you\'ll clean it — fix missing values, wrong types, and duplicate rows — so it is safe to train a model on."
+      prevLevelContext="In the last level you inspected the raw patient data. Now you'll clean it — fix missing values, wrong types, and duplicate rows — so it is safe to train a model on."
       cumulativeSkills={[
         "Set up the Python ML environment and ran first NumPy array operations",
         "Implemented vectorised operations: dot products, broadcasting, array slicing",

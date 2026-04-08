@@ -70,7 +70,7 @@ export default function ML1_Level2() {
         { label:'Supervised is 80% of Industry ML', detail:'Most real business ML is supervised: churn prediction, demand forecasting, credit scoring, image classification. Reinforcement learning makes headlines but supervised learning makes money.' },
         { label:'Feature Engineering', detail:'The quality of your features determines model quality more than the algorithm. Transforming raw data (log of income, age buckets, day of week) often matters more than choosing XGBoost vs Random Forest. This is covered in Stage 2.' },
       ]}
-      prevLevelContext="In the last level you mapped the full ML workflow. Now you\'ll use the first two steps — problem framing — to convert real business problems into supervised learning tasks."
+      prevLevelContext="In the last level you mapped the full ML workflow. Now you'll use the first two steps — problem framing — to convert real business problems into supervised learning tasks."
       cumulativeSkills={[
         "Explained what ML is and the three problem types it solves",
         "Mapped the 8-step ML workflow from problem definition to production deployment",

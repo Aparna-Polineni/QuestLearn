@@ -16,11 +16,11 @@ export default function UX1_Level0() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <UX1Shell levelId={0} canProceed={seen.size
+    <UX1Shell levelId={0} canProceed={seen.size >= CARDS.length}
       cumulativeSkills={[
         "Defined UX vs UI and mapped the five phases of Design Thinking",
       ]}
-    >= CARDS.length}>
+    >
       <div className="ux1-intro">
         <h1>What is Design Thinking?</h1>
         <p className="ux1-tagline">🎨 Start with people. End with products they love.</p>

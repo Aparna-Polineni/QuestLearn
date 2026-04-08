@@ -73,7 +73,7 @@ export default function CY1_Level2() {
         { label:'Threat Modelling Before Building', detail:'Teams that threat model during design find security issues at 1/10th the cost of finding them in production. The question "what could an attacker do with this feature?" should be asked at every design review. It takes 30 minutes and saves weeks of incident response.' },
         { label:'STRIDE in Practice', detail:'For every component in your system, apply STRIDE. Login page: Spoofing (brute force), Information Disclosure (error messages leak usernames). API: Tampering (modify request body), Elevation of privilege (access other users\' data). STRIDE is a checklist, not a framework you need to memorise perfectly.' },
       ]}
-      prevLevelContext="In the last level you categorised threats. Now you\'ll map attack surfaces — every door, window, and vent an attacker could enter through the hospital booking system."
+      prevLevelContext="In the last level you categorised threats. Now you'll map attack surfaces — every door, window, and vent an attacker could enter through the hospital booking system."
       cumulativeSkills={[
         "Applied the CIA triad to evaluate a hospital system's security posture",
         "Built a STRIDE threat model identifying spoofing, tampering, and escalation risks",

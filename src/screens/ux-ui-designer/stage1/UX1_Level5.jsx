@@ -74,7 +74,7 @@ export default function UX1_Level5() {
         { label:'The Hardest Part: Staying Silent', detail:'When a user is confused, every instinct says to help them. Don\'t. Say "What would you do next?" or stay silent. Their confusion is data. The moment you help, you lose the insight. The facilitator\'s job is to observe, not to teach.' },
         { label:'Severity Rating', detail:'Not all usability issues are equal. Critical: blocks task completion. Major: causes significant difficulty. Minor: frustrating but manageable. Cosmetic: users notice but easily adapt. Fix Critical and Major issues before the next test. Cosmetic issues go in the backlog.' },
       ]}
-      prevLevelContext="In the last level you organised the navigation. Now you\'ll make it readable — applying visual hierarchy so the most important information catches the eye immediately."
+      prevLevelContext="In the last level you organised the navigation. Now you'll make it readable — applying visual hierarchy so the most important information catches the eye immediately."
       cumulativeSkills={[
         "Defined UX vs UI and mapped the five phases of Design Thinking",
         "Applied Design Thinking: empathised and defined the booking problem",

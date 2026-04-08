@@ -73,7 +73,7 @@ export default function ML1_Level4() {
         { label:'Data Leakage is Career-Ending', detail:'A model that achieves 99.9% accuracy on validation but 60% in production is almost always a data leakage bug. Including a feature that contains future information causes the model to "cheat". Always ask: is this feature available at prediction time, before the label is known?' },
         { label:'Imbalanced Classes', detail:'With 1% fraud: a model predicting "never fraud" gets 99% accuracy. This is useless. Use precision/recall/F1 instead of accuracy. Use class_weight="balanced" or SMOTE. Always check the class distribution before training.' },
       ]}
-      prevLevelContext="In the last level you defined what data to collect. Now you\'ll choose which model family is right for the job — and understand why the choice matters before you see a single line of training code."
+      prevLevelContext="In the last level you defined what data to collect. Now you'll choose which model family is right for the job — and understand why the choice matters before you see a single line of training code."
       cumulativeSkills={[
         "Explained what ML is and the three problem types it solves",
         "Mapped the 8-step ML workflow from problem definition to production deployment",

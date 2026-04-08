@@ -68,7 +68,7 @@ export default function DE2_Level5() {
         { label:'Window Functions Don\'t Collapse Rows', detail:'GROUP BY collapses many rows into one. Window functions keep all rows and add a new calculated column. ROW_NUMBER() OVER (PARTITION BY ward_id ORDER BY fee DESC) ranks patients within each ward while keeping every patient row visible.' },
         { label:'LAG and LEAD for Time-Series', detail:'LAG(fee, 1) gives you the previous row\'s fee. LEAD(fee, 1) gives you the next row\'s fee. Combined: fee - LAG(fee) gives you day-over-day change. This pattern appears in virtually every time-series dashboard — growth rates, churn, retention.' },
       ]}
-      prevLevelContext="In the last level you fixed NULL handling. Now you\'ll write subqueries and CTEs — structuring complex questions as readable steps rather than nested SQL tangles."
+      prevLevelContext="In the last level you fixed NULL handling. Now you'll write subqueries and CTEs — structuring complex questions as readable steps rather than nested SQL tangles."
       cumulativeSkills={[
         "Set up the hospital analytics database and ran first SELECT queries",
         "Written SELECT, FROM, WHERE, ORDER BY, LIMIT, DISTINCT, and LIKE queries",

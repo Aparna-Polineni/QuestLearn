@@ -75,7 +75,7 @@ export default function UX1_Level1() {
         { label:'5 Whys', detail:'"Why is checkout abandonment high?" → "Users can\'t find the promo code field." → "Why?" → "It\'s below the fold." → "Why?" → "We added upsells above it." → "Why?" → "Marketing A/B tested it." The 5 Whys reveal root causes, not symptoms. Always go deeper than the first answer.' },
         { label:'Users Lie (Not Intentionally)', detail:'What users say in interviews often differs from what they do. They want to seem positive, they forget, they tell you what they think you want to hear. Observation reveals truth. "I always check prices first" vs watching them immediately click "Add to Cart".' },
       ]}
-      prevLevelContext="In the last level you learned the Design Thinking framework. Now you\'ll apply it — specifically the Empathise and Define phases — to a real broken booking form."
+      prevLevelContext="In the last level you learned the Design Thinking framework. Now you'll apply it — specifically the Empathise and Define phases — to a real broken booking form."
       cumulativeSkills={[
         "Defined UX vs UI and mapped the five phases of Design Thinking",
         "Applied Design Thinking to the hospital booking problem: empathised, defined the problem statement",

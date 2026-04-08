@@ -75,7 +75,7 @@ export default function UX1_Level2() {
         { label:'HMW Questions', detail:'"How Might We" questions open the door to ideation without prescribing solutions. "HMW reduce login time" is too narrow. "HMW make authentication feel invisible" opens up facial recognition, badge tap, pre-auth. The right HMW question unlocks a hundred solutions.' },
         { label:'Define Success Before Ideating', detail:'If you don\'t define what success looks like before designing, you can\'t evaluate solutions objectively. "Faster" is not a metric. "Login time < 3 seconds for 95th percentile users" is. Define your success metric before the first sketch.' },
       ]}
-      prevLevelContext="In the last level you defined the problem. Now you\'ll go deeper into the Empathise phase — writing an interview guide and synthesising findings into a patient persona."
+      prevLevelContext="In the last level you defined the problem. Now you'll go deeper into the Empathise phase — writing an interview guide and synthesising findings into a patient persona."
       cumulativeSkills={[
         "Defined UX vs UI and mapped the five phases of Design Thinking",
         "Applied Design Thinking: empathised and defined the booking problem",

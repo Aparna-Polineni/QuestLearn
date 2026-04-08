@@ -16,8 +16,8 @@ export default function ML1_Level6() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <ML1Shell levelId={6} canProceed={seen.size
-      prevLevelContext="In the last level you defined how to measure success. Now you\'ll see what failure looks like — overfitting, underfitting, and data leakage — in three real model output scenarios."
+    <ML1Shell levelId={6} canProceed={seen.size >= CARDS.length}
+      prevLevelContext="In the last level you defined how to measure success. Now you'll see what failure looks like — overfitting, underfitting, and data leakage — in three real model output scenarios."
       cumulativeSkills={[
         "Explained what ML is and the three problem types it solves",
         "Mapped the 8-step ML workflow from problem definition to production deployment",
@@ -27,7 +27,7 @@ export default function ML1_Level6() {
         "Chose the right evaluation metric for each clinical scenario",
         "Diagnosed overfitting, underfitting, and data leakage from model outputs alone",
       ]}
-    >= CARDS.length}>
+    >
       <div className="ml1-intro">
         <h1>ML in Production</h1>
         <p className="ml1-tagline">🚀 Training a model is 10% of the work. Running it reliably is 90%.</p>
