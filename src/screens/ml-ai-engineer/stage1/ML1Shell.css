@@ -1,45 +1,208 @@
 .ml1-shell { display:flex; flex-direction:column; min-height:100vh; background:#0f172a; color:#e2e8f0; font-family:'Inter',sans-serif; }
-.ml1-topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 24px; background:#1e293b; border-bottom:1px solid #334155; }
+.ml1-topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 24px; background:#1e293b; border-bottom:1px solid #334155; border-top:2px solid var(--path-color); }
 .ml1-back { background:none; border:1px solid #475569; color:#94a3b8; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; transition:all .2s; }
-.ml1-back:hover { border-color:#8b5cf6; color:#8b5cf6; }
+.ml1-back:hover { border-color:var(--path-color); color:var(--path-color); }
 .ml1-breadcrumb { display:flex; align-items:center; gap:8px; font-size:14px; }
 .ml1-path { font-weight:700; font-size:15px; }
 .ml1-sep { color:#475569; }
 .ml1-stage,.ml1-title { color:#94a3b8; }
 .ml1-title { color:#e2e8f0; font-weight:500; }
-.ml1-mode { padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.5px; }
-.mode-concepts { background:#1e3a5f; color:#60a5fa; }
-.mode-fill     { background:#14532d; color:#4ade80; }
-.mode-build    { background:#3b0764; color:#c084fc; }
-.mode-debug    { background:#450a0a; color:#f87171; }
+.ml1-mode { padding:5px 14px; border-radius:6px; font-size:12px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; }
+.mode-concepts { background:#1e3a5f; color:#60a5fa; border:1px solid #3b82f680; font-size:12px; }
+.mode-fill     { background:#14532d; color:#4ade80; border:1px solid #4ade8060; font-size:12px; }
+.mode-build    { background:#3b0764; color:#c084fc; border:1px solid #c084fc60; font-size:12px; }
+.mode-debug    { background:#450a0a; color:#f87171; border:1px solid #f8717160; font-size:12px; }
 .ml1-content { flex:1; padding:32px 24px; max-width:900px; margin:0 auto; width:100%; box-sizing:border-box; }
 .ml1-footer { padding:16px 24px; background:#1e293b; border-top:1px solid #334155; display:flex; justify-content:flex-end; }
 .ml1-btn { padding:12px 32px; border:none; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:all .2s; }
 .ml1-btn:disabled { opacity:.45; cursor:not-allowed; }
 .ml1-btn:not(:disabled):hover { filter:brightness(1.1); transform:translateY(-1px); }
 /* Shared content styles */
-.ml1-intro h1 { font-size:22px; font-weight:700; color:#e2e8f0; margin:0 0 8px; }
-.ml1-tagline { color:#8b5cf6; font-size:14px; font-weight:600; margin:0 0 10px; }
-.ml1-why { color:#94a3b8; font-size:14px; line-height:1.6; margin:0 0 24px; }
+.ml1-intro h1 { font-size:26px; font-weight:700; color:#e2e8f0; margin:0 0 8px; }
+.ml1-tagline { color:var(--path-color); font-size:15px; font-weight:600; letter-spacing:-0.1px; margin:0 0 10px; }
+.ml1-why { color:#94a3b8; font-size:16px; line-height:1.8; margin:0 0 24px; }
 .ml1-cards { display:grid; gap:12px; margin:20px 0; }
 .ml1-card { background:#1e293b; border:1px solid #334155; border-radius:10px; padding:16px 20px; cursor:pointer; border-left:3px solid #334155; transition:all .2s; }
-.ml1-card:hover,.ml1-card.seen { border-left-color:#8b5cf6; }
+.ml1-card:hover,.ml1-card.seen { border-left-color:var(--path-color); }
 .ml1-card-top { display:flex; justify-content:space-between; align-items:center; }
 .ml1-card-title { font-size:15px; font-weight:600; color:#e2e8f0; }
 .ml1-card-body { color:#94a3b8; font-size:14px; line-height:1.6; margin:10px 0 0; }
 .ml1-table { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
-.ml1-table th { background:#0f172a; color:#8b5cf6; padding:8px 12px; text-align:left; border-bottom:2px solid #334155; }
+.ml1-table th { background:#0f172a; color:var(--path-color); padding:8px 12px; text-align:left; border-bottom:2px solid #334155; }
 .ml1-table td { padding:8px 12px; border-bottom:1px solid #1e293b; color:#cbd5e1; }
 .ml1-panel { background:#1e293b; border:1px solid #334155; border-radius:10px; margin:16px 0; overflow:hidden; }
 .ml1-panel-hdr { background:#0f172a; padding:10px 16px; font-size:12px; font-weight:700; color:#64748b; letter-spacing:1px; border-bottom:1px solid #334155; }
 .ml1-panel-body { padding:16px; font-family:'Fira Code',monospace; font-size:13px; line-height:1.8; }
-.ml1-blank { display:inline-block; background:#0f172a; border:1.5px dashed #8b5cf6; border-radius:4px; min-width:90px; padding:1px 6px; margin:0 2px; font-family:'Fira Code',monospace; color:#e2e8f0; font-size:13px; outline:none; transition:border-color .2s; vertical-align:middle; }
+.ml1-blank { display:inline-block; background:#0f172a; border:1.5px dashed var(--path-color); border-radius:4px; min-width:90px; padding:1px 6px; margin:0 2px; font-family:'Fira Code',monospace; color:#e2e8f0; font-size:13px; outline:none; transition:border-color .2s; vertical-align:middle; }
 .ml1-blank.correct { border-color:#4ade80; border-style:solid; color:#4ade80; }
 .ml1-blank.incorrect { border-color:#f87171; border-style:solid; }
-.ml1-check-btn { background:#8b5cf6; color:#0f172a; border:none; padding:10px 24px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; margin-top:12px; transition:all .2s; }
+.ml1-check-btn { background:var(--path-color); color:#0f172a; border:none; padding:10px 24px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; margin-top:12px; transition:all .2s; }
 .ml1-feedback { padding:12px 16px; border-radius:8px; margin:14px 0; font-size:14px; font-weight:500; }
 .ml1-feedback.success { background:#14532d40; border:1px solid #4ade8060; color:#4ade80; }
 .ml1-feedback.error   { background:#450a0a40; border:1px solid #f8717160; color:#f87171; }
 .ml1-editor { width:100%; min-height:280px; background:#0f172a; color:#e2e8f0; border:1px solid #334155; border-radius:8px; padding:16px; font-family:'Fira Code',monospace; font-size:13px; line-height:1.7; resize:vertical; outline:none; box-sizing:border-box; }
 .ml1-req { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid #1e293b; }
 .ml1-req:last-child { border-bottom:none; }
+
+/* ═══════════════════════════════════════════════════════════════
+   VISUAL IDENTITY UPGRADE — Area 5
+   Path colour bleeds through. Typography hierarchy enforced.
+   Mode badges unmissable.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Mode badges — impossible to miss ──────────────────────────
+   Larger pill, stronger contrast, left-border accent strip      */
+.mode-concepts,
+.mode-fill,
+.mode-build,
+.mode-debug {
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mode-concepts {
+  background: rgba(96, 165, 250, 0.15);
+  color: #93c5fd;
+  border: 1.5px solid rgba(96, 165, 250, 0.4);
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.15);
+}
+.mode-fill {
+  background: rgba(74, 222, 128, 0.12);
+  color: #86efac;
+  border: 1.5px solid rgba(74, 222, 128, 0.4);
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.12);
+}
+.mode-build {
+  background: rgba(192, 132, 252, 0.12);
+  color: #d8b4fe;
+  border: 1.5px solid rgba(192, 132, 252, 0.4);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.12);
+}
+.mode-debug {
+  background: rgba(248, 113, 113, 0.12);
+  color: #fca5a5;
+  border: 1.5px solid rgba(248, 113, 113, 0.4);
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.12);
+}
+
+/* ── Typography hierarchy ───────────────────────────────────────
+   Instructional content (scenario + task) vs chrome (buttons)  */
+
+/* Level title — larger, bolder */
+[class$="-intro"] h1,
+[class*="-intro"] h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin: 0 0 10px;
+}
+
+/* Tagline — path colour, generous size */
+[class$="-tagline"],
+[class*="-tagline"] {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--path-color);
+  margin: 0 0 14px;
+}
+
+/* "Why this matters" instructional body — largest body text, most line-height */
+[class$="-why"],
+[class*="-why"] {
+  font-size: 17px;
+  line-height: 1.9;
+  color: #94a3b8;
+  margin: 0 0 28px;
+  max-width: 720px;
+}
+
+/* Card body text — readable, comfortable */
+[class$="-card-body"],
+[class*="-card-body"] {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #94a3b8;
+}
+
+/* ── Path colour touch-points ────────────────────────────────── */
+
+/* Progress bar fill — path colour */
+[class$="-progress-fill"],
+[class*="-progress-fill"] {
+  background: var(--path-color) !important;
+}
+
+/* Table headers — path colour */
+[class$="-table"] th,
+[class*="-table"] th {
+  color: var(--path-color);
+  border-bottom-color: var(--path-color) !important;
+  opacity: 0.9;
+}
+
+/* Correct answer highlight — keep green but also use path colour for glow */
+[class$="-blank"].correct,
+[class*="-blank"].correct {
+  border-color: #4ade80;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+}
+
+/* Check button — path colour with dark text for legibility */
+[class$="-check-btn"],
+[class*="-check-btn"] {
+  background: var(--path-color);
+  color: #0f172a;
+  font-weight: 800;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+[class$="-check-btn"]:hover,
+[class*="-check-btn"]:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--path-color) 40%, transparent);
+}
+
+/* Panel header accent — path colour bar on left */
+[class$="-panel-hdr"],
+[class*="-panel-hdr"] {
+  border-left: 3px solid var(--path-color);
+  color: #64748b;
+}
+
+/* Topbar border top — already set but ensure it applies */
+[class$="-topbar"],
+[class*="-topbar"] {
+  border-top: 3px solid var(--path-color);
+}
+
+/* Footer continue button — already inline but reinforce */
+[class$="-btn"]:not([class*="back"]):not(:disabled),
+[class*="-btn"]:not([class*="back"]):not(:disabled) {
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--path-color) 25%, transparent);
+}
+
+/* ── Mode badge icons via ::before ─────────────────────────────
+   Each mode gets a unique icon so users identify mode at a glance
+   even before reading the text.                                  */
+.mode-concepts::before { content: '📖 '; }
+.mode-fill::before     { content: '✏️ '; }
+.mode-build::before    { content: '🔨 '; }
+.mode-debug::before    { content: '🐛 '; }
+
+/* Make badges slightly larger so they read from peripheral vision */
+.mode-concepts,
+.mode-fill,
+.mode-build,
+.mode-debug {
+  font-size: 12px;
+  padding: 6px 14px 6px 10px;
+  border-radius: 8px;
+}

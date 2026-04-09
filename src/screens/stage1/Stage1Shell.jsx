@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import RoadmapSidebar from '../../components/RoadmapSidebar';
 import SaveProgressModal from '../../components/SaveProgressModal';
 import './Stage1Shell.css';
+import '../../styles/level-identity.css';
 
 const LEVELS = [
   { id: 1, title: "The Problem Statement", icon: "📋" },
@@ -50,7 +51,7 @@ function Stage1Shell({ children, levelId, canProceed, onComplete, conceptUnlocke
 
   return (
     <>
-    <div className="s1-shell">
+    <div className="s1-shell" style={{ '--path-color': '#f97316' }}>
 
       {/* Top HUD */}
       <div className="s1-hud">

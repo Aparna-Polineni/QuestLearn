@@ -7,6 +7,7 @@ import { ConceptReveal } from '../../../components/LevelSupport';
 import SaveProgressModal from '../../../components/SaveProgressModal';
 import StageCelebration from '../../../components/StageCelebration';
 import './UX1Shell.css';
+import '../../../styles/level-identity.css';
 
 const LEVEL_TITLES = {
   0: 'What is Design Thinking?',
@@ -53,7 +54,7 @@ export default function UX1Shell({ levelId, canProceed, conceptReveal, children,
   const title = LEVEL_TITLES[levelId] || `Level 1.${levelId}`;
 
   return (
-    <div className="ux1-shell">
+    <div className="ux1-shell" style={{ '--path-color': STAGE_COLOR }}>
       <div className="ux1-topbar">
         <button className="ux1-back" onClick={() => navigate(user ? '/roadmap' : '/')}>
           {user ? '← Roadmap' : '← Back'}

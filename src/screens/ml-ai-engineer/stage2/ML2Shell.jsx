@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../../context/GameContext';
 import { ConceptReveal } from '../../../components/LevelSupport';
 import './ML2Shell.css';
+import '../../../styles/level-identity.css';
 
 const LEVEL_TITLES = {
   0:'Python for ML — Overview', 1:'NumPy Arrays & Vectorisation',
@@ -28,7 +29,7 @@ export default function ML2Shell({ levelId, canProceed, conceptReveal, children 
   }
 
   return (
-    <div className="ml2-shell">
+    <div className="ml2-shell" style={{ '--path-color': STAGE_COLOR }}>
       <div className="ml2-topbar">
         <button className="ml2-back" onClick={() => navigate('/roadmap')}>← Roadmap</button>
         <div className="ml2-breadcrumb">

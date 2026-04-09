@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../../context/GameContext';
 import { ConceptReveal } from '../../../components/LevelSupport';
 import './CY2Shell.css';
+import '../../../styles/level-identity.css';
 
 const LEVEL_TITLES = {
   0:'Linux & Networking — Overview', 1:'Navigation & File System',
@@ -29,7 +30,7 @@ export default function CY2Shell({ levelId, canProceed, conceptReveal, children 
   }
 
   return (
-    <div className="cy2-shell">
+    <div className="cy2-shell" style={{ '--path-color': STAGE_COLOR }}>
       <div className="cy2-topbar">
         <button className="cy2-back" onClick={() => navigate('/roadmap')}>← Roadmap</button>
         <div className="cy2-breadcrumb">

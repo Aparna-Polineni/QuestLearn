@@ -1,0 +1,257 @@
+/* src/styles/level-identity.css
+   ─────────────────────────────────────────────────────────────────────────
+   VISUAL IDENTITY SYSTEM — imported by every level shell
+   Three rules, applied universally:
+
+   1. Path colour bleeds through the entire level experience
+   2. Instructional text is larger + more line-height than chrome text
+   3. Mode badges are impossible to miss
+   ─────────────────────────────────────────────────────────────────────────
+
+   Every shell sets  --path-color  on its root div. All rules below
+   consume that variable so the colour is derived from the path automatically.
+   ─────────────────────────────────────────────────────────────────────────  */
+
+/* ══════════════════════════════════════════════════════════════
+   1. PATH COLOUR TOUCHPOINTS
+   ══════════════════════════════════════════════════════════════ */
+
+/* Top bar accent stripe */
+[class$="-topbar"],
+[class*="-topbar"] {
+  border-top: 3px solid var(--path-color) !important;
+}
+
+/* Breadcrumb path name */
+[class$="-path"],
+[class*="-path-name"] {
+  color: var(--path-color) !important;
+}
+
+/* Back button hover */
+[class$="-back"]:hover,
+[class*="-back-btn"]:hover {
+  border-color: var(--path-color) !important;
+  color:        var(--path-color) !important;
+}
+
+/* Fill blanks — dashed border in path colour */
+[class$="-blank"],
+[class*="-blank"] {
+  border-color: var(--path-color) !important;
+}
+
+/* Correct blank — green with path-colour glow */
+[class$="-blank"].correct,
+[class*="-blank"].correct {
+  border-color: #4ade80 !important;
+  color:        #4ade80 !important;
+  box-shadow:   0 0 10px rgba(74,222,128,.25);
+}
+
+/* Check / submit button */
+[class$="-check-btn"],
+[class*="-check-btn"],
+[class$="-check-button"],
+[class*="-check-button"] {
+  background:  var(--path-color) !important;
+  color:       #0a0f1e !important;
+  font-weight: 800 !important;
+  transition:  all .2s;
+}
+[class$="-check-btn"]:hover,
+[class*="-check-btn"]:hover {
+  filter:    brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px color-mix(in srgb, var(--path-color) 40%, transparent);
+}
+
+/* Table headers */
+[class$="-table"] th,
+[class*="-table"] th {
+  color:             var(--path-color) !important;
+  border-bottom-color: var(--path-color) !important;
+}
+
+/* Panel left-border accent */
+[class$="-panel-hdr"],
+[class*="-panel-hdr"] {
+  border-left: 3px solid var(--path-color) !important;
+}
+
+/* Progress bars */
+[class$="-progress-fill"],
+[class*="-progress-fill"] {
+  background: var(--path-color) !important;
+}
+
+/* Cards — hover & seen state */
+[class$="-card"]:hover,
+[class*="-card"]:hover,
+[class$="-card"].seen,
+[class*="-card"].seen {
+  border-left-color: var(--path-color) !important;
+}
+
+/* Tagline — always in path colour */
+[class$="-tagline"],
+[class*="-tagline"] {
+  color: var(--path-color) !important;
+}
+
+/* Continue / next button — path colour glow */
+[class$="-btn"]:not([class*="back"]):not(:disabled),
+[class*="-btn"]:not([class*="back"]):not(:disabled) {
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--path-color) 20%, transparent);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   2. TYPOGRAPHY HIERARCHY
+   Content to read vs chrome to use — two distinct sizes
+   ══════════════════════════════════════════════════════════════ */
+
+/* Level title — large, confident */
+[class$="-intro"] h1,
+[class*="-intro"] h1,
+.level-title {
+  font-size:    clamp(22px, 3vw, 30px);
+  font-weight:  800;
+  color:        #f1f5f9;
+  letter-spacing: -0.5px;
+  line-height:  1.2;
+  margin:       0 0 10px;
+}
+
+/* Tagline — path accent, medium weight */
+[class$="-tagline"],
+[class*="-tagline"] {
+  font-size:   16px !important;
+  font-weight: 600;
+  line-height: 1.5;
+  margin:      0 0 14px;
+}
+
+/* "Why this matters" body — the most instructional text, largest size */
+[class$="-why"],
+[class*="-why"],
+.level-why {
+  font-size:   17px !important;
+  line-height: 1.9  !important;
+  color:       #94a3b8;
+  margin:      0 0 28px;
+  max-width:   680px;
+}
+
+/* Card body — comfortable reading */
+[class$="-card-body"],
+[class*="-card-body"] {
+  font-size:   15px;
+  line-height: 1.75;
+  color:       #94a3b8;
+}
+
+/* Code panels — mono, slightly smaller, high line-height */
+[class$="-panel-body"] pre,
+[class*="-panel-body"] pre,
+[class$="-panel-body"],
+[class*="-panel-body"] {
+  font-family: 'Fira Code', 'DM Mono', 'Courier New', monospace;
+  font-size:   13px;
+  line-height: 1.8;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   3. MODE BADGES — impossible to miss
+   Each mode has: unique colour, unique icon, strong contrast
+   ══════════════════════════════════════════════════════════════ */
+
+/* Shared badge reset — applied before individual overrides */
+.mode-concepts,
+.mode-fill,
+.mode-build,
+.mode-debug {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            6px;
+  padding:        6px 14px;
+  border-radius:  7px;
+  font-size:      11px;
+  font-weight:    900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space:    nowrap;
+  transition:     box-shadow .2s;
+}
+
+/* CONCEPTS — blue, book icon */
+.mode-concepts {
+  background: rgba(96,165,250,.14);
+  color:      #93c5fd;
+  border:     1.5px solid rgba(96,165,250,.45);
+  box-shadow: 0 0 14px rgba(96,165,250,.12);
+}
+.mode-concepts::before {
+  content: '📖';
+  font-size: 13px;
+}
+
+/* FILL — green, pencil icon */
+.mode-fill {
+  background: rgba(74,222,128,.12);
+  color:      #86efac;
+  border:     1.5px solid rgba(74,222,128,.45);
+  box-shadow: 0 0 14px rgba(74,222,128,.10);
+}
+.mode-fill::before {
+  content: '✏️';
+  font-size: 13px;
+}
+
+/* BUILD — purple, hammer icon */
+.mode-build {
+  background: rgba(192,132,252,.12);
+  color:      #d8b4fe;
+  border:     1.5px solid rgba(192,132,252,.45);
+  box-shadow: 0 0 14px rgba(192,132,252,.10);
+}
+.mode-build::before {
+  content: '🔨';
+  font-size: 13px;
+}
+
+/* DEBUG — red, bug icon */
+.mode-debug {
+  background: rgba(248,113,113,.12);
+  color:      #fca5a5;
+  border:     1.5px solid rgba(248,113,113,.45);
+  box-shadow: 0 0 14px rgba(248,113,113,.10);
+}
+.mode-debug::before {
+  content: '🐛';
+  font-size: 13px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4. LEVEL THREAD BANNER  (Area 4 continuity integration)
+   ══════════════════════════════════════════════════════════════ */
+
+.level-thread {
+  display:      flex;
+  align-items:  flex-start;
+  gap:          10px;
+  background:   rgba(var(--path-color-rgb, 99,102,241), .05);
+  border-left:  3px solid color-mix(in srgb, var(--path-color) 50%, transparent);
+  border-radius: 0 8px 8px 0;
+  padding:      11px 16px;
+  margin:       0 0 20px;
+  font-size:    13px;
+  color:        #64748b;
+  line-height:  1.65;
+  font-style:   italic;
+}
+.level-thread-icon {
+  font-style:  normal;
+  flex-shrink: 0;
+  opacity:     .5;
+  margin-top:  1px;
+}

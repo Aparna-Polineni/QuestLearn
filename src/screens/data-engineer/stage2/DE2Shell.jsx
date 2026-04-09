@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../../context/GameContext';
 import { ConceptReveal } from '../../../components/LevelSupport';
 import './DE2Shell.css';
+import '../../../styles/level-identity.css';
 
 const LEVEL_TITLES = {
   0:'SQL & Databases — Overview', 1:'SELECT, WHERE, ORDER BY',
@@ -32,7 +33,7 @@ export default function DE2Shell({ levelId, canProceed, conceptReveal, children 
   }
 
   return (
-    <div className="de2-shell">
+    <div className="de2-shell" style={{ '--path-color': STAGE_COLOR }}>
       <div className="de2-topbar">
         <button className="de2-back" onClick={() => navigate('/roadmap')}>← Roadmap</button>
         <div className="de2-breadcrumb">

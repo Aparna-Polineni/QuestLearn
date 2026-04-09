@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../../context/GameContext';
 import { ConceptReveal } from '../../../components/LevelSupport';
 import './UX2Shell.css';
+import '../../../styles/level-identity.css';
 
 const LEVEL_TITLES = {
   0:'Figma Foundations — Overview', 1:'Frames, Groups & Layers',
@@ -27,7 +28,7 @@ export default function UX2Shell({ levelId, canProceed, conceptReveal, children 
   }
 
   return (
-    <div className="ux2-shell">
+    <div className="ux2-shell" style={{ '--path-color': STAGE_COLOR }}>
       <div className="ux2-topbar">
         <button className="ux2-back" onClick={() => navigate('/roadmap')}>← Roadmap</button>
         <div className="ux2-breadcrumb">

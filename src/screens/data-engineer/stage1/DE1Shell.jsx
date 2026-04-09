@@ -7,6 +7,7 @@ import { ConceptReveal } from '../../../components/LevelSupport';
 import SaveProgressModal from '../../../components/SaveProgressModal';
 import StageCelebration from '../../../components/StageCelebration';
 import './DE1Shell.css';
+import '../../../styles/level-identity.css';
 
 const LEVEL_TITLES = {
   0: 'What is Data Engineering?',
@@ -22,7 +23,7 @@ const LEVEL_MODES  = { 0:'CONCEPTS', 1:'DEBUG', 2:'FILL', 3:'FILL', 4:'FILL', 5:
 const STAGE_COLOR  = '#06b6d4';
 const PATH_ID      = 'data-engineer';
 
-export default function DE1Shell({ levelId, canProceed, conceptReveal, children }) {
+export default function DE1Shell({ levelId, canProceed, conceptReveal, children, prevLevelContext, cumulativeSkills }) {
   const navigate = useNavigate();
   const { completeLevel } = useGame();
   const { user } = useAuth();
@@ -55,7 +56,7 @@ export default function DE1Shell({ levelId, canProceed, conceptReveal, children 
   const title = LEVEL_TITLES[levelId] || `Level 1.${levelId}`;
 
   return (
-    <div className="de1-shell">
+    <div className="de1-shell" style={{ '--path-color': STAGE_COLOR }}>
       <div className="de1-topbar">
         <button className="de1-back" onClick={() => navigate(user ? '/roadmap' : '/')}>
           {user ? '← Roadmap' : '← Back'}
@@ -70,8 +71,15 @@ export default function DE1Shell({ levelId, canProceed, conceptReveal, children 
         <div className={`de1-mode mode-${mode.toLowerCase()}`}>{mode}</div>
       </div>
 
+      {/* Thread — one sentence connecting this level to the previous one */}
+      {prevLevelContext && (
+        <div className="level-thread">
+          <span className="level-thread-icon">↩</span>
+          <span>{prevLevelContext}</span>
+        </div>
+      )}
       <div className="de1-content">{children}</div>
-      {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} />}
+      {conceptReveal && <ConceptReveal items={conceptReveal} stageColor={STAGE_COLOR} cumulativeSkills={cumulativeSkills} />}
 
       <div className="de1-footer">
         <button
