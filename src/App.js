@@ -1,5 +1,6 @@
 // src/App.js
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import ConnectionBanner from './components/ConnectionBanner';
 import { GameProvider } from './context/GameContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -541,6 +542,7 @@ export default function App() {
     <AuthProvider>
       <GameProvider>
         <BrowserRouter>
+        <ConnectionBanner />
           <AppRoutes />
         </BrowserRouter>
       </GameProvider>

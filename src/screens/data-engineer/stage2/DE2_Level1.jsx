@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import DE2Shell from './DE2Shell';
 import { DiagnosticFeedback } from '../../../components/LevelSupport';
+import useDraftAnswers from '../../../hooks/useDraftAnswers';
 
 const BLANKS = [
   {
@@ -104,7 +105,8 @@ const LINES = [
 ];
 
 export default function DE2_Level1() {
-  const [vals, setVals]       = useState({});
+  // useDraftAnswers persists typed answers across page refresh (Area 7)
+  const [vals, setVals, clearDraft] = useDraftAnswers('de-2-1', {});
   const [checked, setChecked] = useState(false);
   const [correct, setCorrect] = useState({});
   const [wrongAttempts, setWrongAttempts] = useState(0);
@@ -117,7 +119,11 @@ export default function DE2_Level1() {
     setCorrect(r);
     setChecked(true);
     const allRight = BLANKS.every(b => r[b.id]);
-    if (!allRight) setWrongAttempts(n => n + 1);
+    if (!allRight) {
+      setWrongAttempts(n => n + 1);
+    } else {
+      clearDraft(); // level complete — remove the localStorage draft
+    }
   }
 
   const allCorrect = checked && BLANKS.every(b => correct[b.id]);

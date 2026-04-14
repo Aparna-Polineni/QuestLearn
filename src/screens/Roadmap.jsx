@@ -64,7 +64,7 @@ function LevelDot({ stageId, levelNum, isComplete, isCurrent, isLocked, onClick 
 }
 
 // ── Stage card ───────────────────────────────────────────────────────────────
-function StageCard({ stage, stageRoute, isLevelComplete, isStageUnlocked, navigate, currentStageId, currentLevel, levelKey, isFirstStage, totalCompleted }) {
+function StageCard({ stage, stageRoute, isLevelComplete, isStageUnlocked, navigate, currentStageId, currentLevel, levelKey, isFirstStage, totalCompleted, getStageProgress, stageOrder, allStageRoutes }) {
   const sid         = String(stage.id);
   const totalLevels = stageRoute?.levels || stage.levels || 8;
 
@@ -157,11 +157,41 @@ function StageCard({ stage, stageRoute, isLevelComplete, isStageUnlocked, naviga
         </div>
       )}
 
-      {isStageLocked && (
-        <div className="stage-locked-msg">
-          Complete the previous stage to unlock
-        </div>
-      )}
+      {isStageLocked && (() => {
+        // Find the previous stage and compute how many more levels are needed
+        const sidIdx    = (stageOrder || []).indexOf(sid);
+        const prevSid   = sidIdx > 0 ? stageOrder[sidIdx - 1] : null;
+        const prevRoute = prevSid && allStageRoutes ? allStageRoutes[prevSid] : null;
+        const prevMax   = prevRoute?.levels || 8;
+        const prevDone  = prevSid && getStageProgress ? getStageProgress(prevSid) : 0;
+        const threshold = Math.ceil(prevMax * 0.8);
+        const needed    = Math.max(0, threshold - prevDone);
+        const nextIncomplete = prevRoute
+          ? `${prevRoute.base}${prevDone}`
+          : null;
+        return (
+          <div className="stage-locked-msg">
+            🔒{' '}
+            {needed > 0 ? (
+              <>
+                Complete{' '}
+                <strong>{needed} more level{needed !== 1 ? 's' : ''}</strong>
+                {' '}in Stage {prevSid} to unlock this stage.{' '}
+                {nextIncomplete && (
+                  <button
+                    className="stage-locked-link"
+                    onClick={() => navigate(nextIncomplete)}
+                  >
+                    Continue Stage {prevSid} →
+                  </button>
+                )}
+              </>
+            ) : (
+              'Completing the previous stage will unlock this one.'
+            )}
+          </div>
+        );
+      })()}
 
       {/* Start / Continue button when unlocked */}
       {!isStageLocked && (
@@ -230,7 +260,7 @@ function Stage25Banner({ navigate, isLevelComplete, stage25Route }) {
 // ── Main Roadmap ──────────────────────────────────────────────────────────────
 export default function Roadmap() {
   const navigate = useNavigate();
-  const { selectedCareerPath, selectedDomain, completedLevels, xp, streak, isLevelComplete, isStageUnlocked } = useGame();
+  const { selectedCareerPath, selectedDomain, completedLevels, xp, streak, isLevelComplete, isStageUnlocked, getStageProgress } = useGame();
   const { user } = useAuth();
 
   const path   = selectedCareerPath;
@@ -368,6 +398,9 @@ export default function Roadmap() {
               levelKey={levelKey}
               isFirstStage={stageIdx === 0}
               totalCompleted={totalCompleted}
+              getStageProgress={getStageProgress}
+              stageOrder={activeStageIds}
+              allStageRoutes={STAGE_ROUTES}
             />
           ))}
         </div>

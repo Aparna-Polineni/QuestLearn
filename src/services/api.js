@@ -1,141 +1,162 @@
 // src/services/api.js
-// Drop this into your React project — handles all calls to the Spring Boot backend.
-//
-// Usage:
-//   import api from './services/api';
-//   const data = await api.login(email, password);
+// Centralised API client for QuestLearn Spring Boot backend.
+// Handles: JWT auth, network error interception, 401 redirect with ql_redirect,
+// offline detection, and draft answer persistence.
 
-const BASE_URL = 'http://localhost:8080/api';
+const BASE = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+const TOKEN_KEY = 'ql_token';
 
-// ── Token helpers ──────────────────────────────────────────────────────────
-// Store the JWT in localStorage so it survives page refresh
-function getToken()        { return localStorage.getItem('ql_token'); }
-function setToken(token)   { localStorage.setItem('ql_token', token); }
-function clearToken()      { localStorage.removeItem('ql_token'); }
+// ── Connection state — drives the offline banner in ConnectionBanner.jsx ────
+let connectionListeners = [];
+let isOnline = true;
 
-// ── Base fetch wrapper ─────────────────────────────────────────────────────
+export function subscribeConnection(fn) {
+  connectionListeners.push(fn);
+  return () => { connectionListeners = connectionListeners.filter(f => f !== fn); };
+}
+
+function setOnline(val) {
+  if (isOnline === val) return;
+  isOnline = val;
+  connectionListeners.forEach(fn => fn(val));
+}
+
+// ── Core fetch wrapper ───────────────────────────────────────────────────────
 async function request(path, options = {}) {
-  const token = getToken();
+  const token = localStorage.getItem(TOKEN_KEY);
   const headers = {
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...(options.headers || {}),
+    ...options.headers,
   };
 
-  const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.error || `Request failed: ${res.status}`);
+  let response;
+  try {
+    response = await fetch(`${BASE}${path}`, { ...options, headers });
+    setOnline(true); // successful network contact
+  } catch (networkErr) {
+    // Network unreachable — backend down or no connection
+    setOnline(false);
+    const err = new Error('NETWORK_ERROR');
+    err.isNetworkError = true;
+    throw err;
   }
 
-  return data;
+  // ── 401 intercept — token expired mid-session ────────────────────────────
+  if (response.status === 401) {
+    // Preserve where the user was BEFORE clearing auth
+    const dest = window.location.pathname + window.location.search;
+    if (dest && dest !== '/' && !dest.startsWith('/auth')) {
+      sessionStorage.setItem('ql_redirect', dest);
+    }
+    // Clear invalid token
+    localStorage.removeItem(TOKEN_KEY);
+    // Redirect to login — use window.location so React Router resets cleanly
+    window.location.href = '/auth';
+    throw new Error('SESSION_EXPIRED');
+  }
+
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    throw new Error(body.message || `HTTP ${response.status}`);
+  }
+
+  // 204 No Content
+  if (response.status === 204) return null;
+  return response.json();
 }
 
-// ── Auth ───────────────────────────────────────────────────────────────────
-
-/**
- * Register a new user.
- * Stores the returned JWT automatically.
- * @returns AuthResponse { token, userId, email, displayName, careerPath, ... }
- */
-async function register(email, displayName, password) {
-  const data = await request('/auth/register', {
-    method: 'POST',
-    body: JSON.stringify({ email, displayName, password }),
-  });
-  setToken(data.token);
-  return data;
-}
-
-/**
- * Log in an existing user.
- * Stores the returned JWT automatically.
- * @returns AuthResponse
- */
-async function login(email, password) {
-  const data = await request('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-  });
-  setToken(data.token);
-  return data;
-}
-
-/** Clear token — call on logout */
-function logout() {
-  clearToken();
-}
-
-/** Returns true if a JWT is present (doesn't validate expiry client-side) */
-function isLoggedIn() {
-  return !!getToken();
-}
-
-// ── User / Profile ─────────────────────────────────────────────────────────
-
-/**
- * Get current user profile.
- * @returns AuthResponse
- */
-async function getMe() {
-  return request('/user/me');
-}
-
-/**
- * Update career path, domain selection, display name.
- * All fields optional — only sends what you provide.
- * @returns AuthResponse with fresh token — store it.
- */
-async function updateProfile({ displayName, careerPath, domainName, domainColor }) {
-  const data = await request('/user/profile', {
-    method: 'PUT',
-    body: JSON.stringify({ displayName, careerPath, domainName, domainColor }),
-  });
-  // Server returns a fresh token with updated claims — replace the stored one
-  if (data.token) setToken(data.token);
-  return data;
-}
-
-// ── Progress ───────────────────────────────────────────────────────────────
-
-/**
- * Load all progress for the current user.
- * Call this on app startup to hydrate GameContext from the database.
- * @returns ProgressResponse { totalXp, currentStage, completedLevels: [...] }
- */
-async function getProgress() {
-  return request('/progress');
-}
-
-/**
- * Mark a level as complete.
- * Safe to call multiple times — idempotent server-side.
- * @returns ProgressResponse with updated totals
- */
-async function completeLevel(stage, levelId, { timeTakenSeconds, attempts } = {}) {
-  return request('/progress/complete', {
-    method: 'POST',
-    body: JSON.stringify({ stage, levelId, timeTakenSeconds, attempts }),
-  });
-}
-
-// ── Leaderboard ────────────────────────────────────────────────────────────
-
-/**
- * Fetch the leaderboard. Public — no auth required.
- * @returns Array of { rank, displayName, totalXp, currentStage }
- */
-async function getLeaderboard(limit = 20) {
-  return request(`/leaderboard?limit=${limit}`);
-}
-
-// ── Export ─────────────────────────────────────────────────────────────────
+// ── Auth ─────────────────────────────────────────────────────────────────────
 const api = {
-  register, login, logout, isLoggedIn,
-  getMe, updateProfile,
-  getProgress, completeLevel,
-  getLeaderboard,
+  isLoggedIn() {
+    return !!localStorage.getItem(TOKEN_KEY);
+  },
+
+  async getMe() {
+    return request('/api/user/me');
+  },
+
+  async register(email, name, password) {
+    const data = await request('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ email, displayName: name, password }),
+    });
+    if (data?.token) localStorage.setItem(TOKEN_KEY, data.token);
+    return data;
+  },
+
+  async login(email, password) {
+    const data = await request('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+    if (data?.token) localStorage.setItem(TOKEN_KEY, data.token);
+    return data;
+  },
+
+  logout() {
+    localStorage.removeItem(TOKEN_KEY);
+  },
+
+  // ── Progress sync ──────────────────────────────────────────────────────────
+  async getProgress() {
+    return request('/api/progress');
+  },
+
+  async completeLevel(stageId, levelId, meta = {}) {
+    return request('/api/progress/complete', {
+      method: 'POST',
+      body: JSON.stringify({ stageId, levelId, ...meta }),
+    });
+  },
+
+  async updateProfile(updates) {
+    const data = await request('/api/user/profile', {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+    if (data?.token) localStorage.setItem(TOKEN_KEY, data.token);
+    return data;
+  },
+
+  // ── Notifications ──────────────────────────────────────────────────────────
+  async subscribeNotification(email, pathName, nextStage) {
+    return request('/api/notifications/subscribe', {
+      method: 'POST',
+      body: JSON.stringify({ email, pathName, nextStage }),
+    });
+  },
+
+  // ── Draft answers — localStorage persistence for mid-level refresh ─────────
+  // Key: ql_draft_{levelKey}  Value: {vals:{}, ts:timestamp}
+  saveDraft(levelKey, vals) {
+    try {
+      localStorage.setItem(
+        `ql_draft_${levelKey}`,
+        JSON.stringify({ vals, ts: Date.now() })
+      );
+    } catch (_) {} // storage quota exceeded — fail silently
+  },
+
+  loadDraft(levelKey) {
+    try {
+      const raw = localStorage.getItem(`ql_draft_${levelKey}`);
+      if (!raw) return null;
+      const { vals, ts } = JSON.parse(raw);
+      // Expire drafts older than 7 days
+      if (Date.now() - ts > 7 * 24 * 60 * 60 * 1000) {
+        localStorage.removeItem(`ql_draft_${levelKey}`);
+        return null;
+      }
+      return vals;
+    } catch (_) {
+      return null;
+    }
+  },
+
+  clearDraft(levelKey) {
+    try { localStorage.removeItem(`ql_draft_${levelKey}`); } catch (_) {}
+  },
 };
 
 export default api;
