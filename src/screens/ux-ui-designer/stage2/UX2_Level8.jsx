@@ -82,7 +82,7 @@ export default function UX2_Level8() {
               {!isSolved ? (
                 <button className="ux2-check-btn"
                   style={{background:'#334155',color:'#94a3b8',fontSize:13,padding:'7px 16px'}}
-                  onClick={()=>setFound(prev=>{const n=new Set(prev);n.add(bug.id);return n;}))}>
+                  onClick={()=>{const n=new Set(found);n.add(bug.id);setFound(n);}}>
                   Show Fix
                 </button>
               ) : (

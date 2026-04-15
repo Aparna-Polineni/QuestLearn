@@ -126,9 +126,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 32px;
+  padding: 12px 24px;
   background: #0d1117;
   border-top: 1px solid #1e293b;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.s1-action-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex-shrink: 0;
 }
 
@@ -288,32 +296,91 @@
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* ═══════════════════════════════════════════════════════
-   VISUAL IDENTITY UPGRADE — Stage1Shell
-   ═══════════════════════════════════════════════════════ */
+/* Roadmap button in HUD */
+.s1-roadmap-btn {
+  margin-left: 12px;
+  padding: 4px 10px;
+  background: rgba(56,189,248,0.08);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 7px;
+  color: #38bdf8;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+.s1-roadmap-btn:hover { background: rgba(56,189,248,0.14); }
 
-/* Progress bar — path colour */
-.s1-progress-fill {
-  background: #38bdf8;
+/* ── Mode badge icons via ::before ─────────────────────────────
+   Each mode gets a unique icon so users identify mode at a glance
+   even before reading the text.                                  */
+.mode-concepts::before { content: '📖 '; }
+.mode-fill::before     { content: '✏️ '; }
+.mode-build::before    { content: '🔨 '; }
+.mode-debug::before    { content: '🐛 '; }
+
+/* Make badges slightly larger so they read from peripheral vision */
+.mode-concepts,
+.mode-fill,
+.mode-build,
+.mode-debug {
+  font-size: 12px;
+  padding: 6px 14px 6px 10px;
+  border-radius: 8px;
 }
 
-/* Level header title — larger, bolder */
-.s1-level-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #f1f5f9;
-  letter-spacing: -0.3px;
-  line-height: 1.3;
+/* ══════════════════════════════════════════════════════════════
+   MOBILE  (Area 8)
+   java-fullstack / frontend-react Stage1Shell mobile rules.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Blank inputs: 44px min-height, 16px font to prevent iOS zoom */
+  .s1-blank {
+    min-height:  44px !important;
+    font-size:   16px !important;
+    padding:     8px 10px !important;
+    min-width:   80px !important;
+  }
+
+  /* Check button: full-width, 48px */
+  .s1-check-btn,
+  [class*="check-btn"] {
+    display:    block !important;
+    width:      100% !important;
+    min-height: 48px !important;
+    font-size:  16px !important;
+    margin-top: 16px !important;
+  }
+
+  /* Continue / next button */
+  .s1-next-btn,
+  .s1-btn {
+    min-height: 48px !important;
+    font-size:  15px !important;
+  }
+
+  /* Content area */
+  .s1-content { padding: 20px 16px !important; }
+
+  /* Code panel scrollable */
+  .s1-panel-body,
+  .s1-code {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Editor textarea */
+  .s1-editor {
+    font-size:  14px !important;
+    min-height: 200px !important;
+  }
+
+  /* HUD: compress on small screens */
+  .s1-hud { padding: 8px 14px; font-size: 11px; }
 }
 
-/* Continue button — stronger visual weight */
-.s1-next-btn, .s1-continue-btn {
-  box-shadow: 0 2px 12px rgba(249,115,22,0.3);
-  font-weight: 800;
-}
-
-/* Level dot — current level gets path colour ring */
-.s1-level-dot.active {
-  border-color: #38bdf8;
-  box-shadow: 0 0 8px rgba(56,189,248,0.4);
+@media (max-width: 480px) {
+  .s1-hud-right { display: none; } /* hide XP on very small screens */
+  .s1-stage      { display: none; }
 }

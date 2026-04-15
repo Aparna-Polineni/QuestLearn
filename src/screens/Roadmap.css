@@ -438,16 +438,51 @@
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+  /* Stage cards: full-width, slightly less padding */
+  .stage-card {
+    padding: 18px 16px;
+    border-radius: 12px;
+  }
+
+  /* Level dots: bigger tap targets on mobile */
+  .level-dot {
+    width:  36px !important;
+    height: 36px !important;
+    font-size: 11px !important;
+    border-radius: 9px;
+  }
+  .stage-level-dots { gap: 7px; }
+
+  /* Continue button: full-width, 48px */
+  .stage-continue-btn,
+  .stage-start-btn {
+    width:      100% !important;
+    min-height: 48px !important;
+    font-size:  15px !important;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Roadmap grid: single column */
+  .roadmap-stages {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @media (max-width: 640px) {
   .roadmap-nav { padding: 14px 16px; }
-  .roadmap-content { padding: 32px 16px 60px; }
-  .roadmap-title { font-size: 28px; }
-  .roadmap-stats { gap: 20px; }
-  .stat-num { font-size: 22px; }
-  .stage-card { padding: 18px 16px; }
-  .level-dot { width: 26px; height: 26px; font-size: 9px; }
+  .roadmap-content { padding: 24px 14px 60px; }
+  .roadmap-title { font-size: 26px; }
+  .roadmap-stats { gap: 16px; flex-wrap: wrap; }
+  .stat-num { font-size: 20px; }
   .s25-banner { flex-direction: column; align-items: flex-start; }
-  .s25-banner-btn { width: 100%; text-align: center; }
+  .s25-banner-btn { width: 100%; text-align: center; min-height: 44px; }
+
+  /* Card header: stack emoji + title on very narrow */
+  .stage-card-header { gap: 8px; }
+  .stage-card-emoji  { font-size: 24px; }
+  .stage-card-title  { font-size: 15px; }
 }
 
 /* ── Start here indicator ──────────────────────────────────────────────────── */

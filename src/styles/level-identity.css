@@ -255,3 +255,108 @@
   opacity:     .5;
   margin-top:  1px;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   5. MOBILE EXPERIENCE  (Area 8)
+   All rules use the same wildcard selectors so they apply to
+   de1-, de2-, ml1-, ml2-, cy1-, cy2-, ux1-, ux2- automatically.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Fill blanks: 44px min-height + 16px font to kill iOS zoom ─ */
+@media (max-width: 768px) {
+  /* Every blank input across every shell */
+  [class$="-blank"],
+  [class*="-blank"] {
+    min-height:  44px !important;
+    font-size:   16px !important; /* below 16px triggers iOS auto-zoom */
+    padding:     8px 10px !important;
+    min-width:   80px !important;
+  }
+
+  /* ── Check / submit button: full-width, 48px tall ── */
+  [class$="-check-btn"],
+  [class*="-check-btn"],
+  [class$="-check-button"],
+  [class*="-check-button"] {
+    display:     block !important;
+    width:       100% !important;
+    min-height:  48px !important;
+    font-size:   16px !important;
+    margin-top:  16px !important;
+  }
+
+  /* ── Continue / next button in footer ── */
+  [class$="-btn"]:not([class*="back"]),
+  [class*="-btn"]:not([class*="back"]) {
+    min-height: 48px !important;
+  }
+
+  /* ── Content area: reduce padding on small screens ── */
+  [class$="-content"],
+  [class*="-content"] {
+    padding: 20px 16px !important;
+  }
+
+  /* ── Level intro: stack concept card + editor vertically ──
+     On desktop the intro sits beside the exercise; on mobile it
+     goes above it with a clear visual separator.               */
+  [class$="-intro"],
+  [class*="-intro"] {
+    display:       flex;
+    flex-direction: column;
+    gap:           0;
+    margin-bottom: 20px;
+    padding-bottom: 18px;
+    border-bottom:  1px solid rgba(255,255,255,.06);
+  }
+
+  [class$="-intro"] h1,
+  [class*="-intro"] h1 {
+    font-size: clamp(19px, 5vw, 24px) !important;
+  }
+
+  /* ── Code panel: allow horizontal scroll, don't shrink font ── */
+  [class$="-panel-body"],
+  [class*="-panel-body"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 12px;
+  }
+
+  /* ── Tables: allow scroll rather than crushing columns ── */
+  [class$="-table"],
+  [class*="-table"] {
+    display:    block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Editor textarea: full width, 200px min ── */
+  [class$="-editor"],
+  [class*="-editor"] {
+    width:       100% !important;
+    min-height:  200px !important;
+    font-size:   14px !important;
+  }
+}
+
+/* ── 480px and below: tighter still ─────────────────────────── */
+@media (max-width: 480px) {
+  [class$="-topbar"],
+  [class*="-topbar"] {
+    padding: 10px 14px !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Breadcrumb: hide stage text on very small screens, keep path + mode */
+  [class$="-stage"],
+  [class*="-stage-name"] {
+    display: none;
+  }
+
+  [class$="-why"],
+  [class*="-why"] {
+    font-size: 15px !important;
+  }
+}

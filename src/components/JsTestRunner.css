@@ -233,3 +233,34 @@
   margin-top: 6px;
   font-style: italic;
 }
+
+/* ── Mobile: Run button full-width + 48px tap target ─────────── */
+@media (max-width: 768px) {
+  .jtr-run-btn {
+    width:       100%;
+    min-height:  48px;
+    font-size:   16px;
+    border-radius: 8px;
+    margin-top:  4px;
+  }
+
+  /* Textarea: prevent iOS zoom (font-size must be 16px+) */
+  .jtr-editor {
+    font-size: 14px !important;
+    min-height: 180px;
+  }
+
+  /* Test result rows: wrap on small screens */
+  .jtr-test-row {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  /* Shrink test detail keys */
+  .jtr-test-key { width: auto; }
+}
+
+@media (max-width: 480px) {
+  .jtr-editor { font-size: 13px !important; min-height: 160px; }
+  .jtr-run-btn { border-radius: 10px; }
+}
