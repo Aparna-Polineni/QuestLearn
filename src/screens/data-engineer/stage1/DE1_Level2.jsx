@@ -1,6 +1,7 @@
 // src/screens/data-engineer/stage1/DE1_Level2.jsx — Anatomy of a Pipeline (FILL)
 import { useState } from 'react';
 import DE1Shell from './DE1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'EXTRACT',   hint:'First step — pull data from source systems' },
@@ -72,12 +73,19 @@ export default function DE1_Level2() {
         { label:'ETL vs ELT', detail:'Traditional ETL transforms before loading (good for limited storage). Modern ELT loads raw data first, transforms later in the warehouse (good for cloud scale — BigQuery, Snowflake have cheap storage). Both patterns are used in industry.' },
         { label:'Idempotency', detail:'The most important property of a production pipeline. If your pipeline crashes halfway and reruns, it must not create duplicates or lose data. Use UPSERT (ON CONFLICT), track high-water marks, or use event IDs as deduplication keys.' },
       ]}
+      prevLevelContext="In the last level you identified three data quality failures. Now you'll build the pipeline structure that prevents them — Extract, Transform, Load."
+      cumulativeSkills={[
+        "Explained what a data engineer does and why the role exists",
+        "Diagnosed three production bugs: NULL crashes, duplicates, timezone mismatches",
+        "Built a three-step ETL pipeline: extraction from source, transformation, idempotent load",
+      ]}
     >
       <div className="de1-intro">
         <h1>Anatomy of a Pipeline</h1>
         <p className="de1-tagline">🔧 Extract → Transform → Load. The 3-step heartbeat of every data system.</p>
         <p className="de1-why">Every data pipeline in the world — whether it moves 100 rows or 100 billion — follows this same pattern. Understanding it deeply makes every tool easier to learn.</p>
       </div>
+      <AnatomyDiagram levelKey="de1-2" color={STAGE_COLOR} title="ETL pipeline — the hospital as source and destination" />
       <div className="de1-panel">
         <div className="de1-panel-hdr">🐍 Python ETL Pipeline — fill the blanks</div>
         <div className="de1-panel-body" style={{fontFamily:'Fira Code,monospace',fontSize:13}}>{LINES.map(renderLine)}</div>

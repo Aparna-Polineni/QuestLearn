@@ -1,6 +1,7 @@
 // src/screens/data-engineer/stage1/DE1_Level7.jsx — Capstone: Design a Pipeline (BUILD)
 import { useState } from 'react';
 import DE1Shell from './DE1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const REQS = [
   { id:'r1', label:'Identify source system and data format (CSV/JSON/DB)' },
@@ -77,12 +78,24 @@ export default function DE1_Level7() {
       conceptReveal={[
         { label:'Stage 1 Complete', detail:'You now understand why data engineering exists, what bad data costs, how ETL pipelines work, star schema design, batch vs streaming trade-offs, data formats, and the full modern data stack. Stage 2 starts writing real SQL against messy datasets.' },
       ]}
+      prevLevelContext="You have covered every component of a real data system. This capstone asks you to design one from scratch — source to dashboard — using everything from Levels 0 through 6."
+      cumulativeSkills={[
+        "Explained what a data engineer does and why the role exists",
+        "Diagnosed three production bugs: NULL crashes, duplicates, timezone mismatches",
+        "Built a three-step ETL pipeline: extraction, transformation, idempotent load",
+        "Designed a normalised hospital schema: patients, wards, appointments, doctors tables",
+        "Chose between batch and streaming for three clinical data scenarios",
+        "Selected the right data format for storage, transport, and analytics workloads",
+        "Mapped a complete modern data stack: ingestion → storage → transformation → BI",
+        "Designed a complete pipeline architecture for a real hospital analytics system",
+      ]}
     >
       <div className="de1-intro">
         <h1>Capstone — Design a Pipeline</h1>
         <p className="de1-tagline">🏆 Design an end-to-end data pipeline from scratch.</p>
         <p className="de1-why">A junior data engineer's first task is often: "we need analytics on X — design the pipeline." This is that task. Write a design document covering all six requirements.</p>
       </div>
+      <AnatomyDiagram levelKey="de1-7" color={STAGE_COLOR} title="Complete pipeline architecture — source to dashboard" />
 
       <div style={{marginBottom:14}}>
         {REQS.map(r => (

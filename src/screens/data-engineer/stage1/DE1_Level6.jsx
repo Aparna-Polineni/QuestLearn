@@ -1,6 +1,7 @@
 // src/screens/data-engineer/stage1/DE1_Level6.jsx — The Data Stack (CONCEPTS)
 import { useState } from 'react';
 import DE1Shell from './DE1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const LAYERS = [
   { id:'src', emoji:'🏭', title:'Sources', tools:'MySQL, Postgres, Salesforce, APIs, logs, IoT', desc:'Where data is born — operational databases, SaaS apps, event streams. Raw, messy, and not designed for analytics.' },
@@ -16,12 +17,24 @@ export default function DE1_Level6() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <DE1Shell levelId={6} canProceed={seen.size >= LAYERS.length}>
+    <DE1Shell levelId={6} canProceed={seen.size >= LAYERS.length}
+      prevLevelContext="In the last level you chose how patient data travels. Now you'll map the complete modern data stack — every tool from ingestion to the BI dashboard a clinician uses."
+      cumulativeSkills={[
+        "Explained what a data engineer does and why the role exists",
+        "Diagnosed three production bugs: NULL crashes, duplicates, timezone mismatches",
+        "Built a three-step ETL pipeline: extraction, transformation, idempotent load",
+        "Designed a normalised hospital schema: patients, wards, appointments, doctors tables",
+        "Chose between batch and streaming for three clinical data scenarios",
+        "Selected the right data format for storage, transport, and analytics workloads",
+        "Mapped a complete modern data stack: ingestion → storage → transformation → BI",
+      ]}
+    >
       <div className="de1-intro">
         <h1>The Modern Data Stack</h1>
         <p className="de1-tagline">🏗️ Six layers. Every company uses some version of this.</p>
         <p className="de1-why">Understanding the full stack tells you where your work fits — and which tools to learn for which job. You'll touch all six layers across Stages 2–7.</p>
       </div>
+      <AnatomyDiagram levelKey="de1-6" color={STAGE_COLOR} title="The modern data stack — layer by layer" />
 
       <div style={{display:'flex',alignItems:'center',justifyContent:'center',flexWrap:'wrap',gap:0,margin:'20px 0'}}>
         {LAYERS.map((l,i) => (

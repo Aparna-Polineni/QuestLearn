@@ -1,6 +1,7 @@
 // src/screens/data-engineer/stage1/DE1_Level0.jsx — CONCEPTS
 import { useState } from 'react';
 import DE1Shell from './DE1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const CARDS = [
   { id:'de', title:'What is a Data Engineer?', body:'A data engineer builds the plumbing that moves data from where it\'s created to where it\'s used. Analysts and ML models can\'t work if the data is messy, missing, or in the wrong place. Data engineers fix that.' },
@@ -16,12 +17,17 @@ export default function DE1_Level0() {
   const toggle = id => setSeen(p => { const n = new Set(p); n.has(id)?n.delete(id):n.add(id); return n; });
 
   return (
-    <DE1Shell levelId={0} canProceed={seen.size >= CARDS.length}>
+    <DE1Shell levelId={0} canProceed={seen.size >= CARDS.length}
+      cumulativeSkills={[
+        "Explained what a data engineer does and why the role exists",
+      ]}
+    >
       <div className="de1-intro">
         <h1>What is Data Engineering?</h1>
         <p className="de1-tagline">🛢️ You build the pipes. Everyone else drinks the water.</p>
         <p className="de1-why">Before analysts can analyse and models can learn, someone has to collect the raw data, clean it, move it, and store it correctly. That person is a data engineer.</p>
       </div>
+      <AnatomyDiagram levelKey="de1-0" color={STAGE_COLOR} title="The data engineering ecosystem — who builds what" />
       <div className="de1-cards">
         {CARDS.map(c => (
           <div key={c.id} className={`de1-card ${seen.has(c.id)?'seen':''}`} onClick={() => toggle(c.id)}>

@@ -1,6 +1,7 @@
 // src/screens/data-engineer/stage1/DE1_Level3.jsx — Schema Design (FILL)
 import { useState } from 'react';
 import DE1Shell from './DE1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'fact',       hint:'Central table with measurements/events (orders, clicks)' },
@@ -73,12 +74,20 @@ export default function DE1_Level3() {
         { label:'Star Schema vs Snowflake Schema', detail:'Star: dimension tables are flat (denormalised) — faster queries, more storage. Snowflake: dimensions are normalised into sub-dimensions — less storage, more joins. Analysts prefer star schema. Most modern data warehouses use it.' },
         { label:'Surrogate Keys', detail:'Never use the source system\'s ID as the warehouse primary key. Source IDs can change, be reused, or conflict across systems. A surrogate key is a simple auto-increment integer the warehouse owns — stable, unique, fast to join.' },
       ]}
+      prevLevelContext="In the last level you built a pipeline that extracts and loads patient records. Now you'll design the schema those records load into — the structure that makes data queryable."
+      cumulativeSkills={[
+        "Explained what a data engineer does and why the role exists",
+        "Diagnosed three production bugs: NULL crashes, duplicates, timezone mismatches",
+        "Built a three-step ETL pipeline: extraction, transformation, idempotent load",
+        "Designed a normalised hospital schema: patients, wards, appointments, doctors tables",
+      ]}
     >
       <div className="de1-intro">
         <h1>Schema Design</h1>
         <p className="de1-tagline">🗺️ How you structure data determines how fast analysts can query it.</p>
         <p className="de1-why">Operational databases (MySQL, Postgres) are designed for writes. Data warehouses are designed for reads. The star schema — fact + dimension tables — makes analytical queries 10–100x faster.</p>
       </div>
+      <AnatomyDiagram levelKey="de1-3" color={STAGE_COLOR} title="Relational schema — four tables, normalised" />
       <table className="de1-table">
         <thead><tr><th>Table Type</th><th>Contains</th><th>Example</th></tr></thead>
         <tbody>

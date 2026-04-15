@@ -1,6 +1,7 @@
 // src/screens/data-engineer/stage1/DE1_Level5.jsx — Data Formats (FILL)
 import { useState } from 'react';
 import DE1Shell from './DE1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'CSV',     hint:'Comma-separated values — simplest text format' },
@@ -64,12 +65,22 @@ export default function DE1_Level5() {
         { label:'Always Use Parquet for Analytics', detail:'Parquet\'s columnar storage means a query for revenue only reads the revenue column — not names, addresses, or timestamps. For a 100-column table with 1 billion rows, this is the difference between a 10-second query and a 10-minute one. Always store analytical data as Parquet in S3.' },
         { label:'CSV vs JSON in Production', detail:'CSV is fine for small exports and Excel. JSON is good for APIs and flexible schemas. Neither is good for storing billions of analytics rows — they\'re uncompressed and row-based. Parquet or ORC for the data warehouse, Avro for event streams.' },
       ]}
+      prevLevelContext="In the last level you decided when to run the pipeline. Now you'll choose what format data travels in — CSV, JSON, Parquet, or Avro — each with different trade-offs at scale."
+      cumulativeSkills={[
+        "Explained what a data engineer does and why the role exists",
+        "Diagnosed three production bugs: NULL crashes, duplicates, timezone mismatches",
+        "Built a three-step ETL pipeline: extraction, transformation, idempotent load",
+        "Designed a normalised hospital schema: patients, wards, appointments, doctors tables",
+        "Chose between batch and streaming for three clinical data scenarios",
+        "Selected the right data format for storage, transport, and analytics workloads",
+      ]}
     >
       <div className="de1-intro">
         <h1>Data Formats</h1>
         <p className="de1-tagline">📄 CSV is fine for 10,000 rows. Parquet is for 10 billion.</p>
         <p className="de1-why">The format you choose affects storage cost, query speed, and whether schema changes break downstream consumers. Knowing when to use each is a core data engineering skill.</p>
       </div>
+      <AnatomyDiagram levelKey="de1-5" color={STAGE_COLOR} title="Four data formats — trade-offs at a glance" />
       <table className="de1-table">
         <thead><tr><th>Format</th><th>Type</th><th>Best For</th><th>Avoid When</th></tr></thead>
         <tbody>

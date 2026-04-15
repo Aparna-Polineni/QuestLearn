@@ -1,6 +1,7 @@
 // src/screens/data-engineer/stage1/DE1_Level4.jsx — Batch vs Streaming (FILL)
 import { useState } from 'react';
 import DE1Shell from './DE1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'batch',    hint:'Process large chunks of data on a schedule' },
@@ -69,12 +70,21 @@ export default function DE1_Level4() {
         { label:'When to Use Batch vs Streaming', detail:'Batch: daily reports, ML training, large historical loads — latency is OK. Streaming: fraud detection, live dashboards, inventory updates, real-time recommendations — latency must be low. Most companies use both.' },
         { label:'Kafka in One Line', detail:'Kafka is a distributed log — producers write events to topics, consumers read them. Events are retained for a configurable period (days/weeks). Multiple consumers can read the same events independently. Stage 6 covers Kafka in depth.' },
       ]}
+      prevLevelContext="In the last level you designed the schema that stores patient records. Now you'll decide how frequently it gets updated — batch jobs at night, or real-time streaming."
+      cumulativeSkills={[
+        "Explained what a data engineer does and why the role exists",
+        "Diagnosed three production bugs: NULL crashes, duplicates, timezone mismatches",
+        "Built a three-step ETL pipeline: extraction, transformation, idempotent load",
+        "Designed a normalised hospital schema: patients, wards, appointments, doctors tables",
+        "Chose between batch and streaming for three different clinical data scenarios",
+      ]}
     >
       <div className="de1-intro">
         <h1>Batch vs Streaming</h1>
         <p className="de1-tagline">⏱️ Nightly reports or real-time fraud alerts — two different tools.</p>
         <p className="de1-why">Choosing batch vs streaming is the first architectural decision in any data project. Wrong choice = either wasted complexity (streaming when batch was fine) or unusable latency (batch when real-time was needed).</p>
       </div>
+      <AnatomyDiagram levelKey="de1-4" color={STAGE_COLOR} title="Batch vs streaming — when to use each" />
       <table className="de1-table">
         <thead><tr><th>Aspect</th><th>Batch</th><th>Streaming</th></tr></thead>
         <tbody>

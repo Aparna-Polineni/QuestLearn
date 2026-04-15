@@ -1,6 +1,7 @@
 // src/screens/data-engineer/stage1/DE1_Level1.jsx — Data Quality Disasters (DEBUG)
 import { useState } from 'react';
 import DE1Shell from './DE1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BUGS = [
   {
@@ -66,6 +67,12 @@ export default function DE1_Level1() {
 
   return (
     <DE1Shell levelId={1} canProceed={found.size >= BUGS.length}
+      prevLevelContext="In the last level you learned why data engineering exists. Now you'll see what happens when it goes wrong — three real bugs that corrupted live business data."
+      cumulativeSkills={[
+        "Explained what a data engineer does and why the role exists",
+        "Diagnosed three production bugs: NULL crashes, duplicate records, and timezone mismatches",
+      ]}
+
       conceptReveal={[
         { label:'The 3 Data Quality Pillars', detail:'Completeness (no missing values), Uniqueness (no duplicates), Consistency (same timezone, same format everywhere). These three failures cause the majority of "the data is wrong" complaints from analysts.' },
       ]}
@@ -75,6 +82,7 @@ export default function DE1_Level1() {
         <p className="de1-tagline">🐛 Three real bugs that corrupted real business data. Find the fixes.</p>
         <p className="de1-why">Bad data costs companies millions. NULLs crash pipelines. Duplicates inflate revenue. Timezone bugs lose orders. These aren't edge cases — they happen on day one in production.</p>
       </div>
+      <AnatomyDiagram levelKey="de1-1" color={STAGE_COLOR} title="Three production bugs — what they look like in logs" />
       <div style={{display:'flex',flexDirection:'column',gap:14}}>
         {BUGS.map(bug => (
           <div key={bug.id} style={{background:'#1e293b',borderRadius:10,padding:'16px 20px',border:`1px solid ${found.has(bug.id)?'#4ade8060':'#334155'}`,borderLeft:`3px solid ${found.has(bug.id)?'#4ade80':'#f87171'}`}}>
