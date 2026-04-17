@@ -40,15 +40,22 @@ export default function AuthScreen() {
     if (result.error) {
       setError(result.error.message);
     } else {
-      // Priority: sessionStorage (set by RequireAuth) > ?next= param > default
-      const stored  = sessionStorage.getItem('ql_redirect');
-      const param   = searchParams.get('next');
-      const raw     = stored || (param ? decodeURIComponent(param) : null) || '/home';
-      // Clear stored destination now that we've used it
+      // Check if there's a stored destination (came through RequireAuth or Level 0 flow)
+      const stored = sessionStorage.getItem('ql_redirect');
+      const param  = searchParams.get('next');
+      const raw    = stored || (param ? decodeURIComponent(param) : null) || null;
       sessionStorage.removeItem('ql_redirect');
-      // Guard: never redirect to / or /auth (loop prevention)
-      const safe = (raw.startsWith('/auth') || raw === '/') ? '/home' : raw;
-      navigate(safe, { replace: true });
+
+      if (mode === 'signup' && !raw) {
+        // Brand new signup with no destination — show the welcome screen
+        // The welcome screen reads activePath from GameContext to personalise
+        localStorage.setItem('ql_new_user', '1');
+        navigate('/welcome', { replace: true });
+      } else {
+        // Returning signin OR signup coming from a specific destination
+        const safe = (raw?.startsWith('/auth') || raw === '/') ? '/home' : (raw || '/home');
+        navigate(safe, { replace: true });
+      }
     }
   }
 

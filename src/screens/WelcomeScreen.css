@@ -1,0 +1,251 @@
+/* src/screens/WelcomeScreen.css */
+
+/* ── Full-screen container ──────────────────────────────────────── */
+.ws-screen {
+  min-height: 100vh;
+  background: #060a12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Floating particle dots ─────────────────────────────────────── */
+.ws-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.ws-dot {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: ws-float 8s ease-in-out infinite;
+}
+@keyframes ws-float {
+  0%   { opacity: 0;    transform: translateY(0); }
+  20%  { opacity: 0.35; }
+  80%  { opacity: 0.2; }
+  100% { opacity: 0;    transform: translateY(-60px); }
+}
+
+/* ── Card ───────────────────────────────────────────────────────── */
+.ws-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  background: #0c1220;
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.ws-card--in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Top colour bar ─────────────────────────────────────────────── */
+.ws-color-bar {
+  height: 5px;
+  width: 100%;
+}
+
+/* ── Inner padding wrapper ──────────────────────────────────────── */
+.ws-card > *:not(.ws-color-bar) {
+  padding-left: 36px;
+  padding-right: 36px;
+}
+
+/* ── Wordmark ───────────────────────────────────────────────────── */
+.ws-logo {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #38bdf8;
+  padding-top: 28px;
+  padding-bottom: 0;
+}
+
+/* ── Greeting ───────────────────────────────────────────────────── */
+.ws-greeting {
+  font-family: 'Syne', 'DM Sans', sans-serif;
+  font-size: clamp(26px, 5vw, 36px);
+  font-weight: 800;
+  color: #f0f4ff;
+  letter-spacing: -0.8px;
+  line-height: 1.1;
+  margin-top: 20px;
+  margin-bottom: 28px;
+}
+.ws-name {
+  /* Inherits path colour from inline style on parent — set via JS */
+  color: inherit;
+}
+
+/* ── Path card ──────────────────────────────────────────────────── */
+.ws-path-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: rgba(255,255,255,.03);
+  border: 1.5px solid color-mix(in srgb, var(--wp, #6366f1) 30%, transparent);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  margin-left: 36px;
+  margin-right: 36px;
+  /* Override the outer padding for this element */
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.ws-path-emoji {
+  font-size: 36px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.ws-path-info { flex: 1; }
+.ws-path-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #475569;
+  margin-bottom: 4px;
+  font-family: 'DM Mono', monospace;
+}
+.ws-path-title {
+  font-family: 'Syne', 'DM Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  margin-bottom: 3px;
+}
+.ws-path-sub {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* ── Outcome sentence ───────────────────────────────────────────── */
+.ws-outcome {
+  margin-bottom: 20px;
+}
+.ws-outcome-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #475569;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 8px;
+}
+.ws-outcome-text {
+  font-size: 15px;
+  color: #94a3b8;
+  line-height: 1.75;
+  margin: 0;
+}
+.ws-outcome-text::before {
+  content: '"';
+  color: #334155;
+}
+.ws-outcome-text::after {
+  content: '"';
+  color: #334155;
+}
+
+/* ── Stage 1 pill ───────────────────────────────────────────────── */
+.ws-stage-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  font-family: 'DM Mono', monospace;
+  background: rgba(255,255,255,.04);
+  border: 1px solid #1e293b;
+  border-radius: 100px;
+  padding: 5px 14px;
+  margin-bottom: 24px;
+}
+.ws-stage-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── CTA button ─────────────────────────────────────────────────── */
+.ws-cta {
+  display: block;
+  width: 100%;
+  border: none;
+  color: #000;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 16px 24px;
+  border-radius: 12px;
+  letter-spacing: -0.3px;
+  transition: all .2s;
+  margin-left: 36px;
+  margin-right: 36px;
+  /* Override outer padding */
+  padding-left: 24px;
+  padding-right: 24px;
+  /* Full width accounting for margins */
+  width: calc(100% - 72px);
+  margin-bottom: 4px;
+}
+.ws-cta:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(0,0,0,.4);
+}
+
+/* ── Skip link ──────────────────────────────────────────────────── */
+.ws-skip {
+  display: block;
+  background: none;
+  border: none;
+  color: #475569;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+  padding-top: 14px;
+  padding-bottom: 28px;
+  transition: color .2s;
+}
+.ws-skip:hover { color: #64748b; }
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .ws-card > *:not(.ws-color-bar) {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .ws-path-card {
+    margin-left: 22px;
+    margin-right: 22px;
+    padding: 14px 16px;
+  }
+  .ws-cta {
+    margin-left: 22px;
+    margin-right: 22px;
+    width: calc(100% - 44px);
+  }
+  .ws-greeting { font-size: 26px; }
+}

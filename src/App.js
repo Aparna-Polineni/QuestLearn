@@ -1,6 +1,7 @@
 // src/App.js
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ConnectionBanner from './components/ConnectionBanner';
+import WelcomeScreen   from './screens/WelcomeScreen';
 import { GameProvider } from './context/GameContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -286,6 +287,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/"              element={<LandingPage />} />
       <Route path="/auth"          element={<AuthScreen />} />
+      <Route path="/welcome"        element={<WelcomeScreen />} />
       <Route path="/home"          element={<R><Home /></R>} />
       <Route path="/career-select" element={<R><CareerPathSelect /></R>} />
       <Route path="/domain-select" element={<DomainSelect />} />
