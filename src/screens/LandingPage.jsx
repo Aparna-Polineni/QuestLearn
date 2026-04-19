@@ -205,6 +205,18 @@ const TASKS = {
 
 // ─── Path grid data ───────────────────────────────────────────────────────────
 
+// ── Social proof testimonials ─────────────────────────────────────────────
+// TODO: populate after your first 5 users finish Stage 1.
+// Ask each one for a single sentence — "What clicked for you?"
+// Keep it short, specific, and real. No editing for polish.
+//
+// Shape: { quote, name, path, color }
+// Example (do not use until you have the real quote):
+// { quote: "I finally understand why data engineers exist.", name: "Priya M.", path: "Data Engineer", color: "#06b6d4" }
+const TESTIMONIALS = [
+  // Empty until real users contribute. Do not add fake quotes.
+];
+
 const ALL_PATHS = [
   { id:'data-engineer',  emoji:'🛢️', title:'Data Engineer',      color:'#06b6d4', levels:84  },
   { id:'ml-ai-engineer', emoji:'🤖', title:'ML / AI Engineer',   color:'#8b5cf6', levels:112 },
@@ -404,6 +416,25 @@ export default function LandingPage() {
   const [phase, setPhase]             = useState('browse');
   const [scrolled, setScrolled]       = useState(false);
   const [completedJobs, setCompleted] = useState([]);
+  const [weeklyCount,   setWeeklyCount] = useState(null); // null = loading
+
+  // Fetch weekly completions from backend — updates every 60s
+  useEffect(() => {
+    async function fetchCount() {
+      try {
+        const res = await fetch('/api/stats/weekly-completions');
+        if (res.ok) {
+          const { count } = await res.json();
+          setWeeklyCount(count);
+        }
+      } catch (_) {
+        // Backend down — show nothing rather than an error
+      }
+    }
+    fetchCount();
+    const interval = setInterval(fetchCount, 60_000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
@@ -605,6 +636,58 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* SOCIAL PROOF */}
+      <section className="sp-section">
+        <div className="sp-wrap">
+
+          {/* Learner count + live counter */}
+          <div className="sp-counts">
+            <div className="sp-count-item">
+              <div className="sp-count-num sp-count-num--join">
+                Join <span className="sp-count-live">
+                  {/* TODO: replace 0 with real user count once you have 50+ signups */}
+                  career switchers
+                </span> learning their next role
+              </div>
+            </div>
+            {weeklyCount !== null && weeklyCount > 0 && (
+              <div className="sp-count-item sp-count-item--live">
+                <span className="sp-live-dot" aria-hidden />
+                <span className="sp-count-num">
+                  <strong>{weeklyCount.toLocaleString()}</strong> levels completed this week
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Testimonial strip */}
+          {/* TODO: populate after your first 5 users finish Stage 1.
+              DM them directly, ask for one sentence about what clicked.
+              That sentence in a speech bubble is worth more than any feature
+              you could build this month. Replace the placeholder items below. */}
+          <div className="sp-testimonials">
+            {TESTIMONIALS.length > 0 ? (
+              TESTIMONIALS.map((t, i) => (
+                <div key={i} className="sp-tcard">
+                  <p className="sp-tcard-quote">"{t.quote}"</p>
+                  <div className="sp-tcard-meta">
+                    <span className="sp-tcard-name">{t.name}</span>
+                    <span className="sp-tcard-sep">·</span>
+                    <span className="sp-tcard-path" style={{ color: t.color }}>{t.path}</span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              /* Empty state — invisible to users, placeholder for devs */
+              <div className="sp-testimonials-empty" aria-hidden>
+                {/* Testimonials appear here once you have real users */}
+              </div>
+            )}
+          </div>
+
         </div>
       </section>
 

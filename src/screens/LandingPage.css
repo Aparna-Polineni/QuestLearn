@@ -435,6 +435,157 @@
 @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 
 /* ─── Responsive ─────────────────────────────────────── */
+
+
+/* ── Social Proof Section ──────────────────────────────────────────────────
+   Three slots: learner count, live completions counter, testimonial strip.
+   Section is invisible / nearly empty until real data is added.
+   ─────────────────────────────────────────────────────────────────────── */
+.sp-section {
+  padding: 64px 24px;
+  background: var(--bg);
+  border-top: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+}
+
+.sp-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+/* ── Counts row ──────────────────────────────────────────────────────────── */
+.sp-counts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.sp-count-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sp-count-item--live {
+  background: rgba(52,211,153,.06);
+  border: 1px solid rgba(52,211,153,.2);
+  border-radius: 100px;
+  padding: 6px 16px;
+}
+
+.sp-count-num {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: var(--t2);
+  line-height: 1.4;
+}
+.sp-count-num strong {
+  color: var(--green);
+  font-weight: 700;
+  font-size: 17px;
+}
+.sp-count-num--join {
+  font-size: 16px;
+  color: var(--t2);
+  text-align: center;
+}
+.sp-count-live {
+  color: var(--t1);
+  font-weight: 600;
+}
+
+/* Pulsing green dot for the live counter */
+.sp-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  animation: sp-pulse 2s ease-in-out infinite;
+}
+@keyframes sp-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ── Testimonial strip ───────────────────────────────────────────────────── */
+.sp-testimonials {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.sp-testimonials-empty {
+  /* Invisible placeholder — takes no space, awaiting real content */
+  display: none;
+}
+
+.sp-tcard {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  padding: 20px 24px;
+  max-width: 280px;
+  flex: 1;
+  min-width: 220px;
+  position: relative;
+  transition: border-color .2s;
+}
+.sp-tcard:hover { border-color: var(--bd2); }
+
+/* Open quote mark */
+.sp-tcard::before {
+  content: '"';
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  font-size: 36px;
+  line-height: 1;
+  color: var(--bd2);
+  font-family: Georgia, serif;
+  pointer-events: none;
+}
+
+.sp-tcard-quote {
+  font-size: 14px;
+  color: var(--t2);
+  line-height: 1.7;
+  margin: 16px 0 14px;
+  font-style: italic;
+}
+
+.sp-tcard-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.sp-tcard-name {
+  font-weight: 700;
+  color: var(--t1);
+  font-family: 'DM Sans', sans-serif;
+}
+.sp-tcard-sep { color: var(--t3); }
+.sp-tcard-path {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+
+@media (max-width: 600px) {
+  .sp-section { padding: 48px 16px; }
+  .sp-counts   { flex-direction: column; gap: 12px; text-align: center; }
+  .sp-tcard    { max-width: 100%; min-width: auto; }
+}
 @media (max-width:640px) {
   .landing-nav, .landing-nav--scrolled { padding-left:20px; padding-right:20px; }
   .exp-section, .choose-section, .how-section { padding:48px 20px; }
