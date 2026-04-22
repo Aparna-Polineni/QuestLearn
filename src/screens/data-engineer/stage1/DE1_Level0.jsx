@@ -27,7 +27,7 @@ export default function DE1_Level0() {
         <p className="de1-tagline">🛢️ You build the pipes. Everyone else drinks the water.</p>
         <p className="de1-why">Before analysts can analyse and models can learn, someone has to collect the raw data, clean it, move it, and store it correctly. That person is a data engineer.</p>
       </div>
-      <AnatomyDiagram levelKey="de1-0" color={STAGE_COLOR} title="The data engineering ecosystem — who builds what" />
+      <AnatomyDiagram levelKey="de1-0" color="#06b6d4" title="The data engineering ecosystem — who builds what" />
       <div className="de1-cards">
         {CARDS.map(c => (
           <div key={c.id} className={`de1-card ${seen.has(c.id)?'seen':''}`} onClick={() => toggle(c.id)}>

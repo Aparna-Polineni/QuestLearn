@@ -84,7 +84,7 @@ export default function DE1_Level4() {
         <p className="de1-tagline">⏱️ Nightly reports or real-time fraud alerts — two different tools.</p>
         <p className="de1-why">Choosing batch vs streaming is the first architectural decision in any data project. Wrong choice = either wasted complexity (streaming when batch was fine) or unusable latency (batch when real-time was needed).</p>
       </div>
-      <AnatomyDiagram levelKey="de1-4" color={STAGE_COLOR} title="Batch vs streaming — when to use each" />
+      <AnatomyDiagram levelKey="de1-4" color="#06b6d4" title="Batch vs streaming — when to use each" />
       <table className="de1-table">
         <thead><tr><th>Aspect</th><th>Batch</th><th>Streaming</th></tr></thead>
         <tbody>

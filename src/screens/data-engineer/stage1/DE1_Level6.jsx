@@ -34,7 +34,7 @@ export default function DE1_Level6() {
         <p className="de1-tagline">🏗️ Six layers. Every company uses some version of this.</p>
         <p className="de1-why">Understanding the full stack tells you where your work fits — and which tools to learn for which job. You'll touch all six layers across Stages 2–7.</p>
       </div>
-      <AnatomyDiagram levelKey="de1-6" color={STAGE_COLOR} title="The modern data stack — layer by layer" />
+      <AnatomyDiagram levelKey="de1-6" color="#06b6d4" title="The modern data stack — layer by layer" />
 
       <div style={{display:'flex',alignItems:'center',justifyContent:'center',flexWrap:'wrap',gap:0,margin:'20px 0'}}>
         {LAYERS.map((l,i) => (

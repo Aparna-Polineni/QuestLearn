@@ -95,7 +95,7 @@ export default function DE1_Level7() {
         <p className="de1-tagline">🏆 Design an end-to-end data pipeline from scratch.</p>
         <p className="de1-why">A junior data engineer's first task is often: "we need analytics on X — design the pipeline." This is that task. Write a design document covering all six requirements.</p>
       </div>
-      <AnatomyDiagram levelKey="de1-7" color={STAGE_COLOR} title="Complete pipeline architecture — source to dashboard" />
+      <AnatomyDiagram levelKey="de1-7" color="#06b6d4" title="Complete pipeline architecture — source to dashboard" />
 
       <div style={{marginBottom:14}}>
         {REQS.map(r => (

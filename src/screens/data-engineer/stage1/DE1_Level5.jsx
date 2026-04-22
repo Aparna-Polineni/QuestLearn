@@ -80,7 +80,7 @@ export default function DE1_Level5() {
         <p className="de1-tagline">📄 CSV is fine for 10,000 rows. Parquet is for 10 billion.</p>
         <p className="de1-why">The format you choose affects storage cost, query speed, and whether schema changes break downstream consumers. Knowing when to use each is a core data engineering skill.</p>
       </div>
-      <AnatomyDiagram levelKey="de1-5" color={STAGE_COLOR} title="Four data formats — trade-offs at a glance" />
+      <AnatomyDiagram levelKey="de1-5" color="#06b6d4" title="Four data formats — trade-offs at a glance" />
       <table className="de1-table">
         <thead><tr><th>Format</th><th>Type</th><th>Best For</th><th>Avoid When</th></tr></thead>
         <tbody>

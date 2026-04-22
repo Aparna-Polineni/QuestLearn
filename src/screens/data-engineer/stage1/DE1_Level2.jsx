@@ -85,7 +85,7 @@ export default function DE1_Level2() {
         <p className="de1-tagline">🔧 Extract → Transform → Load. The 3-step heartbeat of every data system.</p>
         <p className="de1-why">Every data pipeline in the world — whether it moves 100 rows or 100 billion — follows this same pattern. Understanding it deeply makes every tool easier to learn.</p>
       </div>
-      <AnatomyDiagram levelKey="de1-2" color={STAGE_COLOR} title="ETL pipeline — the hospital as source and destination" />
+      <AnatomyDiagram levelKey="de1-2" color="#06b6d4" title="ETL pipeline — the hospital as source and destination" />
       <div className="de1-panel">
         <div className="de1-panel-hdr">🐍 Python ETL Pipeline — fill the blanks</div>
         <div className="de1-panel-body" style={{fontFamily:'Fira Code,monospace',fontSize:13}}>{LINES.map(renderLine)}</div>

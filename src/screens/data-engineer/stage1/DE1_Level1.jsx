@@ -82,7 +82,7 @@ export default function DE1_Level1() {
         <p className="de1-tagline">🐛 Three real bugs that corrupted real business data. Find the fixes.</p>
         <p className="de1-why">Bad data costs companies millions. NULLs crash pipelines. Duplicates inflate revenue. Timezone bugs lose orders. These aren't edge cases — they happen on day one in production.</p>
       </div>
-      <AnatomyDiagram levelKey="de1-1" color={STAGE_COLOR} title="Three production bugs — what they look like in logs" />
+      <AnatomyDiagram levelKey="de1-1" color="#06b6d4" title="Three production bugs — what they look like in logs" />
       <div style={{display:'flex',flexDirection:'column',gap:14}}>
         {BUGS.map(bug => (
           <div key={bug.id} style={{background:'#1e293b',borderRadius:10,padding:'16px 20px',border:`1px solid ${found.has(bug.id)?'#4ade8060':'#334155'}`,borderLeft:`3px solid ${found.has(bug.id)?'#4ade80':'#f87171'}`}}>

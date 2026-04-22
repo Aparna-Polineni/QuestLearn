@@ -87,7 +87,7 @@ export default function DE1_Level3() {
         <p className="de1-tagline">🗺️ How you structure data determines how fast analysts can query it.</p>
         <p className="de1-why">Operational databases (MySQL, Postgres) are designed for writes. Data warehouses are designed for reads. The star schema — fact + dimension tables — makes analytical queries 10–100x faster.</p>
       </div>
-      <AnatomyDiagram levelKey="de1-3" color={STAGE_COLOR} title="Relational schema — four tables, normalised" />
+      <AnatomyDiagram levelKey="de1-3" color="#06b6d4" title="Relational schema — four tables, normalised" />
       <table className="de1-table">
         <thead><tr><th>Table Type</th><th>Contains</th><th>Example</th></tr></thead>
         <tbody>
