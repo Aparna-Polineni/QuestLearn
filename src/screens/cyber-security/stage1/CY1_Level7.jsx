@@ -1,6 +1,7 @@
 // src/screens/cyber-security/stage1/CY1_Level7.jsx — Capstone: Threat Model (BUILD)
 import { useState } from 'react';
 import CY1Shell from './CY1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const REQS = [
   { id:'r1', label:'Identify assets to protect' },
@@ -96,6 +97,7 @@ export default function CY1_Level7() {
         <p className="cy1-tagline">🏆 Build a complete threat model for a hospital patient portal.</p>
         <p className="cy1-why">A threat model is the deliverable every security team produces before a system goes live. Write one that covers assets, actors, attack vectors, risk levels, mitigations, and detection.</p>
       </div>
+      <AnatomyDiagram levelKey="cy1-7" color="#10b981" title="Complete threat model — hospital booking system" />
 
       <div style={{marginBottom:14}}>
         {REQS.map(r => (

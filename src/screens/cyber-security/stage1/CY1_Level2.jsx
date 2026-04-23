@@ -1,6 +1,7 @@
 // src/screens/cyber-security/stage1/CY1_Level2.jsx — Threat Modelling (FILL)
 import { useState } from 'react';
 import CY1Shell from './CY1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'assets',      hint:'What are we protecting? Data, systems, reputation' },
@@ -85,6 +86,7 @@ export default function CY1_Level2() {
         <p className="cy1-tagline">🗺️ Find what could go wrong before attackers find it first.</p>
         <p className="cy1-why">Threat modelling is the most cost-effective security activity — it prevents vulnerabilities from being built in the first place rather than patching them after a breach.</p>
       </div>
+      <AnatomyDiagram levelKey="cy1-2" color="#10b981" title="STRIDE threat model applied to the hospital booking system" />
       <div className="cy1-panel">
         <div className="cy1-panel-hdr">🗺️ Threat Modelling — fill the blanks</div>
         <div className="cy1-panel-body">{LINES.map(renderLine)}</div>

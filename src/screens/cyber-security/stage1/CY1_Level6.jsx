@@ -1,6 +1,7 @@
 // src/screens/cyber-security/stage1/CY1_Level6.jsx — Security Careers (CONCEPTS)
 import { useState } from 'react';
 import CY1Shell from './CY1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const CARDS = [
   { id:'soc',  title:'SOC Analyst (Tier 1–3)',      body:'Security Operations Centre analysts monitor alerts 24/7, investigate incidents, and escalate threats. Tier 1: triage alerts. Tier 2: deeper investigation. Tier 3: threat hunting and incident response. Entry point for most security careers. Uses SIEM, EDR, ticketing systems.' },
@@ -33,6 +34,7 @@ export default function CY1_Level6() {
         <p className="cy1-tagline">💼 3.4 million unfilled security jobs globally. Which role fits you?</p>
         <p className="cy1-why">Cyber security isn't one job — it's a family of specialisations. This path covers skills that apply across all of them: threat analysis, Linux, ethical hacking, SIEM, and incident response.</p>
       </div>
+      <AnatomyDiagram levelKey="cy1-6" color="#10b981" title="Security career paths — Red, Blue, Purple team" />
       <div className="cy1-cards">
         {CARDS.map(c => (
           <div key={c.id} className={`cy1-card ${seen.has(c.id)?'seen':''}`} onClick={() => toggle(c.id)}>

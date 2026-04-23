@@ -1,6 +1,7 @@
 // src/screens/cyber-security/stage1/CY1_Level4.jsx — Common Attack Types (DEBUG)
 import { useState } from 'react';
 import CY1Shell from './CY1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BUGS = [
   {
@@ -95,6 +96,7 @@ export default function CY1_Level4() {
         <p className="cy1-tagline">🐛 Three vulnerabilities from real applications. Find what\'s wrong.</p>
         <p className="cy1-why">SQL injection, hardcoded credentials, and missing rate limiting are responsible for thousands of real breaches every year. Recognise them instantly.</p>
       </div>
+      <AnatomyDiagram levelKey="cy1-4" color="#10b981" title="OWASP Top 10 — common vulnerabilities in real hospital systems" />
       <div style={{display:'flex',flexDirection:'column',gap:14}}>
         {BUGS.map(bug => (
           <div key={bug.id} style={{background:'#1e293b',borderRadius:10,padding:'16px 20px',border:`1px solid ${found.has(bug.id)?'#4ade8060':'#334155'}`,borderLeft:`3px solid ${found.has(bug.id)?'#4ade80':'#f87171'}`}}>

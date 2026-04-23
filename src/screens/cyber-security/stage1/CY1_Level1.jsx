@@ -1,6 +1,7 @@
 // src/screens/cyber-security/stage1/CY1_Level1.jsx — CIA Triad (FILL)
 import { useState } from 'react';
 import CY1Shell from './CY1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'Confidentiality', hint:'Data is only seen by authorised people' },
@@ -80,6 +81,7 @@ export default function CY1_Level1() {
         <p className="cy1-tagline">🔐 Every security control maps to Confidentiality, Integrity, or Availability.</p>
         <p className="cy1-why">CIA is the lens every security professional uses to evaluate risks and controls. When a new attack emerges, the first question is: which pillar does it attack?</p>
       </div>
+      <AnatomyDiagram levelKey="cy1-1" color="#10b981" title="Attacker mindset — the kill chain from recon to exfiltration" />
       <table className="cy1-table">
         <thead><tr><th>Pillar</th><th>Threat Example</th><th>Control Example</th></tr></thead>
         <tbody>

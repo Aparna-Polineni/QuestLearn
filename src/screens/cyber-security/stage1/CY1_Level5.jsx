@@ -1,6 +1,7 @@
 // src/screens/cyber-security/stage1/CY1_Level5.jsx — Defence in Depth (FILL)
 import { useState } from 'react';
 import CY1Shell from './CY1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'perimeter',  hint:'Outer boundary — firewall, WAF, network controls' },
@@ -92,6 +93,7 @@ export default function CY1_Level5() {
         <p className="cy1-tagline">🛡️ Assume each layer will be breached. Design the next layer accordingly.</p>
         <p className="cy1-why">A single firewall is a single point of failure. Defence in depth means an attacker who bypasses the perimeter still faces network segmentation, endpoint detection, application security, and monitoring before reaching sensitive data.</p>
       </div>
+      <AnatomyDiagram levelKey="cy1-5" color="#10b981" title="Defence in depth — concentric security layers" />
       <div className="cy1-panel">
         <div className="cy1-panel-hdr">🛡️ Defence in Depth — fill the blanks</div>
         <div className="cy1-panel-body">{LINES.map(renderLine)}</div>

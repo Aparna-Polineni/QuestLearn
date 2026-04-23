@@ -1,6 +1,7 @@
 // src/screens/cyber-security/stage1/CY1_Level3.jsx — Attack Surfaces (FILL)
 import { useState } from 'react';
 import CY1Shell from './CY1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'attack surface',  hint:'All the ways an attacker can try to enter or extract data' },
@@ -85,6 +86,7 @@ export default function CY1_Level3() {
         <p className="cy1-tagline">🔎 You can\'t protect what you don\'t know you have.</p>
         <p className="cy1-why">Every organisation has a larger attack surface than they think — forgotten servers, unused APIs, third-party libraries, and employees who click phishing links. Map it before attackers do.</p>
       </div>
+      <AnatomyDiagram levelKey="cy1-3" color="#10b981" title="Attack surfaces — every entry point in the hospital system" />
       <div className="cy1-panel">
         <div className="cy1-panel-hdr">🔎 Attack Surfaces — fill the blanks</div>
         <div className="cy1-panel-body">{LINES.map(renderLine)}</div>
