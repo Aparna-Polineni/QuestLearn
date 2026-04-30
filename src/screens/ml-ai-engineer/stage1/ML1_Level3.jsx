@@ -1,6 +1,7 @@
 // src/screens/ml-ai-engineer/stage1/ML1_Level3.jsx — The ML Workflow (FILL)
 import { useState } from 'react';
 import ML1Shell from './ML1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'problem',      hint:'Define what you\'re trying to predict before touching data' },
@@ -90,6 +91,7 @@ export default function ML1_Level3() {
         <p className="ml1-tagline">⚙️ 8 steps from problem definition to production monitoring.</p>
         <p className="ml1-why">Most failed ML projects fail at steps 1 and 2 — they skip proper problem definition and jump straight to modelling. The workflow makes every step explicit.</p>
       </div>
+      <AnatomyDiagram levelKey="ml1-3" color="#8b5cf6" title="The 7-step ML workflow from problem to production" />
       <div className="ml1-panel">
         <div className="ml1-panel-hdr">⚙️ ML Workflow — fill the blanks</div>
         <div className="ml1-panel-body">{LINES.map(renderLine)}</div>

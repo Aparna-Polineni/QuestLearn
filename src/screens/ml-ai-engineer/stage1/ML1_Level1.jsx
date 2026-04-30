@@ -1,6 +1,7 @@
 // src/screens/ml-ai-engineer/stage1/ML1_Level1.jsx — When NOT to Use ML (DEBUG)
 import { useState } from 'react';
 import ML1Shell from './ML1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BUGS = [
   {
@@ -78,6 +79,7 @@ export default function ML1_Level1() {
         <p className="ml1-tagline">🚫 The best engineers know when ML is the wrong tool.</p>
         <p className="ml1-why">Over-engineering with ML when a rule works perfectly wastes months of work. Under-engineering with ML in a regulated context creates legal risk. Three wrong choices — find why they're wrong.</p>
       </div>
+      <AnatomyDiagram levelKey="ml1-1" color="#8b5cf6" title="When ML helps and when it does not" />
       <div style={{display:'flex',flexDirection:'column',gap:14}}>
         {BUGS.map(bug => (
           <div key={bug.id} style={{background:'#1e293b',borderRadius:10,padding:'16px 20px',border:`1px solid ${found.has(bug.id)?'#4ade8060':'#334155'}`,borderLeft:`3px solid ${found.has(bug.id)?'#4ade80':'#f87171'}`}}>

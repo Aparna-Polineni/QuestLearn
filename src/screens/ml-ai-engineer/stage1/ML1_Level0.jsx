@@ -1,6 +1,7 @@
 // src/screens/ml-ai-engineer/stage1/ML1_Level0.jsx — CONCEPTS
 import { useState } from 'react';
 import ML1Shell from './ML1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const CARDS = [
   { id:'def',    title:'What is Machine Learning?',       body:'ML is programming by example instead of by rules. Classic: you write if/else logic. ML: you show the model thousands of examples and it learns the pattern itself. The model finds rules you\'d never think to write.' },
@@ -26,6 +27,7 @@ export default function ML1_Level0() {
         <p className="ml1-tagline">🧠 Teaching computers to learn instead of programming every rule.</p>
         <p className="ml1-why">ML engineers don't just train models — they build the full system: data pipelines, training infrastructure, serving APIs, and monitoring. The model is the smallest part.</p>
       </div>
+      <AnatomyDiagram levelKey="ml1-0" color="#8b5cf6" title="Traditional programming vs machine learning — the core difference" />
       <div className="ml1-cards">
         {CARDS.map(c => (
           <div key={c.id} className={`ml1-card ${seen.has(c.id)?'seen':''}`} onClick={() => toggle(c.id)}>

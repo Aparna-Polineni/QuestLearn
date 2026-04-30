@@ -1,6 +1,7 @@
 // src/screens/ml-ai-engineer/stage1/ML1_Level5.jsx — Evaluation Metrics (FILL)
 import { useState } from 'react';
 import ML1Shell from './ML1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'accuracy',   hint:'% of correct predictions — misleading for imbalanced data' },
@@ -88,6 +89,7 @@ export default function ML1_Level5() {
         <p className="ml1-tagline">📊 Accuracy lies. Know which metric actually matters for your problem.</p>
         <p className="ml1-why">Reporting 99% accuracy to a stakeholder sounds great until they ask "so how many frauds did you miss?" Choosing the right metric is as important as choosing the right model.</p>
       </div>
+      <AnatomyDiagram levelKey="ml1-5" color="#8b5cf6" title="Confusion matrix and evaluation metrics — precision vs recall" />
       <table className="ml1-table">
         <thead><tr><th>Metric</th><th>When to Use</th><th>Avoid When</th></tr></thead>
         <tbody>

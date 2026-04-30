@@ -1,6 +1,7 @@
 // src/screens/ml-ai-engineer/stage1/ML1_Level7.jsx — Capstone: Frame an ML Problem (BUILD)
 import { useState } from 'react';
 import ML1Shell from './ML1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const REQS = [
   { id:'r1', label:'State the business problem and success metric' },
@@ -97,6 +98,7 @@ export default function ML1_Level7() {
         <p className="ml1-tagline">🏆 The most valuable skill in ML: defining the problem correctly before coding anything.</p>
         <p className="ml1-why">Write a complete ML problem framing document. Cover all six requirements. This is the document a senior ML engineer produces before a single line of code is written.</p>
       </div>
+      <AnatomyDiagram levelKey="ml1-7" color="#8b5cf6" title="Complete ML project specification — hospital readmission model" />
 
       <div style={{marginBottom:14}}>
         {REQS.map(r => (

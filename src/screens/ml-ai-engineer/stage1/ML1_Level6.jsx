@@ -1,6 +1,7 @@
 // src/screens/ml-ai-engineer/stage1/ML1_Level6.jsx — ML in Production (CONCEPTS)
 import { useState } from 'react';
 import ML1Shell from './ML1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const CARDS = [
   { id:'serving', title:'Model Serving',        body:'A trained model needs to be accessible to applications. Two patterns: real-time API (FastAPI endpoint — responds in milliseconds, used for fraud detection, recommendations) and batch scoring (run overnight, score millions of records, used for churn prediction, email campaigns).' },
@@ -33,6 +34,7 @@ export default function ML1_Level6() {
         <p className="ml1-tagline">🚀 Training a model is 10% of the work. Running it reliably is 90%.</p>
         <p className="ml1-why">Most ML courses end at model training. Real ML engineering starts after training — serving, monitoring, drift detection, A/B testing, and cost optimisation.</p>
       </div>
+      <AnatomyDiagram levelKey="ml1-6" color="#8b5cf6" title="ML in production — the full lifecycle" />
       <div className="ml1-cards">
         {CARDS.map(c => (
           <div key={c.id} className={`ml1-card ${seen.has(c.id)?'seen':''}`} onClick={() => toggle(c.id)}>

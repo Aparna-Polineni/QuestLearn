@@ -1,6 +1,7 @@
 // src/screens/ml-ai-engineer/stage1/ML1_Level4.jsx — Data: The Foundation (FILL)
 import { useState } from 'react';
 import ML1Shell from './ML1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'imbalanced',  hint:'Class distribution is unequal (1% fraud, 99% legit)' },
@@ -87,6 +88,7 @@ export default function ML1_Level4() {
         <p className="ml1-tagline">🗃️ Bad data beats good algorithms every time.</p>
         <p className="ml1-why">Senior ML engineers spend 70% of their time on data — cleaning, validating, engineering features. The algorithm is the last 10 minutes. Get the data right first.</p>
       </div>
+      <AnatomyDiagram levelKey="ml1-4" color="#8b5cf6" title="What makes a good training dataset" />
       <div className="ml1-panel">
         <div className="ml1-panel-hdr">🗃️ Data Issues — fill the blanks</div>
         <div className="ml1-panel-body">{LINES.map(renderLine)}</div>

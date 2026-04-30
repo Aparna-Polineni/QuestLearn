@@ -1,6 +1,7 @@
 // src/screens/ml-ai-engineer/stage1/ML1_Level2.jsx — Types of Learning (FILL)
 import { useState } from 'react';
 import ML1Shell from './ML1Shell';
+import AnatomyDiagram from '../../../components/AnatomyDiagram';
 
 const BLANKS = [
   { id:'B1', answer:'supervised',    hint:'Labelled training data — you know the correct answer' },
@@ -82,6 +83,7 @@ export default function ML1_Level2() {
         <p className="ml1-tagline">📐 Supervised, Unsupervised, Reinforcement — three fundamentally different approaches.</p>
         <p className="ml1-why">Choosing the wrong learning type wastes months. No labels? Supervised won't work. Need explainability? Reinforcement learning is a nightmare to audit. Know the type before picking a model.</p>
       </div>
+      <AnatomyDiagram levelKey="ml1-2" color="#8b5cf6" title="Three types of learning — supervised, unsupervised, reinforcement" />
       <div className="ml1-panel">
         <div className="ml1-panel-hdr">🧠 ML Types — fill the blanks</div>
         <div className="ml1-panel-body">{LINES.map(renderLine)}</div>
